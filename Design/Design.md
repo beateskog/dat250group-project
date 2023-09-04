@@ -20,6 +20,18 @@ FeedApp´s primary purpose is to facilitate polls for feedback through web, mobi
 
 ## Use case diagrams
 
+- Users - need to be logged in 
+- Voters - do not need to be logged in 
+
+- Create user
+- Login user
+- Create poll -> time-limit, public/private 
+- Close poll 
+- View poll
+- Answer poll
+- View poll results
+- Logout user
+
 ## Application flow diagram (front-end)
 
 ## Mock-up user screens (front-end)
