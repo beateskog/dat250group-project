@@ -27,24 +27,23 @@ public class FeedAppMain {
 
   private static void createObjects(EntityManager em) {
         Account account = new Account();
-        account.setUsername("test");
-        account.setPassword("test");
-        account.setEmail("myemail@outlook.com");
+        account.setUsername("KariNordmann123");
+        account.setPassword("IlikeDogs123");
         account.setRole(Role.USER);
         em.persist(account);
 
         Poll poll = new Poll();
-        poll.setQuestion("test");
+        poll.setQuestion("Do you like dogs better than cats?");
         poll.setPollPin(123);
-        poll.setPollUrl("https://test.com");
+        poll.setPollUrl("https://feedapp.no/poll/123");
         poll.setStartTime(LocalDateTime.now());
         poll.setEndTime(LocalDateTime.of(2023, 10, 10, 10, 10));
         em.persist(poll);
 
         Poll poll2 = new Poll();
-        poll2.setQuestion("test2");
+        poll2.setQuestion("Do you like cats better than dogs?");
         poll2.setPollPin(1234);
-        poll2.setPollUrl("https://test2.com");
+        poll2.setPollUrl("https://feedapp.no/poll/1234");
         poll2.setStartTime(LocalDateTime.now());
         poll2.setEndTime(LocalDateTime.of(2023, 10, 9, 10, 10));
         em.persist(poll2);
