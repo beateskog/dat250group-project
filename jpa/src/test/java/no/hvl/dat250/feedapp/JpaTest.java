@@ -37,7 +37,6 @@ public class JpaTest {
             account.setRole(Role.USER);
             account.setUsername("test123");
             account.setPassword("test123");
-            account.setEmail("test123@hotmail.com");
             em.persist(account);
             for (int i = 0; i < 40; i++) {
                 Poll poll = new Poll();
@@ -72,7 +71,7 @@ public class JpaTest {
         // Perform a simple query for all the Message entities
         Query q = em.createQuery("select p from Poll p");
 
-        // We should have 40 Persons in the database
+        // We should have 40 polls in the database
         assertEquals(40, q.getResultList().size());
 
         em.close();
