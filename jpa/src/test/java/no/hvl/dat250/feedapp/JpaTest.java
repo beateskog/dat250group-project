@@ -34,6 +34,7 @@ public class JpaTest {
         if (createNewEntries) {
             assertEquals(0, q.getResultList().size());
             Account account = new Account();
+            account.setRole(Role.USER);
             account.setUsername("test123");
             account.setPassword("test123");
             account.setEmail("test123@hotmail.com");

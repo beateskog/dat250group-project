@@ -23,7 +23,6 @@ public class FeedAppMain {
       createObjects(em);
       em.getTransaction().commit();
     }
-
   }
 
   private static void createObjects(EntityManager em) {
@@ -37,10 +36,18 @@ public class FeedAppMain {
         Poll poll = new Poll();
         poll.setQuestion("test");
         poll.setPollPin(123);
-        poll.setPollUrl("https//test.com");
+        poll.setPollUrl("https://test.com");
         poll.setStartTime(LocalDateTime.now());
         poll.setEndTime(LocalDateTime.of(2023, 10, 10, 10, 10));
         em.persist(poll);
+
+        Poll poll2 = new Poll();
+        poll2.setQuestion("test2");
+        poll2.setPollPin(1234);
+        poll2.setPollUrl("https://test2.com");
+        poll2.setStartTime(LocalDateTime.now());
+        poll2.setEndTime(LocalDateTime.of(2023, 10, 9, 10, 10));
+        em.persist(poll2);
 
         Vote vote1 = new Vote();
         vote1.setVote(true);
@@ -54,12 +61,25 @@ public class FeedAppMain {
         vote2.setVotingPlatform(VotingPlatform.IoT);
         em.persist(vote2);
 
+        Vote vote3 = new Vote();
+        vote3.setVote(false);
+        vote3.setVoteTime(LocalDateTime.now());
+        vote3.setVotingPlatform(VotingPlatform.WEB);
+        em.persist(vote3);
+
+        account.getPolls().add(poll);
+        account.getPolls().add(poll2);
+
         poll.getVotes().add(vote1);
         poll.getVotes().add(vote2);
+        poll2.getVotes().add(vote3);
+
         poll.setPollOwner(account);
+        poll2.setPollOwner(account);
+
         vote1.setOwningPoll(poll);
         vote2.setOwningPoll(poll);
-      
+        vote3.setOwningPoll(poll2);
     }
   }
 
