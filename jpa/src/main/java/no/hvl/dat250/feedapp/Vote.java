@@ -2,8 +2,6 @@ package no.hvl.dat250.feedapp;
 
 import java.time.LocalDateTime;
 
-import javax.print.DocFlavor.STRING;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -23,7 +21,7 @@ public class Vote {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private boolean vote;
-    
+
     @Enumerated(EnumType.STRING)
     private VotingPlatform votingPlatform;
     private LocalDateTime voteTime;
