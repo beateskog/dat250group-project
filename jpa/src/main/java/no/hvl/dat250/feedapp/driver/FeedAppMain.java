@@ -75,10 +75,7 @@ public class FeedAppMain {
 
         poll.setPollOwner(account);
         poll2.setPollOwner(account);
-
-        vote1.setOwningPoll(poll);
-        vote2.setOwningPoll(poll);
-        vote3.setOwningPoll(poll2);
+        
     }
   }
 

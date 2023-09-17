@@ -26,7 +26,4 @@ public class Vote {
     private VotingPlatform votingPlatform;
     private LocalDateTime voteTime;
 
-    @ManyToOne
-    private Poll owningPoll;
-
 }
