@@ -23,7 +23,7 @@ FeedApp´s primary purpose is to facilitate polls for feedback through web, mobi
 ![Account](./Database/Tables/Account.png)
 ![Poll](./Database/Tables/Poll.png)
 
-![Vote](./Database/Tables/vote.png)
+![Vote](./Database/Tables/Vote.png)
 
 ![Account_Poll](./Database/Tables/Account_Poll.png)
 ![Poll_Vote](./Database/Tables/Poll_Vote.png)
