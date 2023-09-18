@@ -1,15 +1,12 @@
 package no.hvl.dat250.feedapp.dao;
 
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.Persistence;
 import java.util.List;
 import no.hvl.dat250.feedapp.Account;
 
 public class AccountDao {
 
     static final String PERSISTENCE_UNIT_NAME = "feedapp";
-    private EntityManagerFactory emf = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_NAME);
     private EntityManager em;
 
     public AccountDao(EntityManager em) {

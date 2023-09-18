@@ -82,4 +82,5 @@ public class PollDaoTest {
         Poll retrievedPoll = pollDao.getPollById(poll.getId());
         assertNull(retrievedPoll);
     }
+    
 }

@@ -52,18 +52,21 @@ public class FeedAppMain {
         vote1.setVote(true);
         vote1.setVoteTime(LocalDateTime.now());
         vote1.setVotingPlatform(VotingPlatform.WEB);
+        vote1.setPoll(poll);
         em.persist(vote1);
 
         Vote vote2 = new Vote();
         vote2.setVote(true);
         vote2.setVoteTime(LocalDateTime.now());
         vote2.setVotingPlatform(VotingPlatform.IoT);
+        vote2.setPoll(poll);
         em.persist(vote2);
 
         Vote vote3 = new Vote();
         vote3.setVote(false);
         vote3.setVoteTime(LocalDateTime.now());
         vote3.setVotingPlatform(VotingPlatform.WEB);
+        vote3.setPoll(poll2);
         em.persist(vote3);
 
         account.getPolls().add(poll);
