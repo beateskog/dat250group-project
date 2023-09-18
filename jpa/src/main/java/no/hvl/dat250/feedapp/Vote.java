@@ -8,6 +8,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -24,5 +25,8 @@ public class Vote {
     @Enumerated(EnumType.STRING)
     private VotingPlatform votingPlatform;
     private LocalDateTime voteTime;
+
+    @ManyToOne
+    private Poll poll;
 
 }
