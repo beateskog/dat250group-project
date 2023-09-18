@@ -50,6 +50,8 @@ The figure below displays the use case diagram for our application:
 ## Domain Model 
 ![Domain Model](diagrams/Figure-Domain-model.png)
 
+## Example of a database with test data
+
 ![Account](./assets/tables//Account.png)
 ![Poll](./assets/tables/Poll.png)
 
