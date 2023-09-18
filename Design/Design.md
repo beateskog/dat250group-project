@@ -1,6 +1,8 @@
 # Design document
 
-![Figure-logo.png](../Figure-logo.png)
+<p align="center">
+  <img height=250 width=300 src="../Figure-logo.png">
+</p>
 
 ### Group members
 
