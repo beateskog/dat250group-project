@@ -1,7 +1,7 @@
 # Design document
 
 <p align="center">
-  <img height=320 width=300 src="../Figure-logo.png">
+  <img height=400 width=300 src="../Figure-logo.png">
 </p>
 
 ### Group members
@@ -43,7 +43,7 @@ The difference between a user and a voter is that a voter cannot create polls, b
 The figure below displays the use case diagram for our application:
 
 <p align="center">
-  <img  width=350 src="../Figure-Use-case-diagram.png">
+  <img  width=400 src="../Figure-Use-case-diagram.png">
 </p>
 
 
@@ -51,7 +51,9 @@ The figure below displays the use case diagram for our application:
 
 The domain model for the application FeedApp displays the three conceptual classes and their attributes.
 
-![Figure-Domain-model.png](../Figure-Domain-model.png)
+<p align="center">
+  <img  height=200 src="../Figure-Domain-model.png">
+</p>
 
 
 ## Application flow diagram (front-end)
@@ -59,7 +61,7 @@ The domain model for the application FeedApp displays the three conceptual class
 The application flow diagram for the front-end web-client:
 
 <p align="center">
-  <img height=600 width=500 src="../Figure-Application-flow-diagram.png">
+  <img height=600 width=600 src="../Figure-Application-flow-diagram.png">
 </p>
 
 
@@ -73,5 +75,5 @@ The layout for the web-client:
 The system consists of the following elements:
 
 <p align="center">
-  <img height=600 width=500 src="../Figure-System-specific-architecture-diagram.png">
+  <img height=600 width=800 src="../Figure-System-specific-architecture-diagram.png">
 </p>
