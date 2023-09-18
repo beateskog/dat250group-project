@@ -17,23 +17,29 @@ Rita Haveland Borlaug, Sunniva Storetvedt Lothe, Beate Skogvik
 FeedApp´s primary purpose is to facilitate polls for feedback through web, mobile, or IoT devices. 
 
 ## Domain Model 
+![Domain Model](./assets/FeedAppDomainModel.png)
+
+
+![Account](./assets/tables//Account.png)
+![Poll](./assets/tables/Poll.png)
+
+![Vote](./assets/tables/Vote.png)
+
+![Account_Poll](./assets/tables/Account_Poll.png)
+![Poll_Vote](./assets/tables/Poll_Vote.png)
 
 ## Use case diagrams
-
-- Users - need to be logged in 
-- Voters - do not need to be logged in 
-
-- Create user
-- Login user
-- Create poll -> time-limit, public/private 
-- Close poll 
-- View poll
-- Answer poll
-- View poll results
-- Logout user
 
 ## Application flow diagram (front-end)
 
 ## Mock-up user screens (front-end)
+
+![Login](./assets/mockups/Login.png)
+![Register](./assets/mockups/Register.png)
+![Overview](./assets/mockups/Overview.png)
+![CreatePoll](./assets/mockups/CreatePoll.png)
+![PollResult](./assets/mockups/PollviewResults.png)
+![PollVote](./assets/mockups/Pollview.png)
+![MyProfile](./assets/mockups/Myprofile.png)
 
 ## System-specific architectural diagram
