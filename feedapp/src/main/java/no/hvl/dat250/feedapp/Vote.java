@@ -29,4 +29,11 @@ public class Vote {
     @ManyToOne
     private Poll poll;
 
+    @Override
+    public String toString() {
+        return String.format(
+            "Vote[id=%d, vote='%b', votingPlatform='%s', voteTime='%s']",
+            id, vote, votingPlatform, voteTime);
+    }
+
 }

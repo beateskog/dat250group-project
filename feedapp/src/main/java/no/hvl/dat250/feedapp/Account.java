@@ -3,6 +3,7 @@ package no.hvl.dat250.feedapp;
 import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -28,10 +29,17 @@ public class Account {
     @Enumerated(EnumType.STRING)
     private Role role;
     
-    @OneToMany
+    @OneToMany(cascade = CascadeType.PERSIST)
     @JoinTable(name = "account_poll",
             joinColumns = @JoinColumn(name = "account_id"),
             inverseJoinColumns = @JoinColumn(name = "poll_id"))
     private List<Poll> polls = new ArrayList<>();
     
+    @Override
+    public String toString() {
+        return String.format(
+            "Account[id=%d, username='%s', role='%s']",
+            id, username, role);
+  }
+
 }

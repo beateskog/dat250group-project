@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -32,9 +33,16 @@ public class Poll {
     @ManyToOne
     private Account pollOwner;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.PERSIST)
     @JoinTable(name = "poll_vote",
             joinColumns = @JoinColumn(name = "poll_id"),
             inverseJoinColumns = @JoinColumn(name = "vote_id"))
     private List<Vote> votes = new ArrayList<>();
+
+    @Override
+    public String toString() {
+        return String.format(
+            "Poll[id=%d, pollPin='%d', question='%s', pollUrl='%s', startTime='%s', endTime='%s']",
+            id, pollPin, question, pollUrl, startTime, endTime);
+    }
 }
