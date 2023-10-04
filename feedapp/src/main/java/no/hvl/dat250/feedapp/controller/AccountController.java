@@ -19,7 +19,7 @@ public class AccountController {
     @GetMapping("/account")
     public ResponseEntity<?> getAccountByUsername(@RequestParam(value = "username", required = true) String username) {
         try {
-            Account account = accountRepository.findByUsername(username)
+            Account account = accountRepository.findAccountByUsernameWithPolls(username)
                 .orElseThrow(() -> new RuntimeException("Account with username " + username + " not found"));
             return ResponseEntity.ok(account);
         } catch (RuntimeException e) {

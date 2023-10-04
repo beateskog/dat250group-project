@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -24,9 +25,10 @@ public class Vote {
 
     @Enumerated(EnumType.STRING)
     private VotingPlatform votingPlatform;
+    
     private LocalDateTime voteTime;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Poll poll;
 
     @Override
