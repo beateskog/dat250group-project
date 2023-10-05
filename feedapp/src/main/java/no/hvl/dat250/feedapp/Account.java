@@ -3,9 +3,8 @@ package no.hvl.dat250.feedapp;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -27,13 +26,19 @@ public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(unique = true)
     private String username;
+
     private String password;
+
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Vote> votes = new ArrayList<>();
     
-    @JsonIgnore
-    @OneToMany(cascade = CascadeType.ALL ,fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL ,fetch = FetchType.LAZY, orphanRemoval = true)
     @JoinTable(name = "account_poll",
             joinColumns = @JoinColumn(name = "account_id"),
             inverseJoinColumns = @JoinColumn(name = "poll_id"))

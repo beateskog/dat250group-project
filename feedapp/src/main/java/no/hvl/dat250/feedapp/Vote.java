@@ -2,9 +2,11 @@ package no.hvl.dat250.feedapp;
 
 import java.time.LocalDateTime;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -26,6 +28,9 @@ public class Vote {
     private VotingPlatform votingPlatform;
     
     private LocalDateTime voteTime;
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    private Account account;
 
     @ManyToOne
     private Poll poll;

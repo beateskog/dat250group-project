@@ -4,8 +4,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -32,12 +30,13 @@ public class Poll {
     private String pollUrl;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
+    private PollPrivacy pollPrivacy;
+    
 
-    @JsonIgnore
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     private Account pollOwner;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     @JoinTable(name = "poll_vote",
             joinColumns = @JoinColumn(name = "poll_id"),
             inverseJoinColumns = @JoinColumn(name = "vote_id"))

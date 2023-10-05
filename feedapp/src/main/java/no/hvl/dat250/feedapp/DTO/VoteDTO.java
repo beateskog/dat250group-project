@@ -5,6 +5,7 @@ public class VoteDTO {
     public Long id;
     public String vote;
     public String voter;
+    public Long voterId;
     public Long pollId;
     
 }

@@ -23,7 +23,8 @@ public class VoteController {
         try {
             List<Vote> votes = voteRepository.findByPollId(Long.parseLong(id))
                     .orElseThrow(() -> new RuntimeException("Poll with id " + id + " not found"));
-            return ResponseEntity.ok(votes);
+            List<VoteDTO> voteDTOs = votes.stream().map(vote -> voteToVoteDTO(vote)).toList();
+            return ResponseEntity.ok(voteDTOs);
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
@@ -33,7 +34,9 @@ public class VoteController {
 
         VoteDTO voteDTO = new VoteDTO();
         voteDTO.id = vote.getId();
-        voteDTO.voter = vote.getPoll().getPollOwner().getUsername();
+        voteDTO.voter = vote.getAccount().getRole().toString();
+        voteDTO.voterId = vote.getAccount().getId();
+       
         if (vote.isVote() == false) {
             voteDTO.vote = "No";
         } else {

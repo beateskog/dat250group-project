@@ -9,7 +9,10 @@ public class PollDTO {
     public String question;
     public String startTime;
     public String endTime;
+    public String privacy;
     public String pollOwner;
     public int totalVotes;
+    public int yesVotes;
+    public int noVotes;
     
 }
