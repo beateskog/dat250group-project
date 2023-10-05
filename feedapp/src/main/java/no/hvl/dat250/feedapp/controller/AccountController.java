@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import no.hvl.dat250.feedapp.Account;
+import no.hvl.dat250.feedapp.DTO.AccountDTO;
 import no.hvl.dat250.feedapp.repositories.AccountRepository;
 
 @RestController
@@ -21,12 +22,22 @@ public class AccountController {
         try {
             Account account = accountRepository.findAccountByUsernameWithPolls(username)
                 .orElseThrow(() -> new RuntimeException("Account with username " + username + " not found"));
-            return ResponseEntity.ok(account);
+            return ResponseEntity.ok(AccountToAccountDTO(account));
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(e.getMessage());
         }
     }
 
+    public AccountDTO AccountToAccountDTO (Account account) {
+
+        AccountDTO accountDTO = new AccountDTO();
+        accountDTO.id = account.getId();
+        accountDTO.username = account.getUsername();
+        accountDTO.role = account.getRole().toString();
+        accountDTO.numberOfpolls = account.getPolls().size();
+
+        return accountDTO;
+    }
 
 }

@@ -3,6 +3,8 @@ package no.hvl.dat250.feedapp;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -30,6 +32,7 @@ public class Account {
     @Enumerated(EnumType.STRING)
     private Role role;
     
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL ,fetch = FetchType.LAZY)
     @JoinTable(name = "account_poll",
             joinColumns = @JoinColumn(name = "account_id"),

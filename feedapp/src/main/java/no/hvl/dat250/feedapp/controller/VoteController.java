@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import no.hvl.dat250.feedapp.Vote;
+import no.hvl.dat250.feedapp.DTO.VoteDTO;
 import no.hvl.dat250.feedapp.repositories.VoteRepository;
 
 @RestController
@@ -26,6 +27,22 @@ public class VoteController {
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
+    }
+
+    public VoteDTO voteToVoteDTO(Vote vote) {
+
+        VoteDTO voteDTO = new VoteDTO();
+        voteDTO.id = vote.getId();
+        voteDTO.voter = vote.getPoll().getPollOwner().getUsername();
+        if (vote.isVote() == false) {
+            voteDTO.vote = "No";
+        } else {
+            voteDTO.vote = "Yes";
+        }
+        voteDTO.pollId = vote.getPoll().getId();
+        
+
+        return voteDTO;
     }
         
 }

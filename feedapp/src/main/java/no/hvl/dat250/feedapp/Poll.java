@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -31,6 +33,7 @@ public class Poll {
     private LocalDateTime startTime;
     private LocalDateTime endTime;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER)
     private Account pollOwner;
 

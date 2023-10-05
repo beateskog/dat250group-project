@@ -31,7 +31,7 @@ public class FeedappApplication {
             account.setUsername("KariNordmann123");
             account.setPassword("IlikeDogs123");
             account.setRole(Role.USER);
-            accountRepository.save(account);
+
             
 
             // Create and save Polls
@@ -42,8 +42,8 @@ public class FeedappApplication {
             poll.setStartTime(LocalDateTime.now());
             poll.setEndTime(LocalDateTime.of(2023, 10, 10, 10, 10));
 			poll.setPollOwner(account);
-            account.getPolls().add(poll);
-            pollRepository.save(poll);
+            
+           
             
 
             Poll poll2 = new Poll();
@@ -53,23 +53,19 @@ public class FeedappApplication {
             poll2.setStartTime(LocalDateTime.now());
             poll2.setEndTime(LocalDateTime.of(2023, 10, 9, 10, 10));
 			poll2.setPollOwner(account);
-            pollRepository.save(poll2);
-            
-
+          
             // Create and save Votes
             Vote vote1 = new Vote();
             vote1.setVote(true);
             vote1.setVoteTime(LocalDateTime.now());
             vote1.setVotingPlatform(VotingPlatform.WEB);
             vote1.setPoll(poll);
-            voteRepository.save(vote1);
-
+           
             Vote vote2 = new Vote();
             vote2.setVote(true);
             vote2.setVoteTime(LocalDateTime.now());
             vote2.setVotingPlatform(VotingPlatform.IoT);
             vote2.setPoll(poll);
-            voteRepository.save(vote2);
             
 
             Vote vote3 = new Vote();
@@ -77,17 +73,16 @@ public class FeedappApplication {
             vote3.setVoteTime(LocalDateTime.now());
             vote3.setVotingPlatform(VotingPlatform.WEB);
             vote3.setPoll(poll2);
-            voteRepository.save(vote3);
-
-
-            // Associate entities
-            account.getPolls().add(poll);
-            account.getPolls().add(poll2);
-			
+        
+           
+            
             poll.getVotes().add(vote1);
             poll.getVotes().add(vote2);
             poll2.getVotes().add(vote3);
-
+            account.getPolls().add(poll);
+            account.getPolls().add(poll2);
+            accountRepository.save(account);
+        
             
             // Fetch all accounts
             Iterable<Account> accounts = accountRepository.findAll();
@@ -102,7 +97,6 @@ public class FeedappApplication {
             for (Poll p : polls) {
                 log.info(p.toString());
             }
-
             // Fetch all votes
             Iterable<Vote> votes = voteRepository.findAll();
             log.info("Votes:");
