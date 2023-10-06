@@ -38,7 +38,9 @@ public class FeedappApplication {
             account2.setRole(Role.USER);
 
             Account account3 = new Account();
-            account3.setRole(Role.ANONYMOUS);
+            account3.setUsername("PerNordmann123");
+            account3.setPassword("qwerty");
+            account3.setRole(Role.USER);
 
             // Create and save Polls
             Poll poll = new Poll();

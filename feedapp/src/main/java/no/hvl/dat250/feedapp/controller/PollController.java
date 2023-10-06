@@ -8,7 +8,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,6 +19,7 @@ import no.hvl.dat250.feedapp.Poll;
 import no.hvl.dat250.feedapp.PollPrivacy;
 import no.hvl.dat250.feedapp.Vote;
 import no.hvl.dat250.feedapp.DTO.PollDTO;
+import no.hvl.dat250.feedapp.repositories.AccountRepository;
 import no.hvl.dat250.feedapp.repositories.PollRepository;
 
 @RestController
@@ -25,6 +28,29 @@ public class PollController {
 
     @Autowired
     private PollRepository pollRepository;
+    @Autowired
+    private AccountRepository accountRepository;
+
+    @PostMapping("")
+    public ResponseEntity<?> createPoll(@RequestBody PollDTO pollDTO) {
+        try {
+            Poll poll = new Poll();
+            poll = pollRepository.save(poll);
+            poll.setPollPin((poll.getId().intValue()));
+            poll.setPollUrl("https://feedapp.no/poll/" + poll.getId().toString());
+            poll.setQuestion(pollDTO.question);
+            poll.setEndTime(pollDTO.endTime);
+            poll.setStartTime(pollDTO.startTime);
+            poll.setPollPrivacy(pollDTO.privacy);
+            poll.setPollOwner(accountRepository.findById(pollDTO.pollOwnerId)
+                .orElseThrow(() -> new RuntimeException("Account with id " + pollDTO.pollOwnerId + " not found")));
+            pollRepository.save(poll);
+            return ResponseEntity.ok(pollToPollDTO(poll));
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest()
+                .body(e.getMessage());
+        }
+    }
 
     @GetMapping("")
     public ResponseEntity<?>  getPollByPollPin(@RequestParam(value = "pollPin", required = true) String pollPin) {
@@ -99,10 +125,11 @@ public class PollController {
         pollDTO.pollUrl = poll.getPollUrl();
         pollDTO.pollPin = poll.getPollPin();
         pollDTO.question = poll.getQuestion();
-        pollDTO.startTime = poll.getStartTime().toString();
-        pollDTO.endTime = poll.getEndTime().toString();
-        pollDTO.privacy = poll.getPollPrivacy().toString();
+        pollDTO.startTime = poll.getStartTime();
+        pollDTO.endTime = poll.getEndTime();
+        pollDTO.privacy = poll.getPollPrivacy();
         pollDTO.pollOwner = poll.getPollOwner().getUsername();
+        pollDTO.pollOwnerId = poll.getPollOwner().getId();
         pollDTO.totalVotes = poll.getVotes().size();
         pollDTO.yesVotes = 0;
         pollDTO.noVotes = 0;
