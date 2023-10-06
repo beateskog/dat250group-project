@@ -70,14 +70,15 @@ public class FeedappApplication {
 
           
             Vote vote1 = new Vote();
-            vote1.setVote(true);
+            vote1.setAnswer(true);
             vote1.setVoteTime(LocalDateTime.now());
             vote1.setVotingPlatform(VotingPlatform.WEB);
             vote1.setPoll(poll);
             vote1.setAccount(account);
+            
            
             Vote vote2 = new Vote();
-            vote2.setVote(true);
+            vote2.setAnswer(true);
             vote2.setVoteTime(LocalDateTime.now());
             vote2.setVotingPlatform(VotingPlatform.IoT);
             vote2.setPoll(poll);
@@ -85,35 +86,35 @@ public class FeedappApplication {
             
             
             Vote vote3 = new Vote();
-            vote3.setVote(false);
+            vote3.setAnswer(false);
             vote3.setVoteTime(LocalDateTime.now());
             vote3.setVotingPlatform(VotingPlatform.WEB);
             vote3.setPoll(poll2);
             vote3.setAccount(account2);
 
             Vote vote4 = new Vote();
-            vote4.setVote(false);
+            vote4.setAnswer(false);
             vote4.setVoteTime(LocalDateTime.now());
             vote4.setVotingPlatform(VotingPlatform.IoT);
             vote4.setPoll(poll2);
             vote4.setAccount(account);
 
             Vote vote5 = new Vote();
-            vote5.setVote(true);
+            vote5.setAnswer(true);
             vote5.setVoteTime(LocalDateTime.now());
             vote5.setVotingPlatform(VotingPlatform.WEB);
             vote5.setPoll(poll2);
             vote5.setAccount(account3);
 
             Vote vote6 = new Vote();
-            vote6.setVote(true);
+            vote6.setAnswer(true);
             vote6.setVoteTime(LocalDateTime.now());
             vote6.setVotingPlatform(VotingPlatform.IoT);
             vote6.setPoll(poll3);
             vote6.setAccount(account2);
 
             Vote vote7 = new Vote();
-            vote7.setVote(true);
+            vote7.setAnswer(true);
             vote7.setVoteTime(LocalDateTime.now());
             vote7.setVotingPlatform(VotingPlatform.WEB);
             vote7.setPoll(poll3);

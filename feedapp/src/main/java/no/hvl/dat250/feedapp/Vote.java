@@ -22,7 +22,7 @@ public class Vote {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private boolean vote;
+    private boolean answer;
 
     @Enumerated(EnumType.STRING)
     private VotingPlatform votingPlatform;
@@ -39,7 +39,7 @@ public class Vote {
     public String toString() {
         return String.format(
             "Vote[id=%d, vote='%b', votingPlatform='%s', voteTime='%s']",
-            id, vote, votingPlatform, voteTime);
+            id, answer, votingPlatform, voteTime);
     }
 
 }
