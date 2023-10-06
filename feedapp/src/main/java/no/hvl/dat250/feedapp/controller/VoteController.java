@@ -38,15 +38,16 @@ public class VoteController {
     public ResponseEntity<?> createVote(@PathVariable String id, @RequestBody VoteDTO voteDTO) {
         try {
             Vote vote = new Vote();
+            vote = voteRepository.save(vote);
             vote.setAnswer(voteDTO.vote);
             vote.setVoteTime(LocalDateTime.now());
             Poll poll = pollRepository.findById(Long.parseLong(id))
                     .orElseThrow(() -> new RuntimeException("Poll with id " + id + " not found"));
-            vote = voteRepository.save(vote);
             if (voteDTO.voterId != null){
                 Account account = accountRepository.findById(voteDTO.voterId)
                     .orElseThrow(() -> new RuntimeException("Account with id " + voteDTO.voterId + " not found"));
                 vote.setAccount(account);
+                account.getVotes().add(vote);
             }
             vote.setPoll(poll);
             poll.getVotes().add(vote);

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import no.hvl.dat250.feedapp.Account;
 import no.hvl.dat250.feedapp.Poll;
 import no.hvl.dat250.feedapp.PollPrivacy;
 import no.hvl.dat250.feedapp.Vote;
@@ -36,14 +37,17 @@ public class PollController {
         try {
             Poll poll = new Poll();
             poll = pollRepository.save(poll);
+            Account account = accountRepository.findById(pollDTO.pollOwnerId)
+                .orElseThrow(() -> new RuntimeException("Account with id " + pollDTO.pollOwnerId + " not found"));
             poll.setPollPin((poll.getId().intValue()));
             poll.setPollUrl("https://feedapp.no/poll/" + poll.getId().toString());
             poll.setQuestion(pollDTO.question);
             poll.setEndTime(pollDTO.endTime);
             poll.setStartTime(pollDTO.startTime);
             poll.setPollPrivacy(pollDTO.privacy);
-            poll.setPollOwner(accountRepository.findById(pollDTO.pollOwnerId)
-                .orElseThrow(() -> new RuntimeException("Account with id " + pollDTO.pollOwnerId + " not found")));
+            
+            poll.setPollOwner(account);
+            account.getPolls().add(poll);
             pollRepository.save(poll);
             return ResponseEntity.ok(pollToPollDTO(poll));
         } catch (RuntimeException e) {
