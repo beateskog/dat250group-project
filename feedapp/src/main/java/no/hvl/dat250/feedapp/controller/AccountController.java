@@ -8,11 +8,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import no.hvl.dat250.feedapp.Account;
 import no.hvl.dat250.feedapp.Role;
 import no.hvl.dat250.feedapp.DTO.AccountDTO;
@@ -62,11 +62,11 @@ public class AccountController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateAccount(@PathVariable(value = "id", required = true) String id, @RequestBody String username) {
+    public ResponseEntity<?> updateAccount(@PathVariable(value = "id", required = true) String id, @RequestBody AccountDTO accountDTO) {
         try {
             Account account = accountRepository.findById(Long.parseLong(id))
                 .orElseThrow(() -> new RuntimeException("Account with id " + id + " not found"));
-            account.setUsername(username);
+            account.setUsername(accountDTO.username);
             accountRepository.save(account);
             return ResponseEntity.ok(AccountToAccountDTO(account));
         } catch (RuntimeException e) {
