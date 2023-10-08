@@ -66,11 +66,10 @@ public class FeedappApplication {
             poll3.setPollPin(3);
             poll3.setPollUrl("https://feedapp.no/poll/3");
             poll3.setStartTime(LocalDateTime.now());
-            poll3.setEndTime(LocalDateTime.of(2023, 10, 8, 10, 10));
-            poll3.setPollPrivacy(PollPrivacy.PUBLIC);
+            poll3.setEndTime(LocalDateTime.of(2023, 8, 8, 10, 10));
+            poll3.setPollPrivacy(PollPrivacy.PRIVATE);
             poll3.setPollOwner(account2);
 
-          
             Vote vote1 = new Vote();
             vote1.setAnswer(true);
             vote1.setVoteTime(LocalDateTime.now());
@@ -78,14 +77,12 @@ public class FeedappApplication {
             vote1.setPoll(poll);
             vote1.setAccount(account);
             
-           
             Vote vote2 = new Vote();
             vote2.setAnswer(true);
             vote2.setVoteTime(LocalDateTime.now());
             vote2.setVotingPlatform(VotingPlatform.IoT);
             vote2.setPoll(poll);
             vote2.setAccount(account2);
-            
             
             Vote vote3 = new Vote();
             vote3.setAnswer(false);

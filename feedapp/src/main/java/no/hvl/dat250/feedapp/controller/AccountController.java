@@ -40,7 +40,7 @@ public class AccountController {
     @GetMapping("")
     public ResponseEntity<?> getAccountByUsername(@RequestParam(value = "username", required = true) String username) {
         try {
-            Account account = accountRepository.findAccountByUsernameWithPolls(username)
+            Account account = accountRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("Account with username " + username + " not found"));
             return ResponseEntity.ok(AccountToAccountDTO(account));
         } catch (RuntimeException e) {
@@ -52,7 +52,7 @@ public class AccountController {
     @GetMapping("/{id}")
     public ResponseEntity<?> getAccountById(@PathVariable(value = "id", required = true) String id) {
         try {
-            Account account = accountRepository.findAccountWithPolls(Long.parseLong(id))
+            Account account = accountRepository.findById(Long.parseLong(id))
                 .orElseThrow(() -> new RuntimeException("Account with id " + id + " not found"));
             return ResponseEntity.ok(AccountToAccountDTO(account));
         } catch (RuntimeException e) {
