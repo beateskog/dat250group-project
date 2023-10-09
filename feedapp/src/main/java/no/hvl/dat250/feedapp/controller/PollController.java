@@ -1,6 +1,8 @@
 package no.hvl.dat250.feedapp.controller;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -67,6 +69,21 @@ public class PollController {
                 .body(e.getMessage());
         }
     }
+
+    @GetMapping("/account")
+    public ResponseEntity<?>  getPollByUsername(@RequestParam(value = "username", required = true) String username) {
+        try {
+            List<Poll> polls = pollRepository.findByPollOwnerUsername(username);
+            List<PollDTO> pollDTOs = polls.stream()
+                .map(this::pollToPollDTO)
+                .collect(Collectors.toList());
+            return ResponseEntity.ok(pollDTOs);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(e.getMessage());
+        }
+    }
+
     
     @GetMapping("/{id}")
     public ResponseEntity<?> getPollById(@PathVariable(value = "id", required = true) String id) {
@@ -80,19 +97,56 @@ public class PollController {
         }
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> deletePollById(@PathVariable(value = "id", required = true) String id) {
+    @GetMapping("/active")
+     public ResponseEntity<?> getPollsNotEnded() {
         try {
-            Poll poll = pollRepository.findById(Long.parseLong(id))
-                .orElseThrow(() -> new RuntimeException("Poll with id " + id + " not found"));
-            poll.getPollOwner().getPolls().remove(poll);
-            pollRepository.delete(poll);
-            return ResponseEntity.ok().build();
+            List<Poll> activePolls = pollRepository.findPollsNotPassedEndTime();
+            
+            // Convert Poll entities to PollDTOs
+            List<PollDTO> activePollDTOs = activePolls.stream()
+                    .map(this::pollToPollDTO)
+                    .collect(Collectors.toList());
+            
+            return ResponseEntity.ok(activePollDTOs);
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(e.getMessage());
         }
     }
+
+    @GetMapping("/ended")
+     public ResponseEntity<?> getPollsEnded() {
+        try {
+            List<Poll> activePolls = pollRepository.findPollsPassedEndTime();
+            
+            // Convert Poll entities to PollDTOs
+            List<PollDTO> activePollDTOs = activePolls.stream()
+                    .map(this::pollToPollDTO)
+                    .collect(Collectors.toList());
+            
+            return ResponseEntity.ok(activePollDTOs);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/public")
+        public ResponseEntity<?> getPublicPolls() {
+            try {
+                List<Poll> activePolls = pollRepository.findPublicPolls(PollPrivacy.PUBLIC);
+                
+                // Convert Poll entities to PollDTOs
+                List<PollDTO> activePollDTOs = activePolls.stream()
+                        .map(this::pollToPollDTO)
+                        .collect(Collectors.toList());
+                
+                return ResponseEntity.ok(activePollDTOs);
+            } catch (RuntimeException e) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(e.getMessage());
+            }
+        }
 
     @PutMapping("/{id}/endtime")
     public ResponseEntity<?> updateEndTime(@PathVariable(value = "id", required = true) String id, @RequestParam(value = "time", required = true) String endTime) {
@@ -116,6 +170,20 @@ public class PollController {
             poll.setPollPrivacy(PollPrivacy.valueOf(privacy));
             pollRepository.save(poll);
             return ResponseEntity.ok(pollToPollDTO(poll));
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deletePollById(@PathVariable(value = "id", required = true) String id) {
+        try {
+            Poll poll = pollRepository.findById(Long.parseLong(id))
+                .orElseThrow(() -> new RuntimeException("Poll with id " + id + " not found"));
+            poll.getPollOwner().getPolls().remove(poll);
+            pollRepository.delete(poll);
+            return ResponseEntity.ok().build();
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(e.getMessage());

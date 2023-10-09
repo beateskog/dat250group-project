@@ -17,6 +17,8 @@ import no.hvl.dat250.feedapp.Account;
 import no.hvl.dat250.feedapp.Poll;
 import no.hvl.dat250.feedapp.Role;
 import no.hvl.dat250.feedapp.Vote;
+import no.hvl.dat250.feedapp.VotingPlatform;
+import no.hvl.dat250.feedapp.DTO.IoTDTO;
 import no.hvl.dat250.feedapp.DTO.VoteDTO;
 import no.hvl.dat250.feedapp.repositories.AccountRepository;
 import no.hvl.dat250.feedapp.repositories.PollRepository;
@@ -53,6 +55,43 @@ public class VoteController {
             poll.getVotes().add(vote);
             voteRepository.save(vote);
             return ResponseEntity.ok(voteToVoteDTO(vote));
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PostMapping("/IoTvotes")
+    public ResponseEntity<?> createIoTVotes(@RequestBody IoTDTO ioTDTO) {
+        try {
+            Poll poll = pollRepository.findById(ioTDTO.pollId)
+                    .orElseThrow(() -> new RuntimeException("Poll with id " + ioTDTO.pollId + " not found"));
+            int yesVotes = ioTDTO.yesVotes;
+            int noVotes = ioTDTO.noVotes;
+            while (yesVotes > 0) {
+                Vote vote = new Vote();
+                vote = voteRepository.save(vote);
+                vote.setAnswer(true);
+                vote.setVoteTime(LocalDateTime.now());
+                vote.setVotingPlatform(VotingPlatform.IoT);
+                poll.getVotes().add(vote);
+                vote.setPoll(poll);
+                yesVotes--;
+                pollRepository.save(poll);
+            }
+            while (noVotes > 0) {
+                Vote vote = new Vote();
+                vote = voteRepository.save(vote);
+                vote.setAnswer(false);
+                vote.setVoteTime(LocalDateTime.now());
+                vote.setVotingPlatform(VotingPlatform.IoT);
+                vote.setPoll(poll);
+                poll.getVotes().add(vote);
+                noVotes--;
+                pollRepository.save(poll);
+            }
+            pollRepository.save(poll);
+
+            return ResponseEntity.ok(ioTDTO);
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
@@ -108,6 +147,7 @@ public class VoteController {
         }
         voteDTO.vote = vote.isAnswer();
         voteDTO.pollId = vote.getPoll().getId();
+        voteDTO.votingPlatform = vote.getVotingPlatform();
         
 
         return voteDTO;
