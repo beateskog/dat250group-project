@@ -61,7 +61,7 @@ public class VoteController {
     }
 
     @PostMapping("/IoTvotes")
-    public ResponseEntity<?> getIoTVotes(@RequestBody IoTDTO ioTDTO) {
+    public ResponseEntity<?> createIoTVotes(@RequestBody IoTDTO ioTDTO) {
         try {
             Poll poll = pollRepository.findById(ioTDTO.pollId)
                     .orElseThrow(() -> new RuntimeException("Poll with id " + ioTDTO.pollId + " not found"));
