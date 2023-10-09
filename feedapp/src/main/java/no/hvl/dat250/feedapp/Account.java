@@ -15,6 +15,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.OneToMany;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -30,7 +31,7 @@ public class Account {
     @Column(unique = true)
     private String username;
 
-    private String password;
+    private String password; // required
 
     @Enumerated(EnumType.STRING)
     private Role role;

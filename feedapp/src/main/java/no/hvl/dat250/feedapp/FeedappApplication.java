@@ -57,7 +57,7 @@ public class FeedappApplication {
             poll2.setPollPin(2);
             poll2.setPollUrl("https://feedapp.no/poll/2");
             poll2.setStartTime(LocalDateTime.now());
-            poll2.setEndTime(LocalDateTime.of(2023, 10, 9, 10, 10));
+            poll2.setEndTime(LocalDateTime.of(2023, 10, 20, 10, 10));
             poll2.setPollPrivacy(PollPrivacy.PUBLIC);
             poll2.setPollOwner(account);
 
