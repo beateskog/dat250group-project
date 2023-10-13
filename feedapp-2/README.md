@@ -147,3 +147,7 @@ The difference between a user and a voter is that a voter cannot create polls, b
 <p align="left">
   <img width=600 src="src/main/resources/diagrams/Figure-System-specific-architecture-diagram.png">
 </p>
+
+## Trello
+
+[Trello](https://trello.com/b/sKPuLBzR/dat250)
