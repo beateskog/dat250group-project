@@ -22,15 +22,15 @@ public class VoteServiceImpl implements VoteService {
     }
 
     @Override
-    public String createVote(Vote vote) {
-        voteRepository.save(vote);
-        return "Success";
+    public Vote createVote(Vote vote) {
+        return voteRepository.save(vote);
+       
     }
 
     @Override
-    public String updateVote(Vote vote) {
-        voteRepository.save(vote);
-        return "Success";
+    public Vote updateVote(Vote vote) {
+        return voteRepository.save(vote);
+        
     }
 
     @Override

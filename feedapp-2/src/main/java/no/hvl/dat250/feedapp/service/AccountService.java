@@ -1,7 +1,7 @@
 package no.hvl.dat250.feedapp.service;
 
 import java.util.List;
-import java.util.Optional;
+
 
 import no.hvl.dat250.feedapp.model.Account;
 
@@ -12,11 +12,11 @@ public interface AccountService {
 
     // READ
     public Account findAccountById(Long accountId);
-    public Optional<Account> findAccountByUsername(String username);
+    public Account findAccountByUsername(String username);
     public List<Account> getAllAccounts();
 
     // UPDATE
-    public Account updateAccount(Account account);
+    public Account updateAccount(Account account, Long accountId);
 
     // DELETE
     public String deleteAccountById(Long accountId);

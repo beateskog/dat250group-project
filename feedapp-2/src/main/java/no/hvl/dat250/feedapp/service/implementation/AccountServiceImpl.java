@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import no.hvl.dat250.feedapp.exception.BadRequestException;
 import no.hvl.dat250.feedapp.exception.ResourceNotFoundException;
@@ -14,6 +15,7 @@ import no.hvl.dat250.feedapp.repository.AccountRepository;
 import no.hvl.dat250.feedapp.service.AccountService;
 
 @Service
+@Transactional
 public class AccountServiceImpl implements AccountService {
 
     @Autowired
@@ -53,18 +55,15 @@ public class AccountServiceImpl implements AccountService {
     // --------------------------------------------------- READ --------------------------------------------------------
     @Override
     public Account findAccountById(Long accountId) {
-        if (accountRepository.findById(accountId).isEmpty()) {
-            throw new ResourceNotFoundException("Requested account with ID: " + accountId + " does not exist.");
-        }
-        return accountRepository.findById(accountId).get();
+        Account account = accountRepository.findById(accountId) 
+            .orElseThrow(() -> new ResourceNotFoundException("An account with the given ID: " + accountId + " does not exist."));
+        return account;
     }
 
     @Override
-    public Optional<Account> findAccountByUsername(String username) {
-        Optional<Account> account = accountRepository.findAccountByUsername(username);
-        if (account.isEmpty()) {
-            throw new ResourceNotFoundException("An account with the given username: " + username + "does not exist.");
-        }
+    public Account findAccountByUsername(String username) {
+        Account account = accountRepository.findAccountByUsername(username)
+            .orElseThrow(() -> new ResourceNotFoundException("An account with the given username: " + username + "does not exist."));
         return account;
     }
 
@@ -76,8 +75,8 @@ public class AccountServiceImpl implements AccountService {
     // -------------------------------------------------- UPDATE -------------------------------------------------------
 
     @Override
-    public Account updateAccount(Account account) {
-        Optional<Account> existingAccountOptional = accountRepository.findById(account.getId());
+    public Account updateAccount(Account account, Long accountId) {
+        Optional<Account> existingAccountOptional = accountRepository.findById(accountId);
 
         if (existingAccountOptional.isEmpty()) {
             throw new ResourceNotFoundException("Account with ID " + account.getId() + " does not exist.");
@@ -111,6 +110,10 @@ public class AccountServiceImpl implements AccountService {
     // Vi må vurdere om vi skal ha denne metoden eller ikke. I så tilfelle bør vi sjekke ut Spring Security.
     @Override
     public String deleteMyAccount(String username) {
-        return "";
+        if (accountRepository.findAccountByUsername(username).isEmpty()) {
+            throw new ResourceNotFoundException("Account with username: " + username + " does not exist.");
+        }
+        accountRepository.deleteAccountByUsername(username);
+        return "Account with username: " + username + " has been successfully deleted";
     }
 }

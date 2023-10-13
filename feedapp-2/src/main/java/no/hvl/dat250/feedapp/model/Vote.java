@@ -21,7 +21,7 @@ public class Vote {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Boolean vote;
+    private boolean vote;
     private VotingPlatform platform;
     private LocalDateTime timeOfVote;
 

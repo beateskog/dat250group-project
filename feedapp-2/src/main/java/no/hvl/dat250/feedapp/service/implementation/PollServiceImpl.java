@@ -7,11 +7,15 @@ import java.util.Optional;
 import java.util.Random;
 import java.util.UUID;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import no.hvl.dat250.feedapp.DTO.PollDTO;
 import no.hvl.dat250.feedapp.exception.ResourceNotFoundException;
+import no.hvl.dat250.feedapp.model.Account;
 import no.hvl.dat250.feedapp.model.Poll;
 import no.hvl.dat250.feedapp.model.PollPrivacy;
+import no.hvl.dat250.feedapp.repository.AccountRepository;
 import no.hvl.dat250.feedapp.repository.PollRepository;
 import no.hvl.dat250.feedapp.service.PollService;
 
@@ -20,26 +24,38 @@ public class PollServiceImpl implements PollService {
     
     PollRepository pollRepository;
 
+    @Autowired
+    private AccountRepository accountRepository;
+
     public PollServiceImpl (PollRepository pollRepository) {
         this.pollRepository = pollRepository;
     }
 
     // -------------------------------------------------- CREATE -------------------------------------------------------
     @Override
-    public String createPoll(Poll poll) {
+    public Poll createPoll(PollDTO pollDTO) {
         String uniqueUrl = generateUniqueUrl();
         int uniquePin = generateUniquePin();
 
+        Poll poll = new Poll();
+        poll.setQuestion(pollDTO.question);
+        poll.setStartTime(pollDTO.startTime);
+        poll.setEndTime(pollDTO.endTime);
+        poll.setPollPrivacy(pollDTO.privacy);
+
         poll.setPollURL(uniqueUrl);
         poll.setPollPin(uniquePin);
-        poll.setQuestion(poll.getQuestion());
-        
+
+        Account account = accountRepository.findById(pollDTO.pollOwnerId)
+            .orElseThrow(() -> new ResourceNotFoundException("Account with ID: " + poll.getAccount().getId() + " does not exist."));
+        poll.setAccount(account);
+
         pollRepository.save(poll);
-        return "Poll created with URL: " + uniqueUrl + " and PIN: " + uniquePin;
+        return poll;
     }
 
     @Override
-    public String createPoll(String question, LocalDateTime start, LocalDateTime end) {
+    public Poll createPoll(String question, LocalDateTime start, LocalDateTime end) {
         String uniqueUrl = generateUniqueUrl();
         int uniquePin = generateUniquePin();
 
@@ -51,7 +67,7 @@ public class PollServiceImpl implements PollService {
         poll.setEndTime(end);
 
         pollRepository.save(poll);
-        return "Poll created with URL: " + uniqueUrl + " and PIN: " + uniquePin;
+        return poll;
     }
 
     private String generateUniqueUrl() {
@@ -78,20 +94,16 @@ public class PollServiceImpl implements PollService {
     }
  
     @Override
-    public Optional<Poll> findPollByUrl(String url) {
-        Optional<Poll> poll = pollRepository.findPollByPollURL(url);
-        if (poll.isEmpty()) {
-            throw new ResourceNotFoundException("A poll with the given url: " + url + "does not exist.");
-        }
+    public Poll findPollByUrl(String url) {
+        Poll poll = pollRepository.findPollByPollURL(url)
+            .orElseThrow(() -> new ResourceNotFoundException("A poll with the given url: " + url + "does not exist."));
         return poll;
     }
 
     @Override
-    public Optional<Poll> findPollByPin(int pin) {
-        Optional<Poll> poll = pollRepository.findPollByPollPin(pin);
-        if (poll.isEmpty()) {
-            throw new ResourceNotFoundException("A poll with the given pin: " + pin + "does not exist.");
-        }
+    public Poll findPollByPin(int pin) {
+        Poll poll = pollRepository.findPollByPollPin(pin)
+            .orElseThrow(() -> new ResourceNotFoundException("A poll with the given pin: " + pin + "does not exist."));
         return poll;
     }
 

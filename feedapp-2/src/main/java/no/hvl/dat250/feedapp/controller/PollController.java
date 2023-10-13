@@ -1,7 +1,6 @@
 package no.hvl.dat250.feedapp.controller;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,13 +11,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import no.hvl.dat250.feedapp.DTO.PollDTO;
 import no.hvl.dat250.feedapp.exception.BadRequestException;
 import no.hvl.dat250.feedapp.exception.ResourceNotFoundException;
 import no.hvl.dat250.feedapp.model.Poll;
 import no.hvl.dat250.feedapp.model.PollPrivacy;
+import no.hvl.dat250.feedapp.model.Vote;
 import no.hvl.dat250.feedapp.service.PollService;
 
 @RestController
@@ -35,10 +35,10 @@ public class PollController {
     
     // CREATE
     @PostMapping
-    public ResponseEntity<?> createPoll(@RequestBody Poll poll) {
+    public ResponseEntity<?> createPoll(@RequestBody PollDTO poll) {
         try {
-            pollService.createPoll(poll);
-            return ResponseEntity.status(HttpStatus.CREATED).build();
+            Poll createdPoll = pollService.createPoll(poll);
+            return ResponseEntity.status(HttpStatus.CREATED).body(pollToPollDTO(createdPoll));
         } catch (BadRequestException ex) {
             return ResponseEntity.badRequest().body(ex.getMessage());
         }
@@ -46,8 +46,14 @@ public class PollController {
 
     // READ
     @GetMapping("{pollId}")
-    public Poll findPollById(@PathVariable("pollId") Long pollId) {
-        return pollService.findPollById(pollId);
+    public ResponseEntity<?> findPollById(@PathVariable("pollId") Long pollId) {
+        try {
+            Poll poll = pollService.findPollById(pollId);
+            return ResponseEntity.ok(pollToPollDTO(poll));
+        } catch (ResourceNotFoundException ex) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+        }
+      
 
         // return ResponseHandler.responseBuilder(
         //     "Requested Poll Details are given here.",
@@ -56,50 +62,78 @@ public class PollController {
     }
 
     @GetMapping("/url")
-    public ResponseEntity<Poll> findPollByUrl(@PathVariable String url) {
-        Optional<Poll> poll = pollService.findPollByUrl(url);
-
-        if (poll.isPresent()) {
-            return ResponseEntity.ok(poll.get());
-        } else {
-            return ResponseEntity.notFound().build();
+    public ResponseEntity<?> findPollByUrl(@PathVariable String url) {
+        try {
+            Poll poll = pollService.findPollByUrl(url);
+            return ResponseEntity.ok(pollToPollDTO(poll));
+        } catch (ResourceNotFoundException ex) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
         }
     }
 
-    @GetMapping("pin")
-    public ResponseEntity<Poll> findPollByPin(@PathVariable int pin) {
-        Optional<Poll> poll = pollService.findPollByPin(pin);
-
-        if (poll.isPresent()) {
-            return ResponseEntity.ok(poll.get());
-        } else {
-            return ResponseEntity.notFound().build();
+    @GetMapping("/pin/{id}")
+    public ResponseEntity<?> findPollByPin(@PathVariable("id") int pin) {
+        try {
+            Poll poll = pollService.findPollByPin(pin);
+            return ResponseEntity.ok(pollToPollDTO(poll));
+        } catch (ResourceNotFoundException ex) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
         }
     }
 
     @GetMapping("/owner/{username}")
-    public List<Poll> findByPollsByOwnerUsername(@PathVariable String username) {
-        return pollService.findPollsByOwnerUsername(username);
+    public ResponseEntity<?> findByPollsByOwnerUsername(@PathVariable String username) {
+        try{
+            List<Poll> polls = pollService.findPollsByOwnerUsername(username);
+            List<PollDTO> pollDTOs = polls.stream().map(poll -> pollToPollDTO(poll)).toList();
+            return ResponseEntity.ok(pollDTOs);
+        } catch (ResourceNotFoundException ex) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+        }
     }
 
-    @GetMapping("/not-passed-end-time")
-    public List<Poll> findPollsNotPassedEndTime() {
-        return pollService.findPollsNotPassedEndTime();
+    @GetMapping("/active")
+    public ResponseEntity<?> findPollsNotPassedEndTime() {
+        try {
+            List<Poll> polls = pollService.findPollsNotPassedEndTime();
+            List<PollDTO> pollDTOs = polls.stream().map(poll -> pollToPollDTO(poll)).toList();
+            return ResponseEntity.ok(pollDTOs);
+        } catch (ResourceNotFoundException ex) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+        }
     }
 
-    @GetMapping("/passed-end-time")
-    public List<Poll> findPollsPassedEndTime() {
-        return pollService.findPollsPassedEndTime();
+    @GetMapping("/ended")
+    public ResponseEntity<?> findPollsPassedEndTime() {
+        try {
+            List<Poll> polls = pollService.findPollsPassedEndTime();
+            List<PollDTO> pollDTOs = polls.stream().map(poll -> pollToPollDTO(poll)).toList();
+            return ResponseEntity.ok(pollDTOs);
+        } catch (ResourceNotFoundException ex) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+        }
     }
 
     @GetMapping("/public")
-    public List<Poll> findPublicPolls(@RequestParam("privacy") PollPrivacy privacy) {
-        return pollService.findPublicPolls(PollPrivacy.PUBLIC);
+    public ResponseEntity<?> findPublicPolls() {
+       try {
+            List<Poll> polls = pollService.findPublicPolls(PollPrivacy.PUBLIC);
+            List<PollDTO> pollDTOs = polls.stream().map(poll -> pollToPollDTO(poll)).toList();
+            return ResponseEntity.ok(pollDTOs);
+        } catch (ResourceNotFoundException ex) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+       }
     }
 
     @GetMapping("/all")
-    public List<Poll> getAllPolls() {
-        return pollService.getAllPolls();
+    public ResponseEntity<?> getAllPolls() {
+        try {
+            List<Poll> polls = pollService.getAllPolls();
+            List<PollDTO> pollDTOs = polls.stream().map(poll -> pollToPollDTO(poll)).toList();
+            return ResponseEntity.ok(pollDTOs);
+        } catch (ResourceNotFoundException ex) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+        }
     }
 
     // UPDATE
@@ -107,20 +141,46 @@ public class PollController {
     public ResponseEntity<?> updatePoll(@RequestBody Poll poll) {
         try {
             Poll updatedPoll = pollService.updatePoll(poll);
-            return ResponseEntity.ok(updatedPoll);
+            return ResponseEntity.ok(pollToPollDTO(updatedPoll));
         } catch (ResourceNotFoundException ex) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
         }
     }
 
     // DELETE
     @DeleteMapping("{pollId}")
-    public ResponseEntity<Poll> deletePollById(@PathVariable("pollId") Long pollId) {
+    public ResponseEntity<?> deletePollById(@PathVariable("pollId") Long pollId) {
         try {
             pollService.deletePollById(pollId);
-            return ResponseEntity.noContent().build();
+            return ResponseEntity.ok().build();
         } catch (ResourceNotFoundException ex) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
         }
+    }
+
+    private PollDTO pollToPollDTO(Poll poll) {
+
+        PollDTO pollDTO = new PollDTO();
+        pollDTO.id = poll.getId();
+        pollDTO.pollUrl = poll.getPollURL();
+        pollDTO.pollPin = poll.getPollPin();
+        pollDTO.question = poll.getQuestion();
+        pollDTO.startTime = poll.getStartTime();
+        pollDTO.endTime = poll.getEndTime();
+        pollDTO.privacy = poll.getPollPrivacy();
+        pollDTO.pollOwner = poll.getAccount().getUsername();
+        pollDTO.pollOwnerId = poll.getAccount().getId();
+        pollDTO.totalVotes = poll.getVotes().size();
+        pollDTO.yesVotes = 0;
+        pollDTO.noVotes = 0;
+        for (Vote vote : poll.getVotes()) {
+            if (vote.isVote() == false) {
+                pollDTO.noVotes++;
+            } else {
+                pollDTO.yesVotes++;
+            }
+        }
+
+        return pollDTO;
     }
 }
