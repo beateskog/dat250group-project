@@ -55,7 +55,7 @@ public class PollController {
         //     pollService.getPoll(pollId));
     }
 
-    @GetMapping
+    @GetMapping("/url")
     public ResponseEntity<Poll> findPollByUrl(@PathVariable String url) {
         Optional<Poll> poll = pollService.findPollByUrl(url);
 
@@ -66,7 +66,7 @@ public class PollController {
         }
     }
 
-    @GetMapping
+    @GetMapping("pin")
     public ResponseEntity<Poll> findPollByPin(@PathVariable int pin) {
         Optional<Poll> poll = pollService.findPollByPin(pin);
 
@@ -97,7 +97,7 @@ public class PollController {
         return pollService.findPublicPolls(PollPrivacy.PUBLIC);
     }
 
-    @GetMapping()
+    @GetMapping("/all")
     public List<Poll> getAllPolls() {
         return pollService.getAllPolls();
     }

@@ -47,8 +47,8 @@ public class PollServiceImpl implements PollService {
         poll.setPollURL(uniqueUrl);
         poll.setPollPin(uniquePin);
         poll.setQuestion(question);
-        poll.setStart(start);
-        poll.setEnd(end);
+        poll.setStartTime(start);
+        poll.setEndTime(end);
 
         pollRepository.save(poll);
         return "Poll created with URL: " + uniqueUrl + " and PIN: " + uniquePin;
@@ -79,7 +79,7 @@ public class PollServiceImpl implements PollService {
  
     @Override
     public Optional<Poll> findPollByUrl(String url) {
-        Optional<Poll> poll = pollRepository.findPollByUrl(url);
+        Optional<Poll> poll = pollRepository.findPollByPollURL(url);
         if (poll.isEmpty()) {
             throw new ResourceNotFoundException("A poll with the given url: " + url + "does not exist.");
         }
@@ -88,7 +88,7 @@ public class PollServiceImpl implements PollService {
 
     @Override
     public Optional<Poll> findPollByPin(int pin) {
-        Optional<Poll> poll = pollRepository.findPollByPin(pin);
+        Optional<Poll> poll = pollRepository.findPollByPollPin(pin);
         if (poll.isEmpty()) {
             throw new ResourceNotFoundException("A poll with the given pin: " + pin + "does not exist.");
         }
@@ -111,8 +111,8 @@ public class PollServiceImpl implements PollService {
         List<Poll> activePolls = new ArrayList<>();
 
         for (Poll poll : allPolls) {
-            if (poll.getEnd() != null && poll.getEnd().isAfter(currentTime) &&
-                poll.getStart() != null && poll.getStart().isBefore(currentTime)) {
+            if (poll.getEndTime() != null && poll.getEndTime().isAfter(currentTime) &&
+                poll.getStartTime() != null && poll.getStartTime().isBefore(currentTime)) {
                 // Check if the poll has both start and end times and is currently active
                 activePolls.add(poll);
             }
@@ -130,7 +130,7 @@ public class PollServiceImpl implements PollService {
         List<Poll> passedEndTimePolls = new ArrayList<>();
 
         for (Poll poll : allPolls) {
-            if (poll.getEnd() != null && poll.getEnd().isBefore(currentTime)) {
+            if (poll.getEndTime() != null && poll.getEndTime().isBefore(currentTime)) {
                 // Check if the poll has an end time and it's before the current time
                 passedEndTimePolls.add(poll);
             }
@@ -146,7 +146,7 @@ public class PollServiceImpl implements PollService {
             throw new IllegalArgumentException("Privacy parameter must be set to PollPrivacy.PUBLIC.");
         }
     
-        List<Poll> publicPolls = pollRepository.findPollsByPrivacy(PollPrivacy.PUBLIC);
+        List<Poll> publicPolls = pollRepository.findPollsByPollPrivacy(PollPrivacy.PUBLIC);
     
         if (publicPolls.isEmpty()) {
             throw new ResourceNotFoundException("No public polls found.");
@@ -173,12 +173,12 @@ public class PollServiceImpl implements PollService {
         Poll existingPoll = existingPollOptional.get();
 
         // Update the start and end times if provided
-        if (poll.getStart() != null) {
-            existingPoll.setStart(poll.getStart());
+        if (poll.getStartTime() != null) {
+            existingPoll.setStartTime(poll.getStartTime());
         }
 
-        if (poll.getEnd() != null) {
-            existingPoll.setEnd(poll.getEnd());
+        if (poll.getEndTime() != null) {
+            existingPoll.setEndTime(poll.getEndTime());
         }
 
         // Update the privacy status if provided

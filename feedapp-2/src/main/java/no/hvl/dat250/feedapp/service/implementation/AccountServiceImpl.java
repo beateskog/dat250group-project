@@ -3,6 +3,7 @@ package no.hvl.dat250.feedapp.service.implementation;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import no.hvl.dat250.feedapp.exception.BadRequestException;
@@ -15,6 +16,7 @@ import no.hvl.dat250.feedapp.service.AccountService;
 @Service
 public class AccountServiceImpl implements AccountService {
 
+    @Autowired
     private AccountRepository accountRepository;
 
     public AccountServiceImpl (AccountRepository accountRepository) {

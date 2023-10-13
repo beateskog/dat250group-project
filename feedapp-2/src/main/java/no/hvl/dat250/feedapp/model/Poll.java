@@ -27,8 +27,8 @@ public class Poll {
     private int pollPin;
     private String pollURL;
     private String question;
-    private LocalDateTime start;
-    private LocalDateTime end;
+    private LocalDateTime startTime;
+    private LocalDateTime endTime;
     private PollPrivacy pollPrivacy;
 
     @ManyToOne
@@ -46,7 +46,7 @@ public class Poll {
         this.pollPin = pollPin;
         this.pollURL = pollURL;
         this.question = question;
-        this.start = start;
-        this.end = end;
+        this.startTime = start;
+        this.endTime = end;
     }
 }

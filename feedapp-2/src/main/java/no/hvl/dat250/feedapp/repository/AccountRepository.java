@@ -8,5 +8,5 @@ import no.hvl.dat250.feedapp.model.Account;
 
 public interface AccountRepository extends JpaRepository<Account, Long> {
     public Optional<Account> findAccountByUsername(String username);
-    public Optional<Account> deleteMyAccount(String username);
+    public Optional<Account> deleteAccountByUsername(String username);
 }
