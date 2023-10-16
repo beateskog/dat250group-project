@@ -14,12 +14,12 @@ import no.hvl.dat250.feedapp.repositories.PollRepository;
 import no.hvl.dat250.feedapp.repositories.VoteRepository;
 
 @SpringBootApplication
-public class FeedappApplication {
+public class FeedappApplicationOld {
 
-	private static final Logger log = LoggerFactory.getLogger(FeedappApplication.class);
+	private static final Logger log = LoggerFactory.getLogger(FeedappApplicationOld.class);
 
 	public static void main(String[] args) {
-		SpringApplication.run(FeedappApplication.class, args);
+		SpringApplication.run(FeedappApplicationOld.class, args);
 	}
 
 	@Bean
