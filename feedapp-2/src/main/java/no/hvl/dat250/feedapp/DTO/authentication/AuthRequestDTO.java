@@ -1,11 +1,11 @@
-package no.hvl.dat250.feedapp.authentication;
+package no.hvl.dat250.feedapp.DTO.authentication;
 
-public class AuthRequest {
+public class AuthRequestDTO {
 
     private String username;
     private String password;
 
-    public AuthRequest(String username, String password) {
+    public AuthRequestDTO(String username, String password) {
         this.username = username;
         this.password = password;
     }

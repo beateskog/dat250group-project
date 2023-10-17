@@ -1,12 +1,16 @@
 package no.hvl.dat250.feedapp.service;
 
-import no.hvl.dat250.feedapp.DTO.AuthResponse;
-import no.hvl.dat250.feedapp.authentication.AuthRequest;
-import no.hvl.dat250.feedapp.authentication.RegisterRequest;
+import org.springframework.stereotype.Service;
 
+import no.hvl.dat250.feedapp.DTO.authentication.AuthRequestDTO;
+import no.hvl.dat250.feedapp.DTO.authentication.AuthResponseDTO;
+import no.hvl.dat250.feedapp.DTO.authentication.RegisterRequestDTO;
+
+
+@Service
 public interface AuthService {
 
-    public AuthResponse register(RegisterRequest registerRequest);
+    public AuthResponseDTO register(RegisterRequestDTO registerRequest);
     
-    public AuthResponse authenticate(AuthRequest authRequest);
+    public AuthResponseDTO authenticate(AuthRequestDTO authRequest);
 }

@@ -1,4 +1,4 @@
-package no.hvl.dat250.security;
+package no.hvl.dat250.feedapp.security;
 
 import java.io.IOException;
 
@@ -33,30 +33,29 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 			@NonNull HttpServletResponse response, 
 			@NonNull FilterChain filterChain)
 			throws ServletException, IOException {
-		//Header that contains JWT-token
+
 		final String authHeader = request.getHeader("Authorization");
-		final String jwt;
 		final String username;
-		//Header should always start with "Bearer.."
+		final String jwt;
+		
 		if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-			//Sends request and response to next filter.
 			filterChain.doFilter(request, response);
 			return;
 		}
-		// Starts at 7 because length of "Bearer " is 7. 
+		
 		jwt = authHeader.substring(7);
 		username = jwtService.retrieveUsername(jwt);
-		// Checks if the user is already authenticated
+		
 		if(username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-			//Get userdetails from database
+			
 			UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
-			//Check if user and token is valid.
+			
 			if(jwtService.isTokenValid(jwt, userDetails)) {
 				UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
 						userDetails, null, userDetails.getAuthorities());
 				authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 				
-				//update authenticationtoken
+				
 				SecurityContextHolder.getContext().setAuthentication(authToken);
 			}
 			filterChain.doFilter(request, response);

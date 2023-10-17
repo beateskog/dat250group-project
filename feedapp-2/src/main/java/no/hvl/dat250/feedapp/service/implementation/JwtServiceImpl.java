@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +19,7 @@ import no.hvl.dat250.feedapp.service.JwtService;
 @Service
 public class JwtServiceImpl implements JwtService {
 
-    private static final String SECRET_KEY = "secret";
+    private static final String SECRET_KEY = "";
 
     @Override
     public String retrieveUsername(String jwt) {
@@ -64,8 +65,8 @@ public class JwtServiceImpl implements JwtService {
 	}
     
     private Key getKey() {
-        byte[] bytes = Decoders.BASE64.decode(SECRET_KEY);
-        return Keys.hmacShaKeyFor(bytes);
+        byte[] keyBytes = Decoders.BASE64.decode(SECRET_KEY);
+        return Keys.hmacShaKeyFor(keyBytes);
 
     }
 }

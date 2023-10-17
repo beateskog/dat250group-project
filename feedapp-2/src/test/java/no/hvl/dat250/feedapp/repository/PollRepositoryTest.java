@@ -6,4 +6,6 @@ package no.hvl.dat250.feedapp.repository;
 
 public class PollRepositoryTest {
 
+    
+
 }

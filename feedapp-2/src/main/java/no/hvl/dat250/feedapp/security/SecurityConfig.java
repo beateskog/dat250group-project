@@ -1,4 +1,4 @@
-package no.hvl.dat250.security;
+package no.hvl.dat250.feedapp.security;
 
 
 
@@ -22,18 +22,24 @@ public class SecurityConfig {
     @Autowired
     JwtAuthFilter jwtAuthFilter;
 
+    /*
+     * This method configures the security filter chain.
+     * It is responsible for authenticating the user and checking if the user has the correct permissions.
+     * It also adds the jwtAuthFilter to the filter chain.
+     */
     @Bean 
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
 			.csrf()
-			.disable()
+            .disable()
 			.authorizeHttpRequests()
+            // update here based on what should be back authentication or not
 			.requestMatchers("/**").permitAll()
 			.anyRequest()
-			.authenticated()
-			.and() // "and()" to add a new configuration.
+            .authenticated()
+			.and()
 			.sessionManagement()
-			.sessionCreationPolicy(SessionCreationPolicy.STATELESS) //New session for each request
+			.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 			.and()
 			.authenticationProvider(authProvider)
 			.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);

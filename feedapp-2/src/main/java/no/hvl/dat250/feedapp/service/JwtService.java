@@ -3,10 +3,10 @@ package no.hvl.dat250.feedapp.service;
 import java.util.Map;
 
 import org.springframework.security.core.userdetails.UserDetails;
-
+import org.springframework.stereotype.Service;
 import io.jsonwebtoken.Claims;
 
-
+@Service
 public interface JwtService {
 
     public String retrieveUsername(String jwt);
