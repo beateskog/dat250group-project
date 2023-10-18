@@ -19,7 +19,7 @@ public interface AccountService {
     public Account updateAccount(Account account, Long accountId);
 
     // DELETE
-    public String deleteAccountById(Long accountId);
+    public String deleteAccountById(Account account, Long accountId);
     public String deleteMyAccount(String username);
 
 }

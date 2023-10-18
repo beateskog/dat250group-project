@@ -9,6 +9,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import no.hvl.dat250.feedapp.exception.BadRequestException;
 import no.hvl.dat250.feedapp.exception.ResourceNotFoundException;
+
+import no.hvl.dat250.feedapp.exception.AccessDeniedException;
 import no.hvl.dat250.feedapp.model.Account;
 import no.hvl.dat250.feedapp.model.Role;
 import no.hvl.dat250.feedapp.repository.AccountRepository;
@@ -97,7 +99,11 @@ public class AccountServiceImpl implements AccountService {
     // -------------------------------------------------- DELETE -------------------------------------------------------
 
     @Override
-    public String deleteAccountById(Long accountId) {
+    public String deleteAccountById(Account account, Long accountId) {
+        if (account.getRole() != Role.ADMIN) {
+            throw new AccessDeniedException("Only administrators can delete accounts.");
+        }
+        
         if (accountRepository.findById(accountId).isEmpty()) {
             throw new ResourceNotFoundException("Account with ID: " + accountId + " does not exist.");
         }

@@ -42,7 +42,7 @@ public class PollServiceImpl implements PollService {
         poll.setQuestion(pollDTO.question);
         poll.setStartTime(pollDTO.startTime);
         poll.setEndTime(pollDTO.endTime);
-        poll.setPollPrivacy(pollDTO.privacy);
+        poll.setPollPrivacy(pollDTO.pollPrivacy);
 
         poll.setPollURL(uniqueUrl);
         poll.setPollPin(uniquePin);
