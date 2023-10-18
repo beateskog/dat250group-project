@@ -5,7 +5,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +19,8 @@ import no.hvl.dat250.feedapp.service.JwtService;
 @Service
 public class JwtServiceImpl implements JwtService {
 
-    private static final String SECRET_KEY = "";
+    @Value("${app.secret_key}")
+    private String SECRET_KEY;
 
     @Override
     public String retrieveUsername(String jwt) {
@@ -54,7 +55,7 @@ public class JwtServiceImpl implements JwtService {
             .setSubject(userDetails.getUsername())
             .setIssuedAt(new Date(System.currentTimeMillis()))
             //12 hours
-            .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 12))
+            .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60* 12))
             .signWith(getKey(), SignatureAlgorithm.HS256)
             .compact();
     }
