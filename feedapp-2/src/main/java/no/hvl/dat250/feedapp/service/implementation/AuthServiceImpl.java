@@ -1,5 +1,7 @@
 package no.hvl.dat250.feedapp.service.implementation;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -9,6 +11,7 @@ import org.springframework.stereotype.Service;
 import no.hvl.dat250.feedapp.DTO.authentication.AuthRequestDTO;
 import no.hvl.dat250.feedapp.DTO.authentication.AuthResponseDTO;
 import no.hvl.dat250.feedapp.DTO.authentication.RegisterRequestDTO;
+import no.hvl.dat250.feedapp.exception.BadRequestException;
 import no.hvl.dat250.feedapp.model.Account;
 import no.hvl.dat250.feedapp.model.Role;
 import no.hvl.dat250.feedapp.repository.AccountRepository;
@@ -30,8 +33,21 @@ public class AuthServiceImpl implements AuthService {
 	@Autowired
 	AuthenticationManager authenticationManager;
 
+    @Autowired
+    AccountRepository accountRepository;
+
     @Override
     public AuthResponseDTO register(RegisterRequestDTO registerRequest) {
+        Optional<Account> existingAccount = accountRepository.findAccountByUsername(registerRequest.getUsername());
+        
+        if (existingAccount.isPresent()) {
+            throw new BadRequestException("An account with username: " + registerRequest.getUsername() + " already exists.");
+        }
+       
+        if (registerRequest.getUsername() == null || registerRequest.getPassword() == null) {
+            throw new BadRequestException("Both username and password are required fields.");
+        }
+        
         Account user = new Account();
         user.setUsername(registerRequest.getUsername());
         user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
