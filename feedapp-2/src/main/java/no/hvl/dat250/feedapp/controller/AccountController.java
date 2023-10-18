@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,8 +15,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import no.hvl.dat250.feedapp.DTO.AccountDTO;
+import no.hvl.dat250.feedapp.exception.AccessDeniedException;
 import no.hvl.dat250.feedapp.exception.BadRequestException;
 import no.hvl.dat250.feedapp.exception.ResourceNotFoundException;
+import no.hvl.dat250.feedapp.exception.UnauthorizedAccessException;
 import no.hvl.dat250.feedapp.model.Account;
 import no.hvl.dat250.feedapp.model.Poll;
 import no.hvl.dat250.feedapp.service.AccountService;
@@ -33,6 +36,7 @@ public class AccountController {
     }
 
     // CREATE
+    //DONT NEED THIS METHOD SINCE WE NOW HAVE A REGISTER METHOD IN AUTHCONTROLLER
     @PostMapping
     public ResponseEntity<?> createAccount(@RequestBody Account account) {
         try {
@@ -80,24 +84,37 @@ public class AccountController {
 
     // UPDATE
     @PutMapping("{accountId}")
-    public ResponseEntity<?> updateAccount(@RequestBody Account account, @PathVariable("accountId") Long accountId) {
+    public ResponseEntity<?> updateAccount(UsernamePasswordAuthenticationToken token, @RequestBody Account account, @PathVariable("accountId") Long accountId) {
         try {
+            Account user = (Account) token.getPrincipal();
+            //Checks if the user that is logged in is the same as the user that is being updated
+            if (!user.getId().equals(accountId)) {
+                throw new AccessDeniedException("You are not authorized to update this account.");
+            }
             Account updatedAccount = accountService.updateAccount(account, accountId);
             return ResponseEntity.ok(AccountToAccountDTO(updatedAccount));
         } catch (ResourceNotFoundException ex) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+        } catch (BadRequestException ex) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
         }
     }
 
     // DELETE
     @DeleteMapping("/{accountId}")
-    public ResponseEntity<?> deleteAccountById(@PathVariable("accountId") Long accountId) {
+    public ResponseEntity<?> deleteAccountById(UsernamePasswordAuthenticationToken token, @PathVariable("accountId") Long accountId) {
         try {
+            Account user = (Account) token.getPrincipal();
             //Account account = accountService.findAccountById(accountId);
-            String resp = accountService.deleteAccountById(accountId);
+            //We check inside deleteAccountById if the user is an admin
+            String resp = accountService.deleteAccountById(user, accountId);
             return ResponseEntity.ok().body(resp);
         } catch (ResourceNotFoundException ex) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+        } catch (BadRequestException ex) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+        } catch (UnauthorizedAccessException ex) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(ex.getMessage());
         }
     }
 
