@@ -35,3 +35,6 @@ build/
 ##Private key file##
 private-key.pem
 
+#Secret key in this file#
+application.properties
+
