@@ -167,7 +167,7 @@ public class PollController {
         pollDTO.question = poll.getQuestion();
         pollDTO.startTime = poll.getStartTime();
         pollDTO.endTime = poll.getEndTime();
-        pollDTO.privacy = poll.getPollPrivacy();
+        pollDTO.pollPrivacy = poll.getPollPrivacy();
         pollDTO.pollOwner = poll.getAccount().getUsername();
         pollDTO.pollOwnerId = poll.getAccount().getId();
         pollDTO.totalVotes = poll.getVotes().size();

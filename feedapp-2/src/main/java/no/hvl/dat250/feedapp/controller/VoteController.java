@@ -90,7 +90,7 @@ public class VoteController {
         }
         voteDTO.vote = vote.isVote();
         voteDTO.pollId = vote.getPoll().getId();
-        voteDTO.votingPlatform = vote.getPlatform();
+        voteDTO.platform = vote.getPlatform();
         
         return voteDTO;
     }

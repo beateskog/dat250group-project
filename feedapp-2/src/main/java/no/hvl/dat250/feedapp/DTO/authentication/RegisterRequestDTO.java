@@ -10,6 +10,9 @@ public class RegisterRequestDTO {
         this.password = password;
     }
 
+    public RegisterRequestDTO() {
+    }
+
     public void setUsername(String username) {
         this.username = username;
     }
