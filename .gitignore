@@ -30,3 +30,6 @@ replay_pid*
 
 ### VS Code ###
 .vscode/
+
+application-test.properties
+application.properties
