@@ -33,7 +33,7 @@ public class SecurityConfig {
 			.csrf()
             .disable()
 			.authorizeHttpRequests()
-            // update here based on what should be back authentication or not
+            // update here based on what should be authentication or not
 			.requestMatchers("/**").permitAll()
 			.anyRequest()
             .authenticated()

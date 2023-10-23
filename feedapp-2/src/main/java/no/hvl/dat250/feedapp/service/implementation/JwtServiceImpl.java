@@ -22,6 +22,10 @@ public class JwtServiceImpl implements JwtService {
     @Value("${app.secret_key}")
     private String SECRET_KEY;
 
+    public void setSecretKey(String secretKey) {
+        this.SECRET_KEY = secretKey;
+    }
+    
     @Override
     public String retrieveUsername(String jwt) {
         return retrieveAllClaims(jwt).getSubject();

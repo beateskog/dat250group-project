@@ -23,7 +23,8 @@ import no.hvl.dat250.feedapp.service.PollService;
 @Service
 public class PollServiceImpl implements PollService {
     
-    PollRepository pollRepository;
+    @Autowired
+    private PollRepository pollRepository;
 
     @Autowired
     private AccountRepository accountRepository;

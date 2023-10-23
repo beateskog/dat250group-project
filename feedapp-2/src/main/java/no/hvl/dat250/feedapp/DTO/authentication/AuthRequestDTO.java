@@ -10,6 +10,9 @@ public class AuthRequestDTO {
         this.password = password;
     }
 
+    public AuthRequestDTO() {
+    }
+
     public void setUsername(String username) {
         this.username = username;
     }

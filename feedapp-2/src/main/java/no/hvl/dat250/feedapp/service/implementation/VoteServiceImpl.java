@@ -2,6 +2,7 @@ package no.hvl.dat250.feedapp.service.implementation;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import no.hvl.dat250.feedapp.model.Vote;
@@ -15,7 +16,8 @@ public class VoteServiceImpl implements VoteService {
     // Getting instance of repository because repository is a layer which is talking to the database
     // Creating an instance of PollRepository and adding a constructor is enough to get the Poll repository
     // layer to interact with service layer.
-    VoteRepository voteRepository;
+    @Autowired
+    private VoteRepository voteRepository;
 
     public VoteServiceImpl (VoteRepository voteRepository) {
         this.voteRepository = voteRepository;

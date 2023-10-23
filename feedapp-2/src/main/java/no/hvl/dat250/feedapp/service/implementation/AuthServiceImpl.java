@@ -5,12 +5,14 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import no.hvl.dat250.feedapp.DTO.authentication.AuthRequestDTO;
 import no.hvl.dat250.feedapp.DTO.authentication.AuthResponseDTO;
 import no.hvl.dat250.feedapp.DTO.authentication.RegisterRequestDTO;
+import no.hvl.dat250.feedapp.exception.AccessDeniedException;
 import no.hvl.dat250.feedapp.exception.BadRequestException;
 import no.hvl.dat250.feedapp.model.Account;
 import no.hvl.dat250.feedapp.model.Role;
@@ -20,9 +22,6 @@ import no.hvl.dat250.feedapp.service.JwtService;
 
 @Service
 public class AuthServiceImpl implements AuthService {
-
-    @Autowired
-	AccountRepository repository;
 	
 	@Autowired
 	PasswordEncoder passwordEncoder;
@@ -44,7 +43,10 @@ public class AuthServiceImpl implements AuthService {
             throw new BadRequestException("An account with username: " + registerRequest.getUsername() + " already exists.");
         }
        
-        if (registerRequest.getUsername() == null || registerRequest.getPassword() == null) {
+        if (registerRequest.getUsername() == null 
+            || registerRequest.getPassword() == null 
+            || registerRequest.getPassword().isBlank() 
+            || registerRequest.getUsername().isBlank()) {
             throw new BadRequestException("Both username and password are required fields.");
         }
         
@@ -52,7 +54,7 @@ public class AuthServiceImpl implements AuthService {
         user.setUsername(registerRequest.getUsername());
         user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
         user.setRole(Role.USER);
-        repository.save(user);
+        accountRepository.save(user);
         String jwt = jwtService.generateToken(user);
         return new AuthResponseDTO(jwt);
     }
@@ -60,14 +62,23 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public AuthResponseDTO authenticate(AuthRequestDTO authRequest) {
         //check if user exists
-        Account user = repository.getByUsername(authRequest.getUsername());
+        Account user = accountRepository.getByUsername(authRequest.getUsername());
 
-        String principal = authRequest.getUsername();
-        String credentials = authRequest.getPassword();
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(principal, credentials));
+        if (user == null) {
+            throw new AccessDeniedException("Invalid credentials.");
+        }
+    
+        try {
+            String principal = authRequest.getUsername();
+            String credentials = authRequest.getPassword();
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(principal, credentials));
+            String jwt = jwtService.generateToken(user);
+            return new AuthResponseDTO(jwt);
 
-        String jwt = jwtService.generateToken(user);
-        return new AuthResponseDTO(jwt);
+        } catch (AuthenticationException e) {
+            throw new AccessDeniedException("Invalid credentials.");
+        }
+        
     }
     
 }
