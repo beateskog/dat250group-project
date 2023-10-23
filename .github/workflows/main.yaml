@@ -7,7 +7,7 @@ on:
     branches: [ "main" ]
 
 jobs:
-  jpa-test:
+  feedapp-test:
     runs-on: ubuntu-latest
 
     steps:
