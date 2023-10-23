@@ -10,6 +10,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.test.context.ActiveProfiles;
 
 import no.hvl.dat250.feedapp.model.Account;
 import no.hvl.dat250.feedapp.model.Poll;
@@ -22,6 +23,7 @@ import no.hvl.dat250.feedapp.model.VotingPlatform;
 // already has these methods implemented and tested (properly).
 
 @DataJpaTest
+@ActiveProfiles("test")
 public class AccountRepositoryTest {
     
  // Given - when - then

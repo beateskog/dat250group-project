@@ -6,6 +6,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Profile;
 import org.springframework.transaction.annotation.Transactional;
 
 import no.hvl.dat250.feedapp.DTO.PollDTO;
@@ -18,6 +19,7 @@ import no.hvl.dat250.feedapp.service.AuthService;
 import no.hvl.dat250.feedapp.service.PollService;
 import no.hvl.dat250.feedapp.service.VoteService;
 
+
 @SpringBootApplication(exclude = SecurityAutoConfiguration.class)
 public class FeedappApplication {
 
@@ -27,6 +29,7 @@ public class FeedappApplication {
 
 	@Bean
     @Transactional
+    @Profile("!test")
     public CommandLineRunner demo(AccountService accountService, AuthService authService, PollService pollService, VoteService voteService) {
         return (args) -> {
             // Create and save an Account

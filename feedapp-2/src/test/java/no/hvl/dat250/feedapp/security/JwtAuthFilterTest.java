@@ -23,6 +23,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import no.hvl.dat250.feedapp.service.JwtService;
 
+
 @ExtendWith(MockitoExtension.class)
 public class JwtAuthFilterTest {
 
