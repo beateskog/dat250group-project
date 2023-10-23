@@ -7,6 +7,7 @@ import no.hvl.dat250.feedapp.DTO.PollDTO;
 import no.hvl.dat250.feedapp.model.Poll;
 import no.hvl.dat250.feedapp.model.PollPrivacy;
 
+
 public interface PollService {
 
     // CREATE

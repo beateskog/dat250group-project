@@ -2,8 +2,8 @@ package no.hvl.dat250.feedapp.service;
 
 import java.util.List;
 
-
 import no.hvl.dat250.feedapp.model.Account;
+
 
 public interface AccountService {
 

@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import no.hvl.dat250.feedapp.model.Account;
 
+
 public interface AccountRepository extends JpaRepository<Account, Long> {
 
     public Account getByUsername(String username);
