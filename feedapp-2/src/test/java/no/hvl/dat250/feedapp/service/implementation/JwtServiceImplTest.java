@@ -28,7 +28,7 @@ public class JwtServiceImplTest {
     
     @BeforeEach
     public void setup() {
-    jwtService.setSecretKey(SECRET_KEY);
+        jwtService.setSecretKey(SECRET_KEY);
     }
 
 
