@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,10 +17,12 @@ import org.springframework.web.bind.annotation.RestController;
 import no.hvl.dat250.feedapp.DTO.PollDTO;
 import no.hvl.dat250.feedapp.exception.BadRequestException;
 import no.hvl.dat250.feedapp.exception.ResourceNotFoundException;
-import no.hvl.dat250.feedapp.model.Poll;
-import no.hvl.dat250.feedapp.model.PollPrivacy;
-import no.hvl.dat250.feedapp.model.Vote;
-import no.hvl.dat250.feedapp.service.PollService;
+import no.hvl.dat250.feedapp.model.jpa.PollPrivacy;
+import no.hvl.dat250.feedapp.model.jpa.Account;
+import no.hvl.dat250.feedapp.model.jpa.Poll;
+import no.hvl.dat250.feedapp.model.jpa.Vote;
+import no.hvl.dat250.feedapp.service.jpa.PollService;
+import no.hvl.dat250.feedapp.service.mongo.PollResultService;
 
 @RestController
 @RequestMapping("/poll") // All request mappings start with poll
@@ -28,6 +31,8 @@ public class PollController {
     // The Controller layer communicates with the service layer
     PollService pollService;
 
+    PollResultService pollResultService;
+
     public PollController(PollService pollService) {
         this.pollService = pollService;
     }
@@ -35,10 +40,13 @@ public class PollController {
     
     // CREATE
     @PostMapping
-    public ResponseEntity<?> createPoll(@RequestBody PollDTO poll) {
+    public ResponseEntity<?> createPoll(@RequestBody PollDTO poll, UsernamePasswordAuthenticationToken token) {
         try {
-            Poll createdPoll = pollService.createPoll(poll);
-            return ResponseEntity.status(HttpStatus.CREATED).body(pollToPollDTO(createdPoll));
+            Account user = (Account) token.getPrincipal();
+            Poll createdPoll = pollService.createPoll(poll, user);
+            PollDTO pollDTO = pollToPollDTO(createdPoll);
+            pollResultService.savePollResult(pollDTO);
+            return ResponseEntity.status(HttpStatus.CREATED).body(pollDTO);
         } catch (BadRequestException ex) {
             return ResponseEntity.badRequest().body(ex.getMessage());
         }

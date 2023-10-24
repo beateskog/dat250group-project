@@ -12,11 +12,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ActiveProfiles;
 
-import no.hvl.dat250.feedapp.model.Account;
-import no.hvl.dat250.feedapp.model.Poll;
-import no.hvl.dat250.feedapp.model.Role;
-import no.hvl.dat250.feedapp.model.Vote;
-import no.hvl.dat250.feedapp.model.VotingPlatform;
+import no.hvl.dat250.feedapp.model.jpa.Account;
+import no.hvl.dat250.feedapp.model.jpa.Poll;
+import no.hvl.dat250.feedapp.model.jpa.Role;
+import no.hvl.dat250.feedapp.model.jpa.Vote;
+import no.hvl.dat250.feedapp.model.jpa.VotingPlatform;
 
 // There is no need to write unit test cases for the methods we are directly
 // using from the JPA repository (such as FingById), because the JPA repository

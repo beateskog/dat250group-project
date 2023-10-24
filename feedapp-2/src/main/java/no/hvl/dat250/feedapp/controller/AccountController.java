@@ -19,9 +19,9 @@ import no.hvl.dat250.feedapp.exception.AccessDeniedException;
 import no.hvl.dat250.feedapp.exception.BadRequestException;
 import no.hvl.dat250.feedapp.exception.ResourceNotFoundException;
 import no.hvl.dat250.feedapp.exception.UnauthorizedAccessException;
-import no.hvl.dat250.feedapp.model.Account;
-import no.hvl.dat250.feedapp.model.Poll;
-import no.hvl.dat250.feedapp.service.AccountService;
+import no.hvl.dat250.feedapp.model.jpa.Account;
+import no.hvl.dat250.feedapp.model.jpa.Poll;
+import no.hvl.dat250.feedapp.service.jpa.AccountService;
 
 
 @RestController
@@ -118,10 +118,11 @@ public class AccountController {
         }
     }
 
-    @DeleteMapping("/username/{username}")
-    public ResponseEntity<?> deleteMyAccount(@PathVariable("username") String username) {
+    @DeleteMapping("/username")
+    public ResponseEntity<?> deleteMyAccount(UsernamePasswordAuthenticationToken token) {
         try {
-            String resp = accountService.deleteMyAccount(username);
+            Account user = (Account) token.getPrincipal();
+            String resp = accountService.deleteMyAccount(user.getUsername());
             return ResponseEntity.ok().body(resp);
         } catch (ResourceNotFoundException ex) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());

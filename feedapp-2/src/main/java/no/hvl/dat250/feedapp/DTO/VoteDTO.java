@@ -1,6 +1,6 @@
 package no.hvl.dat250.feedapp.DTO;
 
-import no.hvl.dat250.feedapp.model.VotingPlatform;
+import no.hvl.dat250.feedapp.model.jpa.VotingPlatform;
 
 public class VoteDTO {
 

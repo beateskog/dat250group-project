@@ -1,8 +1,8 @@
-package no.hvl.dat250.feedapp.service;
+package no.hvl.dat250.feedapp.service.jpa;
 
 import java.util.List;
 
-import no.hvl.dat250.feedapp.model.Account;
+import no.hvl.dat250.feedapp.model.jpa.Account;
 
 
 public interface AccountService {

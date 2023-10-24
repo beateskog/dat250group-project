@@ -1,4 +1,4 @@
-package no.hvl.dat250.feedapp.model;
+package no.hvl.dat250.feedapp.model.jpa;
 
 import java.util.ArrayList;
 import java.util.Collection;

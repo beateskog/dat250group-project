@@ -3,7 +3,7 @@ package no.hvl.dat250.feedapp.DTO;
 
 import java.time.LocalDateTime;
 
-import no.hvl.dat250.feedapp.model.PollPrivacy;
+import no.hvl.dat250.feedapp.model.jpa.PollPrivacy;
 
 public class PollDTO {
 

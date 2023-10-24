@@ -12,7 +12,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.core.Authentication;
 
-import no.hvl.dat250.feedapp.model.Account;
+import no.hvl.dat250.feedapp.model.jpa.Account;
 import no.hvl.dat250.feedapp.repository.AccountRepository;
 
 import static org.junit.jupiter.api.Assertions.*;

@@ -1,17 +1,18 @@
-package no.hvl.dat250.feedapp.service;
+package no.hvl.dat250.feedapp.service.jpa;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 import no.hvl.dat250.feedapp.DTO.PollDTO;
-import no.hvl.dat250.feedapp.model.Poll;
-import no.hvl.dat250.feedapp.model.PollPrivacy;
+import no.hvl.dat250.feedapp.model.jpa.PollPrivacy;
+import no.hvl.dat250.feedapp.model.jpa.Account;
+import no.hvl.dat250.feedapp.model.jpa.Poll;
 
 
 public interface PollService {
 
     // CREATE
-    public Poll createPoll(PollDTO poll);
+    public Poll createPoll(PollDTO poll, Account account);
     public Poll createPoll(String question, LocalDateTime start, LocalDateTime end);
 
     // READ

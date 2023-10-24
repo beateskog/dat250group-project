@@ -1,13 +1,13 @@
-package no.hvl.dat250.feedapp.service.implementation;
+package no.hvl.dat250.feedapp.service.jpa.implementation;
 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import no.hvl.dat250.feedapp.model.Vote;
+import no.hvl.dat250.feedapp.model.jpa.Vote;
 import no.hvl.dat250.feedapp.repository.VoteRepository;
-import no.hvl.dat250.feedapp.service.VoteService;
+import no.hvl.dat250.feedapp.service.jpa.VoteService;
 
 @Service
 public class VoteServiceImpl implements VoteService {

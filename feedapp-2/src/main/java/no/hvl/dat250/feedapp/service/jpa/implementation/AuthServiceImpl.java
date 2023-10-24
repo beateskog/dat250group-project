@@ -1,9 +1,9 @@
-package no.hvl.dat250.feedapp.service.implementation;
+package no.hvl.dat250.feedapp.service.jpa.implementation;
 
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationManager; 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -14,11 +14,11 @@ import no.hvl.dat250.feedapp.DTO.authentication.AuthResponseDTO;
 import no.hvl.dat250.feedapp.DTO.authentication.RegisterRequestDTO;
 import no.hvl.dat250.feedapp.exception.AccessDeniedException;
 import no.hvl.dat250.feedapp.exception.BadRequestException;
-import no.hvl.dat250.feedapp.model.Account;
-import no.hvl.dat250.feedapp.model.Role;
+import no.hvl.dat250.feedapp.model.jpa.Account;
+import no.hvl.dat250.feedapp.model.jpa.Role;
 import no.hvl.dat250.feedapp.repository.AccountRepository;
-import no.hvl.dat250.feedapp.service.AuthService;
-import no.hvl.dat250.feedapp.service.JwtService;
+import no.hvl.dat250.feedapp.service.jpa.AuthService;
+import no.hvl.dat250.feedapp.service.jpa.JwtService;
 
 @Service
 public class AuthServiceImpl implements AuthService {
@@ -47,6 +47,7 @@ public class AuthServiceImpl implements AuthService {
             || registerRequest.getPassword() == null 
             || registerRequest.getPassword().isBlank() 
             || registerRequest.getUsername().isBlank()) {
+
             throw new BadRequestException("Both username and password are required fields.");
         }
         
@@ -76,7 +77,7 @@ public class AuthServiceImpl implements AuthService {
             return new AuthResponseDTO(jwt);
 
         } catch (AuthenticationException e) {
-            throw new AccessDeniedException("Invalid credentials.");
+            throw new AccessDeniedException("Wrong password or username.");
         }
         
     }

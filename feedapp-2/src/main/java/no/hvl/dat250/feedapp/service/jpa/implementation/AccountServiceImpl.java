@@ -1,4 +1,4 @@
-package no.hvl.dat250.feedapp.service.implementation;
+package no.hvl.dat250.feedapp.service.jpa.implementation;
 
 import java.util.List;
 import java.util.Optional;
@@ -11,10 +11,10 @@ import no.hvl.dat250.feedapp.exception.BadRequestException;
 import no.hvl.dat250.feedapp.exception.ResourceNotFoundException;
 
 import no.hvl.dat250.feedapp.exception.AccessDeniedException;
-import no.hvl.dat250.feedapp.model.Account;
-import no.hvl.dat250.feedapp.model.Role;
+import no.hvl.dat250.feedapp.model.jpa.Account;
+import no.hvl.dat250.feedapp.model.jpa.Role;
 import no.hvl.dat250.feedapp.repository.AccountRepository;
-import no.hvl.dat250.feedapp.service.AccountService;
+import no.hvl.dat250.feedapp.service.jpa.AccountService;
 
 @Service
 @Transactional
@@ -65,7 +65,7 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public Account findAccountByUsername(String username) {
         Account account = accountRepository.findAccountByUsername(username)
-            .orElseThrow(() -> new ResourceNotFoundException("An account with the given username: " + username + "does not exist."));
+            .orElseThrow(() -> new ResourceNotFoundException("An account with the given username: " + username + " does not exist."));
         return account;
     }
 

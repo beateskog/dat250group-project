@@ -1,9 +1,8 @@
-package no.hvl.dat250.feedapp.service;
+package no.hvl.dat250.feedapp.service.jpa;
 
 import java.util.List;
 
-
-import no.hvl.dat250.feedapp.model.Vote;
+import no.hvl.dat250.feedapp.model.jpa.Vote;
 
 
 public interface VoteService {

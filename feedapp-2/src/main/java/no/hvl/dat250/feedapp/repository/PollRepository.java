@@ -7,9 +7,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-
-import no.hvl.dat250.feedapp.model.Poll;
-import no.hvl.dat250.feedapp.model.PollPrivacy;
+import no.hvl.dat250.feedapp.model.jpa.PollPrivacy;
+import no.hvl.dat250.feedapp.model.jpa.Poll;
 
 
 public interface PollRepository extends JpaRepository<Poll, Long> {

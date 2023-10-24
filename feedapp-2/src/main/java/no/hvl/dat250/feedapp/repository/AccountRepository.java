@@ -4,8 +4,7 @@ import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-
-import no.hvl.dat250.feedapp.model.Account;
+import no.hvl.dat250.feedapp.model.jpa.Account;
 
 
 public interface AccountRepository extends JpaRepository<Account, Long> {

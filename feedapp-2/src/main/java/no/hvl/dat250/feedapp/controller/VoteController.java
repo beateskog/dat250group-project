@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import no.hvl.dat250.feedapp.DTO.VoteDTO;
 import no.hvl.dat250.feedapp.exception.BadRequestException;
-import no.hvl.dat250.feedapp.model.Vote;
-import no.hvl.dat250.feedapp.service.VoteService;
-import no.hvl.dat250.feedapp.model.Role;
+import no.hvl.dat250.feedapp.model.jpa.Role;
+import no.hvl.dat250.feedapp.model.jpa.Vote;
+import no.hvl.dat250.feedapp.service.jpa.VoteService;
 
 @RestController
 @RequestMapping("/vote")

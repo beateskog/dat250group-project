@@ -11,11 +11,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import no.hvl.dat250.feedapp.DTO.authentication.AccountRespDTO;
 import no.hvl.dat250.feedapp.DTO.authentication.AuthRequestDTO;
-import no.hvl.dat250.feedapp.DTO.authentication.AuthResponseDTO;
 import no.hvl.dat250.feedapp.DTO.authentication.RegisterRequestDTO;
 import no.hvl.dat250.feedapp.exception.BadRequestException;
-import no.hvl.dat250.feedapp.model.Account;
-import no.hvl.dat250.feedapp.service.AuthService;
+import no.hvl.dat250.feedapp.model.jpa.Account;
+import no.hvl.dat250.feedapp.service.jpa.AuthService;
 
 
 @RestController
@@ -30,9 +29,15 @@ public class AuthController {
 
     @PostMapping("/register")
     @ResponseBody
-    public ResponseEntity<AuthResponseDTO> registerUser(@RequestBody RegisterRequestDTO request){
-        var response = authService.register(request);
-		return ResponseEntity.ok(response);
+    public ResponseEntity<?> registerUser(@RequestBody RegisterRequestDTO request){
+        try {
+            var response = authService.register(request);
+		    return ResponseEntity.ok(response);
+        } catch (BadRequestException ex) {
+            return ResponseEntity.badRequest().body(ex.getMessage());
+        } catch (Exception ex) {
+            return ResponseEntity.internalServerError().body(ex.getMessage());
+        }
     }
 	
     @PostMapping("/login")
@@ -41,6 +46,8 @@ public class AuthController {
             return ResponseEntity.ok(authService.authenticate(authRequest));
         } catch (BadRequestException ex) {
             return ResponseEntity.badRequest().body(ex.getMessage());
+        } catch (Exception ex) {
+            return ResponseEntity.internalServerError().body(ex.getMessage());
         }
     }
 
@@ -54,6 +61,8 @@ public class AuthController {
 
         } catch (BadRequestException ex) {
             return ResponseEntity.badRequest().body(ex.getMessage());
+        } catch (Exception ex) {
+            return ResponseEntity.internalServerError().body(ex.getMessage());
         }
     }
 

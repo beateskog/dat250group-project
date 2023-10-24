@@ -1,12 +1,12 @@
-package no.hvl.dat250.feedapp.service.implementation;
+package no.hvl.dat250.feedapp.service.jpa.implementation;
 
 import no.hvl.dat250.feedapp.DTO.authentication.AuthRequestDTO;
 import no.hvl.dat250.feedapp.DTO.authentication.RegisterRequestDTO;
 import no.hvl.dat250.feedapp.exception.AccessDeniedException;
 import no.hvl.dat250.feedapp.exception.BadRequestException;
-import no.hvl.dat250.feedapp.model.Account;
+import no.hvl.dat250.feedapp.model.jpa.Account;
 import no.hvl.dat250.feedapp.repository.AccountRepository;
-import no.hvl.dat250.feedapp.service.JwtService;
+import no.hvl.dat250.feedapp.service.jpa.JwtService;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

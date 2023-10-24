@@ -1,4 +1,4 @@
-package no.hvl.dat250.feedapp.service.implementation;
+package no.hvl.dat250.feedapp.service.jpa.implementation;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -13,12 +13,11 @@ import org.springframework.stereotype.Service;
 
 import no.hvl.dat250.feedapp.DTO.PollDTO;
 import no.hvl.dat250.feedapp.exception.ResourceNotFoundException;
-import no.hvl.dat250.feedapp.model.Account;
-import no.hvl.dat250.feedapp.model.Poll;
-import no.hvl.dat250.feedapp.model.PollPrivacy;
-import no.hvl.dat250.feedapp.repository.AccountRepository;
+import no.hvl.dat250.feedapp.model.jpa.PollPrivacy;
+import no.hvl.dat250.feedapp.model.jpa.Account;
+import no.hvl.dat250.feedapp.model.jpa.Poll;
 import no.hvl.dat250.feedapp.repository.PollRepository;
-import no.hvl.dat250.feedapp.service.PollService;
+import no.hvl.dat250.feedapp.service.jpa.PollService;
 
 @Service
 public class PollServiceImpl implements PollService {
@@ -26,16 +25,13 @@ public class PollServiceImpl implements PollService {
     @Autowired
     private PollRepository pollRepository;
 
-    @Autowired
-    private AccountRepository accountRepository;
-
     public PollServiceImpl (PollRepository pollRepository) {
         this.pollRepository = pollRepository;
     }
 
     // -------------------------------------------------- CREATE -------------------------------------------------------
     @Override
-    public Poll createPoll(PollDTO pollDTO) {
+    public Poll createPoll(PollDTO pollDTO, Account account) {
         String uniqueUrl = generateUniqueUrl();
         int uniquePin = generateUniquePin();
 
@@ -47,15 +43,13 @@ public class PollServiceImpl implements PollService {
 
         poll.setPollURL(uniqueUrl);
         poll.setPollPin(uniquePin);
-
-        Account account = accountRepository.findById(pollDTO.pollOwnerId)
-            .orElseThrow(() -> new ResourceNotFoundException("Account with ID: " + poll.getAccount().getId() + " does not exist."));
         poll.setAccount(account);
 
         pollRepository.save(poll);
         return poll;
     }
 
+    //DONT think we need this 
     @Override
     public Poll createPoll(String question, LocalDateTime start, LocalDateTime end) {
         String uniqueUrl = generateUniqueUrl();

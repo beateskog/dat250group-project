@@ -1,4 +1,4 @@
-package no.hvl.dat250.feedapp.model;
+package no.hvl.dat250.feedapp.model.jpa;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -14,6 +14,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
+
 
 @Getter
 @Setter

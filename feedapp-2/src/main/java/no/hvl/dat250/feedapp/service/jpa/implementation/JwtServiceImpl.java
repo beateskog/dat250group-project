@@ -1,4 +1,4 @@
-package no.hvl.dat250.feedapp.service.implementation;
+package no.hvl.dat250.feedapp.service.jpa.implementation;
 
 import java.security.Key;
 import java.util.Date;
@@ -14,7 +14,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import no.hvl.dat250.feedapp.service.JwtService;
+import no.hvl.dat250.feedapp.service.jpa.JwtService;
 
 @Service
 public class JwtServiceImpl implements JwtService {
