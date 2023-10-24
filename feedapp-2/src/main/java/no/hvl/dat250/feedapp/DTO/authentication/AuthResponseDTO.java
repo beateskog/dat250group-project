@@ -7,5 +7,15 @@ public class AuthResponseDTO {
     public AuthResponseDTO(String jwt) {
         this.jwt = jwt;
     }
+
+    public AuthResponseDTO() {
+    }
+
+    public void setjwt(String jwt) {
+        this.jwt = jwt;
+    }
+
+    public String getjwt() { 
+        return jwt; }
     
 }
