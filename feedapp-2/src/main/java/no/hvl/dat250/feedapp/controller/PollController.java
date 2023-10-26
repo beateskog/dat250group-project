@@ -2,6 +2,7 @@ package no.hvl.dat250.feedapp.controller;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -29,13 +30,16 @@ import no.hvl.dat250.feedapp.service.mongo.PollResultService;
 public class PollController {
 
     // The Controller layer communicates with the service layer
-    PollService pollService;
+    @Autowired
+    private PollService pollService;
 
-    PollResultService pollResultService;
+    @Autowired
+    private PollResultService pollResultService;
 
-    public PollController(PollService pollService) {
-        this.pollService = pollService;
-    }
+    //use autowired instead of constructor injection
+    //public PollController(PollService pollService) {
+    //    this.pollService = pollService;
+    //}
     
     
     // CREATE

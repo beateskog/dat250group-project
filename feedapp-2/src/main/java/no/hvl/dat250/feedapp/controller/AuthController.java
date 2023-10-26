@@ -1,5 +1,6 @@
 package no.hvl.dat250.feedapp.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,11 +22,13 @@ import no.hvl.dat250.feedapp.service.jpa.AuthService;
 @RequestMapping("/auth")
 public class AuthController {
 
-    AuthService authService;
+    @Autowired
+    private AuthService authService;
 
-    public AuthController(AuthService authService) {
-        this.authService = authService;
-    }
+    // USE Autowired instead of constructor injection
+    //public AuthController(AuthService authService) {
+    //    this.authService = authService;
+    //}
 
     @PostMapping("/register")
     @ResponseBody

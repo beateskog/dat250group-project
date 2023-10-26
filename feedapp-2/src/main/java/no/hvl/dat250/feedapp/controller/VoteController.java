@@ -3,6 +3,7 @@ package no.hvl.dat250.feedapp.controller;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,11 +23,13 @@ import no.hvl.dat250.feedapp.service.jpa.VoteService;
 public class VoteController {
 
     // The Controller layer communicates with service layer
+    @Autowired
     VoteService voteService;
 
-    public VoteController(VoteService voteService) {
-        this.voteService = voteService;
-    }
+    // USE Autowired instead of constructor injection
+    // public VoteController(VoteService voteService) {
+    //    this.voteService = voteService;
+    //}
 
     // CREATE
     @PostMapping

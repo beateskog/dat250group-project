@@ -14,10 +14,6 @@ public class PollResultServiceImpl implements PollResultService {
     @Autowired
     private PollResultRepository pollResultRepository;
     
-    public PollResultServiceImpl(PollResultRepository pollResultRepository) {
-        this.pollResultRepository = pollResultRepository;
-    }
-    
     @Override
     public PollResult savePollResult(PollDTO pollDTO) {
         PollResult result = new PollResult();

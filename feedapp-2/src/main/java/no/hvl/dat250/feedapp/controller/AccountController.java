@@ -2,6 +2,7 @@ package no.hvl.dat250.feedapp.controller;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -29,11 +30,13 @@ import no.hvl.dat250.feedapp.service.jpa.AccountService;
 public class AccountController {
 
     // The controller layer communicates with the service layer
+    @Autowired
     private AccountService accountService;
 
-    public AccountController(AccountService accountService) {
-        this.accountService = accountService;
-    }
+    // USE Autowired instead of constructor injection
+    //public AccountController(AccountService accountService) {
+    //    this.accountService = accountService;
+    //}
 
     // CREATE
     //DONT NEED THIS METHOD SINCE WE NOW HAVE A REGISTER METHOD IN AUTHCONTROLLER
