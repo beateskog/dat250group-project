@@ -9,10 +9,10 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.transaction.annotation.Transactional;
 
 import no.hvl.dat250.feedapp.dto.authentication.RegisterRequestDTO;
-import no.hvl.dat250.feedapp.service.jpa.AccountService;
-import no.hvl.dat250.feedapp.service.jpa.AuthService;
-import no.hvl.dat250.feedapp.service.jpa.PollService;
-import no.hvl.dat250.feedapp.service.jpa.VoteService;
+import no.hvl.dat250.feedapp.service.AccountService;
+import no.hvl.dat250.feedapp.service.AuthService;
+import no.hvl.dat250.feedapp.service.PollService;
+import no.hvl.dat250.feedapp.service.VoteService;
 
 
 @SpringBootApplication(exclude = SecurityAutoConfiguration.class)

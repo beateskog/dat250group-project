@@ -1,4 +1,4 @@
-package no.hvl.dat250.feedapp.service.jpa.implementation;
+package no.hvl.dat250.feedapp.service.implementation;
 
 import java.util.Optional;
 
@@ -17,8 +17,8 @@ import no.hvl.dat250.feedapp.exception.BadRequestException;
 import no.hvl.dat250.feedapp.model.jpa.Account;
 import no.hvl.dat250.feedapp.model.jpa.Role;
 import no.hvl.dat250.feedapp.repository.AccountRepository;
-import no.hvl.dat250.feedapp.service.jpa.AuthService;
-import no.hvl.dat250.feedapp.service.jpa.JwtService;
+import no.hvl.dat250.feedapp.service.AuthService;
+import no.hvl.dat250.feedapp.service.JwtService;
 
 @Service
 public class AuthServiceImpl implements AuthService {

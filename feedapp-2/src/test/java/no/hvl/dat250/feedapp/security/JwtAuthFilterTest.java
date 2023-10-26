@@ -21,7 +21,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import no.hvl.dat250.feedapp.service.jpa.JwtService;
+import no.hvl.dat250.feedapp.service.JwtService;
 
 
 @ExtendWith(MockitoExtension.class)

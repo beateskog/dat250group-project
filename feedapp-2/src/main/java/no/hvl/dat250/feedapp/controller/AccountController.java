@@ -22,7 +22,7 @@ import no.hvl.dat250.feedapp.exception.ResourceNotFoundException;
 import no.hvl.dat250.feedapp.exception.UnauthorizedAccessException;
 import no.hvl.dat250.feedapp.model.jpa.Account;
 import no.hvl.dat250.feedapp.model.jpa.Poll;
-import no.hvl.dat250.feedapp.service.jpa.AccountService;
+import no.hvl.dat250.feedapp.service.AccountService;
 
 
 @RestController

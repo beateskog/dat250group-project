@@ -1,4 +1,4 @@
-package no.hvl.dat250.feedapp.service.jpa.implementation;
+package no.hvl.dat250.feedapp.service.implementation;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -16,7 +16,7 @@ import no.hvl.dat250.feedapp.model.jpa.PollPrivacy;
 import no.hvl.dat250.feedapp.model.jpa.Account;
 import no.hvl.dat250.feedapp.model.jpa.Poll;
 import no.hvl.dat250.feedapp.repository.PollRepository;
-import no.hvl.dat250.feedapp.service.jpa.PollService;
+import no.hvl.dat250.feedapp.service.PollService;
 
 @Service
 public class PollServiceImpl implements PollService {

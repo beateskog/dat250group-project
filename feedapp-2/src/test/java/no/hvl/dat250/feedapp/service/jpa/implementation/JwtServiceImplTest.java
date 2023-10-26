@@ -13,6 +13,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import no.hvl.dat250.feedapp.service.implementation.JwtServiceImpl;
+
 @ExtendWith(SpringExtension.class)
 @TestPropertySource(locations="classpath:application-test.properties")
 public class JwtServiceImplTest {

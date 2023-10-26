@@ -13,7 +13,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import no.hvl.dat250.feedapp.dto.authentication.AuthRequestDTO;
 import no.hvl.dat250.feedapp.exception.BadRequestException;
-import no.hvl.dat250.feedapp.service.jpa.AuthService;
+import no.hvl.dat250.feedapp.service.AuthService;
 
 import org.springframework.http.MediaType;
 

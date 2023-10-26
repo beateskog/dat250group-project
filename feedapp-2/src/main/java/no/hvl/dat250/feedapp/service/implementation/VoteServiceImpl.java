@@ -1,4 +1,4 @@
-package no.hvl.dat250.feedapp.service.jpa.implementation;
+package no.hvl.dat250.feedapp.service.implementation;
 
 import java.util.List;
 
@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 import no.hvl.dat250.feedapp.model.jpa.Vote;
 import no.hvl.dat250.feedapp.repository.VoteRepository;
-import no.hvl.dat250.feedapp.service.jpa.VoteService;
+import no.hvl.dat250.feedapp.service.VoteService;
 
 @Service
 public class VoteServiceImpl implements VoteService {

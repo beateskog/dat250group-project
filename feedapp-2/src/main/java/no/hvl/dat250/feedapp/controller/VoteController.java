@@ -16,7 +16,7 @@ import no.hvl.dat250.feedapp.dto.VoteDTO;
 import no.hvl.dat250.feedapp.exception.BadRequestException;
 import no.hvl.dat250.feedapp.model.jpa.Role;
 import no.hvl.dat250.feedapp.model.jpa.Vote;
-import no.hvl.dat250.feedapp.service.jpa.VoteService;
+import no.hvl.dat250.feedapp.service.VoteService;
 
 @RestController
 @RequestMapping("/vote")

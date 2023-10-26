@@ -6,7 +6,8 @@ import no.hvl.dat250.feedapp.exception.AccessDeniedException;
 import no.hvl.dat250.feedapp.exception.BadRequestException;
 import no.hvl.dat250.feedapp.model.jpa.Account;
 import no.hvl.dat250.feedapp.repository.AccountRepository;
-import no.hvl.dat250.feedapp.service.jpa.JwtService;
+import no.hvl.dat250.feedapp.service.JwtService;
+import no.hvl.dat250.feedapp.service.implementation.AuthServiceImpl;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

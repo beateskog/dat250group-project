@@ -1,4 +1,4 @@
-package no.hvl.dat250.feedapp.service.jpa;
+package no.hvl.dat250.feedapp.service;
 
 import java.util.Map;
 

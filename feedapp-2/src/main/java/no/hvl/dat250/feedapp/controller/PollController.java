@@ -22,7 +22,7 @@ import no.hvl.dat250.feedapp.model.jpa.PollPrivacy;
 import no.hvl.dat250.feedapp.model.jpa.Account;
 import no.hvl.dat250.feedapp.model.jpa.Poll;
 import no.hvl.dat250.feedapp.model.jpa.Vote;
-import no.hvl.dat250.feedapp.service.jpa.PollService;
+import no.hvl.dat250.feedapp.service.PollService;
 import no.hvl.dat250.feedapp.service.mongo.PollResultService;
 
 @RestController
