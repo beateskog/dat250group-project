@@ -9,10 +9,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-
-import no.hvl.dat250.feedapp.DTO.authentication.AccountRespDTO;
-import no.hvl.dat250.feedapp.DTO.authentication.AuthRequestDTO;
-import no.hvl.dat250.feedapp.DTO.authentication.RegisterRequestDTO;
+import no.hvl.dat250.feedapp.dto.authentication.AccountRespDTO;
+import no.hvl.dat250.feedapp.dto.authentication.AuthRequestDTO;
+import no.hvl.dat250.feedapp.dto.authentication.RegisterRequestDTO;
 import no.hvl.dat250.feedapp.exception.BadRequestException;
 import no.hvl.dat250.feedapp.model.jpa.Account;
 import no.hvl.dat250.feedapp.service.jpa.AuthService;

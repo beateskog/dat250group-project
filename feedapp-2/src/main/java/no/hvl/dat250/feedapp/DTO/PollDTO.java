@@ -1,4 +1,4 @@
-package no.hvl.dat250.feedapp.DTO;
+package no.hvl.dat250.feedapp.dto;
 
 
 import java.time.LocalDateTime;

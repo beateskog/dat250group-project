@@ -1,9 +1,9 @@
 package no.hvl.dat250.feedapp.service.jpa;
 
 
-import no.hvl.dat250.feedapp.DTO.authentication.AuthRequestDTO;
-import no.hvl.dat250.feedapp.DTO.authentication.AuthResponseDTO;
-import no.hvl.dat250.feedapp.DTO.authentication.RegisterRequestDTO;
+import no.hvl.dat250.feedapp.dto.authentication.AuthRequestDTO;
+import no.hvl.dat250.feedapp.dto.authentication.AuthResponseDTO;
+import no.hvl.dat250.feedapp.dto.authentication.RegisterRequestDTO;
 
 
 

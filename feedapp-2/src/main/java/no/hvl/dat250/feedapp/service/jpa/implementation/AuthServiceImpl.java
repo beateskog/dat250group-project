@@ -9,9 +9,9 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import no.hvl.dat250.feedapp.DTO.authentication.AuthRequestDTO;
-import no.hvl.dat250.feedapp.DTO.authentication.AuthResponseDTO;
-import no.hvl.dat250.feedapp.DTO.authentication.RegisterRequestDTO;
+import no.hvl.dat250.feedapp.dto.authentication.AuthRequestDTO;
+import no.hvl.dat250.feedapp.dto.authentication.AuthResponseDTO;
+import no.hvl.dat250.feedapp.dto.authentication.RegisterRequestDTO;
 import no.hvl.dat250.feedapp.exception.AccessDeniedException;
 import no.hvl.dat250.feedapp.exception.BadRequestException;
 import no.hvl.dat250.feedapp.model.jpa.Account;

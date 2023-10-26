@@ -3,8 +3,8 @@ package no.hvl.dat250.feedapp.service.jpa;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import no.hvl.dat250.feedapp.DTO.PollDTO;
 import no.hvl.dat250.feedapp.model.jpa.PollPrivacy;
+import no.hvl.dat250.feedapp.dto.PollDTO;
 import no.hvl.dat250.feedapp.model.jpa.Account;
 import no.hvl.dat250.feedapp.model.jpa.Poll;
 

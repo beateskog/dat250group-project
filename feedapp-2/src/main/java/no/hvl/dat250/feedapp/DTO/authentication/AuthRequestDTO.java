@@ -1,4 +1,4 @@
-package no.hvl.dat250.feedapp.DTO.authentication;
+package no.hvl.dat250.feedapp.dto.authentication;
 
 public class AuthRequestDTO {
 

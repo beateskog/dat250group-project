@@ -10,8 +10,7 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-
-import no.hvl.dat250.feedapp.DTO.PollDTO;
+import no.hvl.dat250.feedapp.dto.PollDTO;
 import no.hvl.dat250.feedapp.exception.ResourceNotFoundException;
 import no.hvl.dat250.feedapp.model.jpa.PollPrivacy;
 import no.hvl.dat250.feedapp.model.jpa.Account;

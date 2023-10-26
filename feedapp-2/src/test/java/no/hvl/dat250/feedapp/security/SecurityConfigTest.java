@@ -11,7 +11,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
-import no.hvl.dat250.feedapp.DTO.authentication.AuthRequestDTO;
+import no.hvl.dat250.feedapp.dto.authentication.AuthRequestDTO;
 import no.hvl.dat250.feedapp.exception.BadRequestException;
 import no.hvl.dat250.feedapp.service.jpa.AuthService;
 

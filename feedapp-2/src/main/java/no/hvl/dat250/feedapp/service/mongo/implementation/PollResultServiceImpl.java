@@ -3,7 +3,7 @@ package no.hvl.dat250.feedapp.service.mongo.implementation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import no.hvl.dat250.feedapp.DTO.PollDTO;
+import no.hvl.dat250.feedapp.dto.PollDTO;
 import no.hvl.dat250.feedapp.model.mongo.PollResult;
 import no.hvl.dat250.feedapp.repository.mongo.PollResultRepository;
 import no.hvl.dat250.feedapp.service.mongo.PollResultService;

@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Profile;
 import org.springframework.transaction.annotation.Transactional;
 
-import no.hvl.dat250.feedapp.DTO.authentication.RegisterRequestDTO;
+import no.hvl.dat250.feedapp.dto.authentication.RegisterRequestDTO;
 import no.hvl.dat250.feedapp.service.jpa.AccountService;
 import no.hvl.dat250.feedapp.service.jpa.AuthService;
 import no.hvl.dat250.feedapp.service.jpa.PollService;
