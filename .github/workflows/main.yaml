@@ -2,7 +2,7 @@ name: FeedApp
 
 on:
   push:
-    branches: [ "main" , "spring-security"]
+    branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
 
