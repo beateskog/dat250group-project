@@ -20,7 +20,6 @@ import no.hvl.dat250.feedapp.exception.AccessDeniedException;
 import no.hvl.dat250.feedapp.exception.BadRequestException;
 import no.hvl.dat250.feedapp.exception.ResourceNotFoundException;
 import no.hvl.dat250.feedapp.model.Account;
-import no.hvl.dat250.feedapp.model.PollPrivacy;
 import no.hvl.dat250.feedapp.model.Vote;
 import no.hvl.dat250.feedapp.model.Poll;
 import no.hvl.dat250.feedapp.service.PollService;
@@ -105,22 +104,47 @@ public class PollController {
     }
 
     @GetMapping("/active")
-    public ResponseEntity<?> findPollsNotPassedEndTime() {
+    public ResponseEntity<?> findAllPollsNotPassedEndTime(UsernamePasswordAuthenticationToken token) {
         try {
-            List<Poll> polls = pollService.findPollsNotPassedEndTime();
+            Account user = (Account) token.getPrincipal();
+            if (user == null) {
+                throw new AccessDeniedException("You are not authorized to view this poll");
+            }
+            List<Poll> polls = pollService.findAllPollsNotPassedEndTime();
             List<PollDTO> pollDTOs = polls.stream().map(poll -> pollToPollDTO(poll)).toList();
             return ResponseEntity.ok(pollDTOs);
         } catch (ResourceNotFoundException ex) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+        } catch (AccessDeniedException ex) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(ex.getMessage());
         } catch (Exception ex){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ex.getMessage());
         }
     }
 
     @GetMapping("/ended")
-    public ResponseEntity<?> findPollsPassedEndTime() {
+    public ResponseEntity<?> findAllPollsPassedEndTime(UsernamePasswordAuthenticationToken token) {
         try {
-            List<Poll> polls = pollService.findPollsPassedEndTime();
+            Account user = (Account) token.getPrincipal();
+            if (user == null) {
+                throw new AccessDeniedException("You are not authorized to view this poll");
+            }
+            List<Poll> polls = pollService.findAllPollsPassedEndTime();
+            List<PollDTO> pollDTOs = polls.stream().map(poll -> pollToPollDTO(poll)).toList();
+            return ResponseEntity.ok(pollDTOs);
+        } catch (ResourceNotFoundException ex) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+        } catch (AccessDeniedException ex) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(ex.getMessage());
+        } catch (Exception ex){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ex.getMessage());
+        }
+    }
+
+    @GetMapping("/active/public")
+    public ResponseEntity<?> findPublicPollsNotPassedEndTime() {
+        try {
+            List<Poll> polls = pollService.findPublicPollsNotPassedEndTime();
             List<PollDTO> pollDTOs = polls.stream().map(poll -> pollToPollDTO(poll)).toList();
             return ResponseEntity.ok(pollDTOs);
         } catch (ResourceNotFoundException ex) {
@@ -130,10 +154,23 @@ public class PollController {
         }
     }
 
-    @GetMapping("/public")
+    @GetMapping("/ended/public")
+    public ResponseEntity<?> findPublicPollsPassedEndTime() {
+        try {
+            List<Poll> polls = pollService.findPublicPollsPassedEndTime();
+            List<PollDTO> pollDTOs = polls.stream().map(poll -> pollToPollDTO(poll)).toList();
+            return ResponseEntity.ok(pollDTOs);
+        } catch (ResourceNotFoundException ex) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+        } catch (Exception ex){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ex.getMessage());
+        }
+    }
+
+    @GetMapping("/all/public")
     public ResponseEntity<?> findPublicPolls() {
        try {
-            List<Poll> polls = pollService.findPublicPolls(PollPrivacy.PUBLIC);
+            List<Poll> polls = pollService.findAllPublicPolls();
             List<PollDTO> pollDTOs = polls.stream().map(poll -> pollToPollDTO(poll)).toList();
             return ResponseEntity.ok(pollDTOs);
         } catch (ResourceNotFoundException ex) {
@@ -144,16 +181,22 @@ public class PollController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<?> getAllPolls() {
+    public ResponseEntity<?> getAllPolls(UsernamePasswordAuthenticationToken token) {
         try {
-            List<Poll> polls = pollService.getAllPolls();
+            Account user = (Account) token.getPrincipal();
+            if (user == null) {
+                throw new AccessDeniedException("You are not authorized to view this poll");
+            }
+            List<Poll> polls = pollService.findAllPolls();
             List<PollDTO> pollDTOs = polls.stream().map(poll -> pollToPollDTO(poll)).toList();
             return ResponseEntity.ok(pollDTOs);
         } catch (ResourceNotFoundException ex) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+        } catch (AccessDeniedException ex) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(ex.getMessage());
         } catch (Exception ex){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ex.getMessage());
-        }
+        } 
     }
 
     // UPDATE

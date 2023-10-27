@@ -4,12 +4,21 @@ import no.hvl.dat250.feedapp.model.VotingPlatform;
 
 public class VoteDTO {
 
-    public Long id;
-    public Boolean vote;
-    public String voterRole;
-    public Long voterId;
-    public Long pollId;
-    public VotingPlatform platform;
+    private Long id;
+    private Boolean vote;
+    private String voterRole;
+    private Long voterId;
+    private Long pollId;
+    private VotingPlatform platform;
+
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getId() {
+        return id;
+    }
 
     public void setVote(Boolean vote) {
         this.vote = vote;

@@ -1,11 +1,8 @@
 package no.hvl.dat250.feedapp.service.implementation;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Random;
-import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,7 +10,6 @@ import org.springframework.stereotype.Service;
 import no.hvl.dat250.feedapp.dto.PollDTO;
 import no.hvl.dat250.feedapp.exception.ResourceNotFoundException;
 import no.hvl.dat250.feedapp.model.Account;
-import no.hvl.dat250.feedapp.model.PollPrivacy;
 import no.hvl.dat250.feedapp.model.Poll;
 import no.hvl.dat250.feedapp.repository.PollRepository;
 import no.hvl.dat250.feedapp.service.PollService;
@@ -24,59 +20,39 @@ public class PollServiceImpl implements PollService {
     @Autowired
     private PollRepository pollRepository;
 
-    public PollServiceImpl (PollRepository pollRepository) {
-        this.pollRepository = pollRepository;
-    }
-
     // -------------------------------------------------- CREATE -------------------------------------------------------
     @Override
     public Poll createPoll(PollDTO pollDTO, Account account) {
-        String uniqueUrl = generateUniqueUrl();
-        int uniquePin = generateUniquePin();
-
+        if (pollDTO.getQuestion() == null) {
+            throw new IllegalArgumentException("Question cannot be null");
+        }
+        if (pollDTO.getStartTime() == null) {
+            throw new IllegalArgumentException("Start time cannot be null");
+        }
+        if (pollDTO.getEndTime() == null) {
+            throw new IllegalArgumentException("End time cannot be null");
+        }
+        if (pollDTO.getPollPrivacy() == null) {
+            throw new IllegalArgumentException("Poll privacy cannot be null");
+        }
+        
         Poll poll = new Poll();
-        poll.setQuestion(pollDTO.question);
-        poll.setStartTime(pollDTO.startTime);
-        poll.setEndTime(pollDTO.endTime);
-        poll.setPollPrivacy(pollDTO.pollPrivacy);
-
-        poll.setPollURL(uniqueUrl);
-        poll.setPollPin(uniquePin);
+    
+        poll.setQuestion(pollDTO.getQuestion());
+        poll.setStartTime(pollDTO.getStartTime());
+        poll.setEndTime(pollDTO.getEndTime());
+        poll.setPollPrivacy(pollDTO.getPollPrivacy());
         poll.setAccount(account);
-
         pollRepository.save(poll);
-        return poll;
-    }
 
-    //DONT think we need this 
-    @Override
-    public Poll createPoll(String question, LocalDateTime start, LocalDateTime end) {
-        String uniqueUrl = generateUniqueUrl();
-        int uniquePin = generateUniquePin();
-
-        Poll poll = new Poll();
+        int uniquePin = poll.getId().intValue();
+        String uniqueUrl = "http://localhost:8080/poll/" + uniquePin;
         poll.setPollURL(uniqueUrl);
         poll.setPollPin(uniquePin);
-        poll.setQuestion(question);
-        poll.setStartTime(start);
-        poll.setEndTime(end);
+        
 
         pollRepository.save(poll);
         return poll;
-    }
-
-    private String generateUniqueUrl() {
-        // Implement logic to generate a unique URL (e.g., a random string or a combination of properties)
-        // Ensure the generated URL is unique in your database
-        // You can use UUID.randomUUID().toString() for simplicity
-        return UUID.randomUUID().toString();
-    }
-
-    private int generateUniquePin() {
-        // Implement logic to generate a unique PIN (e.g., a random number)
-        // Ensure the generated PIN is unique in your database
-        // You can use Random or other methods for generating unique PINs
-        return new Random().nextInt(10000); // Change as needed
     }
 
     // --------------------------------------------------- READ --------------------------------------------------------
@@ -112,58 +88,26 @@ public class PollServiceImpl implements PollService {
     }
 
     @Override
-    public List<Poll> findPollsNotPassedEndTime() {
-        LocalDateTime currentTime = LocalDateTime.now(); // Get the current time
-        List<Poll> allPolls = pollRepository.findAll(); // Retrieve all polls from the repository
-        List<Poll> activePolls = new ArrayList<>();
-
-        for (Poll poll : allPolls) {
-            if (poll.getEndTime() != null && poll.getEndTime().isAfter(currentTime) &&
-                poll.getStartTime() != null && poll.getStartTime().isBefore(currentTime)) {
-                // Check if the poll has both start and end times and is currently active
-                activePolls.add(poll);
-            }
-        }
-        if (activePolls.isEmpty()) {
-            throw new ResourceNotFoundException("No active polls found.");
-        }
-        return activePolls;
+    public List<Poll> findAllPollsNotPassedEndTime() {
+        List<Poll> polls = pollRepository.findAllPollsNotPassedEndTime();
+       
+        return polls;
     }
 
     @Override
-    public List<Poll> findPollsPassedEndTime() {
-        LocalDateTime currentTime = LocalDateTime.now(); // Get the current time
-        List<Poll> allPolls = pollRepository.findAll(); // Retrieve all polls from the repository
-        List<Poll> passedEndTimePolls = new ArrayList<>();
-
-        for (Poll poll : allPolls) {
-            if (poll.getEndTime() != null && poll.getEndTime().isBefore(currentTime)) {
-                // Check if the poll has an end time and it's before the current time
-                passedEndTimePolls.add(poll);
-            }
-        }
-        if (passedEndTimePolls.isEmpty()) {
-            throw new ResourceNotFoundException("No polls found that have passed their end time.");
-        }
-        return passedEndTimePolls;
+    public List<Poll> findAllPollsPassedEndTime() {
+        List<Poll> polls = pollRepository.findAllPollsPassedEndTime();
+        
+        return polls;
     }
 
-    public List<Poll> findPublicPolls(PollPrivacy privacy) {
-        if (privacy != PollPrivacy.PUBLIC) {
-            throw new IllegalArgumentException("Privacy parameter must be set to PollPrivacy.PUBLIC.");
-        }
-    
-        List<Poll> publicPolls = pollRepository.findPollsByPollPrivacy(PollPrivacy.PUBLIC);
+    public List<Poll> findPublicPolls() {
+        List<Poll> publicPolls = pollRepository.findAllPublicPolls();
     
         if (publicPolls.isEmpty()) {
             throw new ResourceNotFoundException("No public polls found.");
         }
         return publicPolls;
-    }
-
-    @Override
-    public List<Poll> getAllPolls() {
-        return pollRepository.findAll();
     }
 
     // -------------------------------------------------- UPDATE -------------------------------------------------------
@@ -221,6 +165,30 @@ public class PollServiceImpl implements PollService {
     public String deletePollById(Long pollId) {
         pollRepository.deleteById(pollId);
         return "Success";
+    }
+
+    @Override
+    public List<Poll> findAllPolls() {
+        List<Poll> polls = pollRepository.findAll();
+        return polls;
+    }
+
+    @Override
+    public List<Poll> findPublicPollsNotPassedEndTime() {
+       List<Poll> polls = pollRepository.findPublicPollsNotPassedEndTime();
+       return polls;
+    }
+
+    @Override
+    public List<Poll> findPublicPollsPassedEndTime() {
+        List<Poll> polls = pollRepository.findPublicPollsPassedEndTime();
+        return polls;
+        }
+
+    @Override
+    public List<Poll> findAllPublicPolls() {
+        List<Poll> polls = pollRepository.findAllPublicPolls();
+        return polls;
     }
     
 }

@@ -3,7 +3,8 @@ package no.hvl.dat250.feedapp.controller;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,27 +29,21 @@ public class VoteController {
     @Autowired
     VoteService voteService;
 
-    // USE Autowired instead of constructor injection
-    // public VoteController(VoteService voteService) {
-    //    this.voteService = voteService;
-    //}
-
     // CREATE
     @PostMapping
-    public ResponseEntity<?> createVote(UsernamePasswordAuthenticationToken token,@RequestBody VoteDTO vote) {
+    public ResponseEntity<?> createVote(Authentication authentication, @RequestBody VoteDTO vote) {
         try {
-            Account account = (Account) token.getPrincipal();
-            if (account != null) {
-                vote.voterId = account.getId();
-                vote.voterRole = account.getRole().toString();
+            if (authentication != null && authentication.isAuthenticated() && !(authentication instanceof AnonymousAuthenticationToken)) {
+                Account account = (Account) authentication.getPrincipal();
+                vote.setVoterId(account.getId());
+                vote.setVoterRole(account.getRole().toString());
             } else {
-                vote.voterRole = Role.ANONYMOUS_VOTER.toString();
+                vote.setVoterRole(Role.ANONYMOUS_VOTER.toString());
             }
-            
             Vote createdVote = voteService.createVote(vote);
             return ResponseEntity.status(HttpStatus.CREATED).body(voteToVoteDTO(createdVote));
         } catch (BadRequestException ex) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
         } catch (IllegalArgumentException ex) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
         } catch (Exception ex) {
@@ -78,36 +73,21 @@ public class VoteController {
         }
     }
 
-    
-    // UPDATE - Cannot update a vote
-    // @PutMapping
-    // public String updateVote(@RequestBody Vote vote) {
-    //     voteService.updateVote(vote);
-    //     return "Vote Updated Successfully";
-    // }
-
-    // DELETE - Cannot delete a vote
-    // @DeleteMapping("{voteId}")
-    // public String deleteVote(@PathVariable("voteId") Long voteId) {
-    //     voteService.deleteVote(voteId);
-    //     return "Vote Deleted Successfully";
-    // }
-
     //Data Transfer object 
     public VoteDTO voteToVoteDTO(Vote vote) {
 
         VoteDTO voteDTO = new VoteDTO();
-        voteDTO.id = vote.getId();
+        voteDTO.setId(vote.getId());
         if (vote.getAccount() == null) {
-            voteDTO.voterId = null;
-            voteDTO.voterRole = Role.ANONYMOUS_VOTER.toString();
+            voteDTO.setVoterId(null);
+            voteDTO.setVoterRole(Role.ANONYMOUS_VOTER.toString());
         } else {
-            voteDTO.voterId = vote.getAccount().getId();
-            voteDTO.voterRole = vote.getAccount().getRole().toString();
+            voteDTO.setVoterId(vote.getAccount().getId());
+            voteDTO.setVoterRole(vote.getAccount().getRole().toString());
         }
-        voteDTO.vote = vote.isVote();
-        voteDTO.pollId = vote.getPoll().getId();
-        voteDTO.platform = vote.getPlatform();
+        voteDTO.setVote(vote.isVote());
+        voteDTO.setVotingPlatform(vote.getPlatform());
+        voteDTO.setPollId(vote.getPoll().getId());
         
         return voteDTO;
     }

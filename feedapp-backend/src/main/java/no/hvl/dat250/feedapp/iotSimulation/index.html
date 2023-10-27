@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IoT Device Simulation</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h2 id="question">Loading question...</h2> <!-- This will display the question from your API -->
+        <button onclick="addVote('yes')">Yes</button>
+        <button onclick="addVote('no')">No</button>
+
+        <p>Yes Count: <span id="yesCount">0</span></p>
+        <p>No Count: <span id="noCount">0</span></p>
+
+        <button onclick="sendResults()">Send</button>
+        <button onclick="resetCounts()">Reset</button>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
