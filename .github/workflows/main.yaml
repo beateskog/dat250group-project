@@ -20,5 +20,5 @@ jobs:
           distribution: 'adopt'
       - name: Build and Test FeedApp
         run: |
-            cd feedapp-2
+            cd feedapp-backend
             mvn --batch-mode --update-snapshots verify
