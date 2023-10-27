@@ -10,4 +10,20 @@ public class AccountDTO {
     public int numberOfpolls;
     public List<Long> polls;
     
+    public Long getId() {
+        return id;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public int getNumberOfpolls() {
+        return numberOfpolls;
+    }
+
 }

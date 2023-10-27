@@ -12,9 +12,9 @@ import org.springframework.stereotype.Service;
 
 import no.hvl.dat250.feedapp.dto.PollDTO;
 import no.hvl.dat250.feedapp.exception.ResourceNotFoundException;
-import no.hvl.dat250.feedapp.model.jpa.PollPrivacy;
-import no.hvl.dat250.feedapp.model.jpa.Account;
-import no.hvl.dat250.feedapp.model.jpa.Poll;
+import no.hvl.dat250.feedapp.model.Account;
+import no.hvl.dat250.feedapp.model.PollPrivacy;
+import no.hvl.dat250.feedapp.model.Poll;
 import no.hvl.dat250.feedapp.repository.PollRepository;
 import no.hvl.dat250.feedapp.service.PollService;
 
@@ -169,8 +169,12 @@ public class PollServiceImpl implements PollService {
     // -------------------------------------------------- UPDATE -------------------------------------------------------
     
     @Override
-    public Poll updatePoll(Poll poll) {
+    public Poll updatePoll(PollDTO poll) {
         // Retrieve the existing poll from the repository
+        if (poll.getId() == null) {
+            throw new IllegalArgumentException("Poll ID must be provided.");
+        }
+        
         Optional<Poll> existingPollOptional = pollRepository.findById(poll.getId());
 
         if (existingPollOptional.isEmpty()) {
@@ -181,10 +185,22 @@ public class PollServiceImpl implements PollService {
 
         // Update the start and end times if provided
         if (poll.getStartTime() != null) {
+            if (poll.getStartTime().isAfter(existingPoll.getEndTime())) {
+                throw new IllegalArgumentException("Start time cannot be after end time.");
+            }
+            if (poll.getStartTime().isBefore(LocalDateTime.now())) {
+                throw new IllegalArgumentException("Start time cannot be before current time.");
+            }
             existingPoll.setStartTime(poll.getStartTime());
         }
 
         if (poll.getEndTime() != null) {
+            if (poll.getEndTime().isBefore(existingPoll.getStartTime())) {
+                throw new IllegalArgumentException("End time cannot be before start time.");
+            }
+            if (poll.getEndTime().isBefore(LocalDateTime.now())) {
+                throw new IllegalArgumentException("End time cannot be before current time.");
+            }
             existingPoll.setEndTime(poll.getEndTime());
         }
 

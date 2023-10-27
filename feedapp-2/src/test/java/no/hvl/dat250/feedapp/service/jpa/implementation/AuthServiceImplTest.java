@@ -4,7 +4,7 @@ import no.hvl.dat250.feedapp.dto.authentication.AuthRequestDTO;
 import no.hvl.dat250.feedapp.dto.authentication.RegisterRequestDTO;
 import no.hvl.dat250.feedapp.exception.AccessDeniedException;
 import no.hvl.dat250.feedapp.exception.BadRequestException;
-import no.hvl.dat250.feedapp.model.jpa.Account;
+import no.hvl.dat250.feedapp.model.Account;
 import no.hvl.dat250.feedapp.repository.AccountRepository;
 import no.hvl.dat250.feedapp.service.JwtService;
 import no.hvl.dat250.feedapp.service.implementation.AuthServiceImpl;

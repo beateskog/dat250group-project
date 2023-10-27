@@ -1,4 +1,4 @@
-package no.hvl.dat250.feedapp.model.jpa;
+package no.hvl.dat250.feedapp.model;
 
 import java.time.LocalDateTime;
 

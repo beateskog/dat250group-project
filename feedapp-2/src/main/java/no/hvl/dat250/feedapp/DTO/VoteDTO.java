@@ -1,12 +1,12 @@
 package no.hvl.dat250.feedapp.dto;
 
-import no.hvl.dat250.feedapp.model.jpa.VotingPlatform;
+import no.hvl.dat250.feedapp.model.VotingPlatform;
 
 public class VoteDTO {
 
     public Long id;
     public Boolean vote;
-    public String voter;
+    public String voterRole;
     public Long voterId;
     public Long pollId;
     public VotingPlatform platform;
@@ -19,12 +19,12 @@ public class VoteDTO {
         return vote;
     }
 
-    public void setVoter(String voter) {
-        this.voter = voter;
+    public void setVoterRole(String voter) {
+        this.voterRole = voter;
     }
 
-    public String getVoter() {
-        return voter;
+    public String getVoterRole() {
+        return voterRole;
     }
 
     public void setVoterId(Long voterId) {
@@ -43,7 +43,7 @@ public class VoteDTO {
         return pollId;
     }
 
-    public void setPlatform(VotingPlatform platform) {
+    public void setVotingPlatform(VotingPlatform platform) {
         this.platform = platform;
     }
 

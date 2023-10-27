@@ -16,12 +16,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import no.hvl.dat250.feedapp.dto.PollDTO;
+import no.hvl.dat250.feedapp.exception.AccessDeniedException;
 import no.hvl.dat250.feedapp.exception.BadRequestException;
 import no.hvl.dat250.feedapp.exception.ResourceNotFoundException;
-import no.hvl.dat250.feedapp.model.jpa.PollPrivacy;
-import no.hvl.dat250.feedapp.model.jpa.Account;
-import no.hvl.dat250.feedapp.model.jpa.Poll;
-import no.hvl.dat250.feedapp.model.jpa.Vote;
+import no.hvl.dat250.feedapp.model.Account;
+import no.hvl.dat250.feedapp.model.PollPrivacy;
+import no.hvl.dat250.feedapp.model.Vote;
+import no.hvl.dat250.feedapp.model.Poll;
 import no.hvl.dat250.feedapp.service.PollService;
 import no.hvl.dat250.feedapp.service.mongo.PollResultService;
 
@@ -35,12 +36,6 @@ public class PollController {
 
     @Autowired
     private PollResultService pollResultService;
-
-    //use autowired instead of constructor injection
-    //public PollController(PollService pollService) {
-    //    this.pollService = pollService;
-    //}
-    
     
     // CREATE
     @PostMapping
@@ -53,6 +48,8 @@ public class PollController {
             return ResponseEntity.status(HttpStatus.CREATED).body(pollDTO);
         } catch (BadRequestException ex) {
             return ResponseEntity.badRequest().body(ex.getMessage());
+        } catch (Exception ex){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ex.getMessage());
         }
     }
 
@@ -64,13 +61,10 @@ public class PollController {
             return ResponseEntity.ok(pollToPollDTO(poll));
         } catch (ResourceNotFoundException ex) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+        } catch (Exception ex){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ex.getMessage());
         }
-      
 
-        // return ResponseHandler.responseBuilder(
-        //     "Requested Poll Details are given here.",
-        //     HttpStatus.OK,
-        //     pollService.getPoll(pollId));
     }
 
     @GetMapping("/url")
@@ -80,6 +74,8 @@ public class PollController {
             return ResponseEntity.ok(pollToPollDTO(poll));
         } catch (ResourceNotFoundException ex) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+        } catch (Exception ex){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ex.getMessage());
         }
     }
 
@@ -90,6 +86,8 @@ public class PollController {
             return ResponseEntity.ok(pollToPollDTO(poll));
         } catch (ResourceNotFoundException ex) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+        } catch (Exception ex){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ex.getMessage());
         }
     }
 
@@ -101,6 +99,8 @@ public class PollController {
             return ResponseEntity.ok(pollDTOs);
         } catch (ResourceNotFoundException ex) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+        } catch (Exception ex){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ex.getMessage());
         }
     }
 
@@ -112,6 +112,8 @@ public class PollController {
             return ResponseEntity.ok(pollDTOs);
         } catch (ResourceNotFoundException ex) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+        } catch (Exception ex){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ex.getMessage());
         }
     }
 
@@ -123,6 +125,8 @@ public class PollController {
             return ResponseEntity.ok(pollDTOs);
         } catch (ResourceNotFoundException ex) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+        } catch (Exception ex){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ex.getMessage());
         }
     }
 
@@ -134,7 +138,9 @@ public class PollController {
             return ResponseEntity.ok(pollDTOs);
         } catch (ResourceNotFoundException ex) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
-       }
+       } catch (Exception ex){
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ex.getMessage());
+    }
     }
 
     @GetMapping("/all")
@@ -145,17 +151,25 @@ public class PollController {
             return ResponseEntity.ok(pollDTOs);
         } catch (ResourceNotFoundException ex) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+        } catch (Exception ex){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ex.getMessage());
         }
     }
 
     // UPDATE
     @PutMapping
-    public ResponseEntity<?> updatePoll(@RequestBody Poll poll) {
+    public ResponseEntity<?> updatePoll(UsernamePasswordAuthenticationToken token,@RequestBody PollDTO poll) {
         try {
+            Account user = (Account) token.getPrincipal();
+            if (!user.getId().equals(poll.getPollOwnerId())) {
+                throw new AccessDeniedException("You are not authorized to update this poll");
+            }
             Poll updatedPoll = pollService.updatePoll(poll);
             return ResponseEntity.ok(pollToPollDTO(updatedPoll));
         } catch (ResourceNotFoundException ex) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+        } catch (Exception ex){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ex.getMessage());
         }
     }
 
@@ -167,6 +181,8 @@ public class PollController {
             return ResponseEntity.ok().build();
         } catch (ResourceNotFoundException ex) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+        } catch (Exception ex){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ex.getMessage());
         }
     }
 

@@ -3,7 +3,7 @@ package no.hvl.dat250.feedapp.dto;
 
 import java.time.LocalDateTime;
 
-import no.hvl.dat250.feedapp.model.jpa.PollPrivacy;
+import no.hvl.dat250.feedapp.model.PollPrivacy;
 
 public class PollDTO {
 
@@ -19,6 +19,10 @@ public class PollDTO {
     public int totalVotes;
     public int yesVotes;
     public int noVotes;
+
+    public Long getId() {
+        return id;
+    }
     
     public void setPollUrl(String pollUrl) {
         this.pollUrl = pollUrl;

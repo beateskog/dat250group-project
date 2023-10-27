@@ -33,7 +33,7 @@ public class FeedappApplication {
 
             RegisterRequestDTO account1 = new RegisterRequestDTO("test","test");
             authService.register(account1);
-
+            
             RegisterRequestDTO account2 = new RegisterRequestDTO("OlaNordmann123", "IlikeCats123");
             authService.register(account2);
 

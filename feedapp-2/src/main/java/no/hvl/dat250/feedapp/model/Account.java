@@ -1,4 +1,4 @@
-package no.hvl.dat250.feedapp.model.jpa;
+package no.hvl.dat250.feedapp.model;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -51,7 +51,6 @@ public class Account implements UserDetails{
         this.role = role;
     }
 
-    //do we need this?
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role.name()));

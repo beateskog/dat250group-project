@@ -3,10 +3,10 @@ package no.hvl.dat250.feedapp.service;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import no.hvl.dat250.feedapp.model.jpa.PollPrivacy;
 import no.hvl.dat250.feedapp.dto.PollDTO;
-import no.hvl.dat250.feedapp.model.jpa.Account;
-import no.hvl.dat250.feedapp.model.jpa.Poll;
+import no.hvl.dat250.feedapp.model.Account;
+import no.hvl.dat250.feedapp.model.PollPrivacy;
+import no.hvl.dat250.feedapp.model.Poll;
 
 
 public interface PollService {
@@ -26,7 +26,7 @@ public interface PollService {
     public List<Poll> getAllPolls();
 
     // UPDATE
-    public Poll updatePoll(Poll poll);
+    public Poll updatePoll(PollDTO poll);
 
     // DELETE
     public String deletePollById(Long pollId);

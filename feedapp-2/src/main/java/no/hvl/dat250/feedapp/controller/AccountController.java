@@ -9,7 +9,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,9 +18,8 @@ import no.hvl.dat250.feedapp.dto.AccountDTO;
 import no.hvl.dat250.feedapp.exception.AccessDeniedException;
 import no.hvl.dat250.feedapp.exception.BadRequestException;
 import no.hvl.dat250.feedapp.exception.ResourceNotFoundException;
-import no.hvl.dat250.feedapp.exception.UnauthorizedAccessException;
-import no.hvl.dat250.feedapp.model.jpa.Account;
-import no.hvl.dat250.feedapp.model.jpa.Poll;
+import no.hvl.dat250.feedapp.model.Account;
+import no.hvl.dat250.feedapp.model.Poll;
 import no.hvl.dat250.feedapp.service.AccountService;
 
 
@@ -33,23 +31,6 @@ public class AccountController {
     @Autowired
     private AccountService accountService;
 
-    // USE Autowired instead of constructor injection
-    //public AccountController(AccountService accountService) {
-    //    this.accountService = accountService;
-    //}
-
-    // CREATE
-    //DONT NEED THIS METHOD SINCE WE NOW HAVE A REGISTER METHOD IN AUTHCONTROLLER
-    @PostMapping
-    public ResponseEntity<?> createAccount(@RequestBody Account account) {
-        try {
-            accountService.createAccount(account);
-            return ResponseEntity.status(HttpStatus.CREATED).body(AccountToAccountDTO(account));
-        } catch (BadRequestException ex) {
-            return ResponseEntity.badRequest().body(ex.getMessage());
-        }
-    }
-
     // READ
     @GetMapping("/id/{accountId}")
     public ResponseEntity<?> findAccountById(@PathVariable("accountId") Long accountId) {
@@ -58,6 +39,8 @@ public class AccountController {
             return ResponseEntity.ok(AccountToAccountDTO(account));
         } catch (ResourceNotFoundException ex) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+        } catch (Exception ex){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ex.getMessage());
         }
     }
 
@@ -69,6 +52,8 @@ public class AccountController {
         }
         catch (ResourceNotFoundException ex) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+        } catch (Exception ex){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ex.getMessage());
         }
     }
 
@@ -80,7 +65,8 @@ public class AccountController {
             return ResponseEntity.ok(accountDTOs);
         } catch (ResourceNotFoundException ex) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
-
+        } catch (Exception ex){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ex.getMessage());
         }
         
     }
@@ -100,6 +86,8 @@ public class AccountController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
         } catch (BadRequestException ex) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+        } catch (Exception ex){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ex.getMessage());
         }
     }
 
@@ -116,8 +104,10 @@ public class AccountController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
         } catch (BadRequestException ex) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
-        } catch (UnauthorizedAccessException ex) {
+        } catch (AccessDeniedException ex) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(ex.getMessage());
+        } catch (Exception ex){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ex.getMessage());
         }
     }
 
@@ -129,6 +119,8 @@ public class AccountController {
             return ResponseEntity.ok().body(resp);
         } catch (ResourceNotFoundException ex) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+        } catch (Exception ex){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ex.getMessage());
         }
     }
 

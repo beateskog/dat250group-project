@@ -11,8 +11,8 @@ import no.hvl.dat250.feedapp.exception.BadRequestException;
 import no.hvl.dat250.feedapp.exception.ResourceNotFoundException;
 
 import no.hvl.dat250.feedapp.exception.AccessDeniedException;
-import no.hvl.dat250.feedapp.model.jpa.Account;
-import no.hvl.dat250.feedapp.model.jpa.Role;
+import no.hvl.dat250.feedapp.model.Account;
+import no.hvl.dat250.feedapp.model.Role;
 import no.hvl.dat250.feedapp.repository.AccountRepository;
 import no.hvl.dat250.feedapp.service.AccountService;
 
