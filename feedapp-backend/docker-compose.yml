@@ -19,5 +19,14 @@ services:
     volumes:
       - mongodb_data:/data/db
 
+  iot-simulation:
+    image: iot-simulation:latest
+    build:
+      context: ./iotSimulation
+      dockerfile: Dockerfile
+    ports:
+      - 8000:80
+
+
 volumes:
   mongodb_data:
