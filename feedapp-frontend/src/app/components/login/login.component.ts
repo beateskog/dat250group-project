@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthService } from '../auth.service'; // You'll need to create an AuthService for handling authentication.
+import { AuthService } from '../../services/auth.service'; // You'll need to create an AuthService for handling authentication.
 
 @Component({
     selector: 'app-login',

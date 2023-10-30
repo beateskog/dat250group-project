@@ -1,19 +1,19 @@
+import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
+import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
 import { AppRoutingModule } from './app-routing.module';
-import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
-import { MyPollsComponent } from './myPolls/myPolls.component';
-import { OverviewComponent } from './overview/overview.component';
-import { RegisterComponent } from './register/register.component';
-import { ResultsComponent } from './results/results.component';
-import { VoteComponent } from './vote/vote.component';
-import { LoginComponent } from './login/login.component';
-import { CreatePollComponent } from './createPoll/createPoll.component';
-import { AuthService } from './auth.service';
+import { CreatePollComponent } from './components/createPoll/createPoll.component';
+import { LoginComponent } from './components/login/login.component';
+import { MyPollsComponent } from './components/myPolls/myPolls.component';
+import { OverviewComponent } from './components/overview/overview.component';
+import { RegisterComponent } from './components/register/register.component';
+import { ResultsComponent } from './components/results/results.component';
+import { VoteComponent } from './components/vote/vote.component';
+import { AuthService } from './services/auth.service';
 
 @NgModule({
   declarations: [

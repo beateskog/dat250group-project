@@ -1,12 +1,12 @@
-import {NgModule} from '@angular/core';
+import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { LoginComponent } from './login/login.component';
-import { RegisterComponent } from './register/register.component';
-import { OverviewComponent } from './overview/overview.component';
-import { MyPollsComponent } from './myPolls/myPolls.component';
-import { VoteComponent } from './vote/vote.component';
-import { ResultsComponent } from './results/results.component';
+import { LoginComponent } from './components/login/login.component';
+import { MyPollsComponent } from './components/myPolls/myPolls.component';
+import { OverviewComponent } from './components/overview/overview.component';
+import { RegisterComponent } from './components/register/register.component';
+import { ResultsComponent } from './components/results/results.component';
+import { VoteComponent } from './components/vote/vote.component';
 
 
 const routes: Routes = [
