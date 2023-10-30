@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import no.hvl.dat250.feedapp.dto.VoteDTO;
@@ -29,7 +30,7 @@ public class IoTController {
     private PollService pollService;
 
     @PostMapping("/iotvotes")
-    public ResponseEntity<?> createIoTVote(IoTResponse response) {
+    public ResponseEntity<?> createIoTVote(@RequestBody IoTResponse response) {
         try {
             List<Vote> votes = voteService.createIoTVote(response);
             List<VoteDTO> voteDTOs = votes.stream().map(vote -> voteToVoteDTO(vote)).toList();

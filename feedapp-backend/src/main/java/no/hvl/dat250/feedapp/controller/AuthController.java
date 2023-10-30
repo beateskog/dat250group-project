@@ -24,11 +24,6 @@ public class AuthController {
     @Autowired
     private AuthService authService;
 
-    // USE Autowired instead of constructor injection
-    //public AuthController(AuthService authService) {
-    //    this.authService = authService;
-    //}
-
     @PostMapping("/register")
     @ResponseBody
     public ResponseEntity<?> registerUser(@RequestBody RegisterRequestDTO request){

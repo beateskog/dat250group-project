@@ -26,6 +26,7 @@ function fetchQuestion() {
             const questionElement = document.getElementById('question');
             questionElement.innerText = data.question;
             currentPollId = data.pollId;
+            console.log("Current Poll ID:", currentPollId);
         })
         .catch((error) => {
             console.error('Error fetching the question:', error);
@@ -37,8 +38,10 @@ function fetchQuestion() {
 function sendResults() {
     const apiUrl = "http://localhost:8080/iotvotes"; 
     const data = {
-        yes: yesCount,
-        no: noCount
+        pollId: currentPollId,
+        yesVotes: yesCount,
+        noVotes: noCount
+
     };
 
     fetch(apiUrl, {

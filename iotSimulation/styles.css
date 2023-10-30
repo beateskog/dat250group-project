@@ -1,0 +1,25 @@
+.container {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    padding: 20px;
+}
+.yes-button {
+    background-color: #4CAF50; /* This is a green color */
+}
+
+.no-button {
+    background-color: #F44336; /* This is a red color */
+}
+
+.yes-button:hover {
+    background-color: #45a049; /* Darker green for hover */
+}
+
+.no-button:hover {
+    background-color: #da190b; /* Darker red for hover */
+}
+
+/* You might also want to style the Font Awesome icons to ensure they're centered and spaced well: */
+button i {
+    margin-right: 5px;
+}
