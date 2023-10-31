@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -36,7 +37,7 @@ public class Poll {
     @JoinColumn(name = "account_id")
     private Account account;
 
-    @OneToMany(mappedBy = "poll")
+    @OneToMany(mappedBy = "poll", cascade = CascadeType.ALL)
     private List<Vote> votes = new ArrayList<>();
 
     public Poll () {

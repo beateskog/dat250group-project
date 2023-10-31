@@ -8,6 +8,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -35,10 +36,10 @@ public class Account implements UserDetails{
     private boolean accountNonLocked = true;
     private boolean credentialsNonExpired = true;
 
-    @OneToMany(mappedBy = "account")
+    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
     private List<Poll> polls = new ArrayList<>();
 
-    @OneToMany(mappedBy = "account")
+    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
     private List<Vote> votes = new ArrayList<>();
 
     public Account () {
