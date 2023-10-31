@@ -209,6 +209,10 @@ public class PollController {
             if (!user.getId().equals(poll.getPollOwnerId())) {
                 throw new AccessDeniedException("You are not authorized to update this poll");
             }
+            Poll pollToUpdate = pollService.findPollById(poll.getId());
+            if (!user.getId().equals(pollToUpdate.getAccount().getId())) {
+                throw new AccessDeniedException("You are not authorized to update this poll");
+            }
             Poll updatedPoll = pollService.updatePoll(poll);
             return ResponseEntity.ok(pollToPollDTO(updatedPoll));
         } catch (ResourceNotFoundException ex) {
@@ -220,10 +224,12 @@ public class PollController {
 
     // DELETE
     @DeleteMapping("{pollId}")
-    public ResponseEntity<?> deletePollById(@PathVariable("pollId") Long pollId) {
+    public ResponseEntity<?> deletePollById(UsernamePasswordAuthenticationToken token,@PathVariable("pollId") Long pollId) {
         try {
-            pollService.deletePollById(pollId);
-            return ResponseEntity.ok().build();
+            Account user = (Account) token.getPrincipal();
+        
+            String resp = pollService.deletePollById(pollId, user);
+            return ResponseEntity.ok().body(resp);
         } catch (ResourceNotFoundException ex) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
         } catch (Exception ex){
