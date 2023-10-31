@@ -168,7 +168,8 @@ public class PollServiceImpl implements PollService {
             pollRepository.deleteById(pollId);
             return "Poll with pollId: " + pollId + " has successfully been deleted.";
         }
-        Poll poll = pollRepository.findById(pollId).get();
+        Poll poll = pollRepository.findById(pollId) 
+            .orElseThrow(() -> new ResourceNotFoundException("A poll with the given ID: " + pollId + " does not exist."));
         if (poll.getAccount().getId() == user.getId()) {
             pollRepository.deleteById(pollId);
             return "Poll with pollId: " + pollId + " has successfully been deleted.";

@@ -28,11 +28,6 @@ public class AccountServiceImpl implements AccountService {
     }
 
     // -------------------------------------------------- CREATE -------------------------------------------------------
-    
-    // 1. Check if username is unique (there does not already exist a user with the same username)
-    // 2. Username and password are required fields in order to create a user
-    // 3. HVIS VI HAR TID/SENERE: Check password strength / qualifications
-    // 4. The id and Role.USER is assigned automatically upon creation
     @Override
     public String createAccount(Account account) {
         Optional<Account> existingAccount = accountRepository.findAccountByUsername(account.getUsername());
@@ -86,7 +81,10 @@ public class AccountServiceImpl implements AccountService {
 
         Account existingAccount = existingAccountOptional.get();
         if (account.getUsername() != null) {
-            existingAccount.setUsername(account.getUsername());
+            if (accountRepository.findAccountByUsername(account.getUsername()).isPresent()) {
+                throw new BadRequestException("An account with username: " + account.getUsername() + " already exists.");
+            } else {existingAccount.setUsername(account.getUsername());}
+            
         }
 
         if (account.getPassword() != null) {
@@ -107,7 +105,6 @@ public class AccountServiceImpl implements AccountService {
         if (accountRepository.findById(accountId).isEmpty()) {
             throw new ResourceNotFoundException("Account with ID: " + accountId + " does not exist.");
         }
-        // HVIS VI HAR TID/SENERE: Check if the current user (e.g., authenticated user) is an administrator using Spring security
 
         accountRepository.deleteById(accountId);
         return "Account with ID: " + accountId + " has been successfully deleted";
