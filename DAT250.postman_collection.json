@@ -1,0 +1,633 @@
+{
+	"info": {
+		"_postman_id": "ca32c7ac-b94e-46bb-aa24-2ececff5d5ce",
+		"name": "DAT250",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "27900829",
+		"_collection_link": "https://planetary-water-5113.postman.co/workspace/New-Team-Workspace~e9f79c67-73e7-4af0-888d-3933572cc738/collection/27900829-ca32c7ac-b94e-46bb-aa24-2ececff5d5ce?action=share&source=collection_link&creator=27900829"
+	},
+	"item": [
+		{
+			"name": "Account",
+			"item": [
+				{
+					"name": "AccountUsername",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/account/username/admin",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"account",
+								"username",
+								"admin"
+							],
+							"query": [
+								{
+									"key": "username",
+									"value": "OlaNordmann123",
+									"disabled": true
+								},
+								{
+									"key": "username",
+									"value": "PerNordmann123",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateAccount",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0IiwiaWF0IjoxNjk3NjMyNjM1LCJleHAiOjE2OTc2NzU4MzV9.zwciif-NkYhb5QkM3y8IQFckjkaxD99YZo3-mv13dEk",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\" : \"Bea8\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/account/6",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"account",
+								"6"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AccountID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/account/id/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"account",
+								"id",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteAccountID",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/account/2",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"account",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteAccountUsername",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/account/username/test",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"account",
+								"username",
+								"test"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Polls",
+			"item": [
+				{
+					"name": "PollPin",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/poll/pin/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"poll",
+								"pin",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PollId",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/poll/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"poll",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeletePoll",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/poll/2",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"poll",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdatePoll",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\" : 3,\n    \"pollOwnerId\": 2,\n    \"pollPrivacy\" : \"PRIVATE\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/poll",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"poll"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "createPoll",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0IiwiaWF0IjoxNjk4NjYzNzU1LCJleHAiOjE2OTg3MDY5NTV9.wkve8Qem0leRHDPWYo7DYe0AZs_B1iPATHY04pGjDws",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"question\": \"Is red your favorite color?\",\n  \"startTime\": \"2023-10-06T10:00:00\",\n  \"endTime\": \"2024-10-06T12:00:00\",\n  \"pollPrivacy\": \"PUBLIC\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/poll",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"poll"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AllActivePolls",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0IiwiaWF0IjoxNjk4NDAwNjcyLCJleHAiOjE2OTg0NDM4NzJ9.tqkvkoWLU3CXpfpq0XY-j2HEUNdID10lQBAEgtESQ0M",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/poll/active",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"poll",
+								"active"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AllEndedPolls",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0IiwiaWF0IjoxNjk4NDAwNjcyLCJleHAiOjE2OTg0NDM4NzJ9.tqkvkoWLU3CXpfpq0XY-j2HEUNdID10lQBAEgtESQ0M",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/poll/ended",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"poll",
+								"ended"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AllPublicPolls",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/poll/public",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"poll",
+								"public"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Username",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/poll/owner/newuser123",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"poll",
+								"owner",
+								"newuser123"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetAllPolls",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/poll/all",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"poll",
+								"all"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PublicActivePolls",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "PublicEndedPolls",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "GetAllPublicPolls",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/poll/all/public",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"poll",
+								"all",
+								"public"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Votes",
+			"item": [
+				{
+					"name": "CreateVote",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0IiwiaWF0IjoxNjk4NDAwNjcyLCJleHAiOjE2OTg0NDM4NzJ9.tqkvkoWLU3CXpfpq0XY-j2HEUNdID10lQBAEgtESQ0M",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"vote\" : false,\n    \"pollId\" : 2,\n    \"votingPlatform\" : \"WEB\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/vote",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"vote"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "IoTVotes",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"pollId\" : 1,\n    \"yesVotes\" : 10,\n    \"noVotes\" : 8\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/IoTvotes",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"IoTvotes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetVoteById",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/vote/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"vote",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetAllVotes",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/vote",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"vote"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\" : \"test\",\n    \"password\" : \"test\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Register",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\" : \"Bea\",\n    \"password\" : \"123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/auth/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJLYXJpIiwiaWF0IjoxNjk4NzQ3NzEyLCJleHAiOjE2OTg3OTA5MTJ9.qEJ7w7Z34MEQoNLPGMotHf_M2gMfmkSsZnR3nrxdK64",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
