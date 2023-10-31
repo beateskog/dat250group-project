@@ -2,6 +2,7 @@ package no.hvl.dat250.feedapp.service.implementation;
 
 import no.hvl.dat250.feedapp.exception.BadRequestException;
 import no.hvl.dat250.feedapp.exception.ResourceNotFoundException;
+import no.hvl.dat250.feedapp.dto.UpdateAccountDTO;
 import no.hvl.dat250.feedapp.exception.AccessDeniedException;
 import no.hvl.dat250.feedapp.model.Account;
 import no.hvl.dat250.feedapp.model.Role;
@@ -12,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+
 import static org.mockito.Mockito.*;
 
 import java.util.Optional;
@@ -91,6 +93,10 @@ class AccountServiceImplTest {
         account.setUsername("testUser");
         account.setPassword("testPassword");
 
+        UpdateAccountDTO updateReq = new UpdateAccountDTO();
+        updateReq.setUsername("updatedUser");
+        updateReq.setPassword("updatedPassword");
+
         Account updatedAccount = new Account();
         updatedAccount.setId(accountId);
         updatedAccount.setUsername("updatedUser");
@@ -99,25 +105,11 @@ class AccountServiceImplTest {
         when(accountRepository.findById(accountId)).thenReturn(Optional.of(account));
         when(accountRepository.save(any(Account.class))).thenReturn(updatedAccount);
 
-        Account response = accountService.updateAccount(updatedAccount, accountId);
+        Account response = accountService.updateAccount(updateReq, account);
 
         assertThat(response).isEqualTo(updatedAccount);
     }
 
-    @Test
-    void updateAccount_NotFound() {
-        Long accountId = 1L;
-        Account account = new Account();
-        account.setId(accountId);
-        account.setUsername("testUser");
-        account.setPassword("testPassword");
-
-        when(accountRepository.findById(accountId)).thenReturn(Optional.empty());
-
-        assertThatExceptionOfType(ResourceNotFoundException.class)
-            .isThrownBy(() -> accountService.updateAccount(account, accountId))
-            .withMessage("Account with ID 1 does not exist.");
-    }
 
     @Test
     void updateAccount_UsernameExists() {
@@ -126,6 +118,10 @@ class AccountServiceImplTest {
         account.setId(accountId);
         account.setUsername("testUser");
         account.setPassword("testPassword");
+
+        UpdateAccountDTO updateReq = new UpdateAccountDTO();
+        updateReq.setUsername("testUser");
+        updateReq.setPassword("testPassword");
 
         Account existingAccount = new Account();
         existingAccount.setId(accountId);
@@ -136,7 +132,7 @@ class AccountServiceImplTest {
         when(accountRepository.findAccountByUsername("testUser")).thenReturn(Optional.of(existingAccount));
 
         assertThatExceptionOfType(BadRequestException.class)
-            .isThrownBy(() -> accountService.updateAccount(account, accountId))
+            .isThrownBy(() -> accountService.updateAccount(updateReq, account))
             .withMessage("An account with username: testUser already exists.");
     }
 

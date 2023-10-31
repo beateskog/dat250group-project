@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import no.hvl.dat250.feedapp.exception.BadRequestException;
 import no.hvl.dat250.feedapp.exception.ResourceNotFoundException;
-
+import no.hvl.dat250.feedapp.dto.UpdateAccountDTO;
 import no.hvl.dat250.feedapp.exception.AccessDeniedException;
 import no.hvl.dat250.feedapp.model.Account;
 import no.hvl.dat250.feedapp.model.Role;
@@ -72,26 +72,20 @@ public class AccountServiceImpl implements AccountService {
     // -------------------------------------------------- UPDATE -------------------------------------------------------
 
     @Override
-    public Account updateAccount(Account account, Long accountId) {
-        Optional<Account> existingAccountOptional = accountRepository.findById(accountId);
-
-        if (existingAccountOptional.isEmpty()) {
-            throw new ResourceNotFoundException("Account with ID " + account.getId() + " does not exist.");
-        }
-
-        Account existingAccount = existingAccountOptional.get();
+    public Account updateAccount(UpdateAccountDTO account, Account accountToUpdate) {
+        
         if (account.getUsername() != null) {
             if (accountRepository.findAccountByUsername(account.getUsername()).isPresent()) {
                 throw new BadRequestException("An account with username: " + account.getUsername() + " already exists.");
-            } else {existingAccount.setUsername(account.getUsername());}
+            } else {accountToUpdate.setUsername(account.getUsername());}
             
         }
 
         if (account.getPassword() != null) {
-            existingAccount.setPassword(account.getPassword());
+            accountToUpdate.setPassword(account.getPassword());
         }
 
-        return accountRepository.save(existingAccount);
+        return accountRepository.save(accountToUpdate);
     }
 
     // -------------------------------------------------- DELETE -------------------------------------------------------

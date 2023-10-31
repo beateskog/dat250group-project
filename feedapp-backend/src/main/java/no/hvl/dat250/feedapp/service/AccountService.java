@@ -2,6 +2,7 @@ package no.hvl.dat250.feedapp.service;
 
 import java.util.List;
 
+import no.hvl.dat250.feedapp.dto.UpdateAccountDTO;
 import no.hvl.dat250.feedapp.model.Account;
 
 
@@ -16,7 +17,7 @@ public interface AccountService {
     public List<Account> getAllAccounts();
 
     // UPDATE
-    public Account updateAccount(Account account, Long accountId);
+    public Account updateAccount(UpdateAccountDTO account, Account accountToUpdate);
 
     // DELETE
     public String deleteAccountById(Account account, Long accountId);
