@@ -43,12 +43,13 @@ public class Poll {
     public Poll () {
     }
 
-    public Poll (Long id, int pollPin, String pollURL, String question, LocalDateTime start, LocalDateTime end) {
+    public Poll (Long id, int pollPin, String pollURL, String question, LocalDateTime start, LocalDateTime end, PollPrivacy pollPrivacy) {
         this.id = id;
         this.pollPin = pollPin;
         this.pollURL = pollURL;
         this.question = question;
         this.startTime = start;
         this.endTime = end;
+        this.pollPrivacy = pollPrivacy;
     }
 }

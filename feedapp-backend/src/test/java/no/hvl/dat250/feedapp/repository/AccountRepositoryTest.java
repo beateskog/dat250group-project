@@ -17,6 +17,7 @@ import no.hvl.dat250.feedapp.model.Role;
 import no.hvl.dat250.feedapp.model.Vote;
 import no.hvl.dat250.feedapp.model.VotingPlatform;
 import no.hvl.dat250.feedapp.model.Poll;
+import no.hvl.dat250.feedapp.model.PollPrivacy;
 
 // There is no need to write unit test cases for the methods we are directly
 // using from the JPA repository (such as FingById), because the JPA repository
@@ -51,7 +52,8 @@ public class AccountRepositoryTest {
             "poll.com",
             "Do you like Christmas?",
             LocalDateTime.of(2023, 10, 10, 19, 0),
-            LocalDateTime.of(2023, 12, 25, 20, 0));
+            LocalDateTime.of(2023, 12, 25, 20, 0),
+            PollPrivacy.PUBLIC);
         pollRepository.save(poll);
         
         vote = new Vote(
@@ -65,13 +67,8 @@ public class AccountRepositoryTest {
     @AfterEach
     void tearDown() {
         account = null;
+        //Because of cascadeType.ALL on accounts, polls and votes will be deleted as well
         accountRepository.deleteAll();
-
-        poll = null;
-        pollRepository.deleteAll();
-
-        vote = null;
-        voteRepository.deleteAll();
     }
 
     // findByUsername(String) - SUCCESS
