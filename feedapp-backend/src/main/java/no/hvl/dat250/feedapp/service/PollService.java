@@ -33,6 +33,6 @@ public interface PollService {
     public Poll updatePoll(PollDTO poll);
 
     // DELETE
-    public String deletePollById(Long pollId);
+    public String deletePollById(Long pollId, Account user);
       
 }

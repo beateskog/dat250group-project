@@ -11,6 +11,7 @@ import no.hvl.dat250.feedapp.dto.PollDTO;
 import no.hvl.dat250.feedapp.exception.ResourceNotFoundException;
 import no.hvl.dat250.feedapp.model.Account;
 import no.hvl.dat250.feedapp.model.Poll;
+import no.hvl.dat250.feedapp.model.Role;
 import no.hvl.dat250.feedapp.repository.PollRepository;
 import no.hvl.dat250.feedapp.service.PollService;
 
@@ -162,9 +163,17 @@ public class PollServiceImpl implements PollService {
     // -------------------------------------------------- DELETE -------------------------------------------------------
 
     @Override
-    public String deletePollById(Long pollId) {
-        pollRepository.deleteById(pollId);
-        return "Success";
+    public String deletePollById(Long pollId, Account user) {
+        if (user.getRole() == Role.ADMIN) {
+            pollRepository.deleteById(pollId);
+            return "Poll with pollId: " + pollId + " has successfully been deleted.";
+        }
+        Poll poll = pollRepository.findById(pollId).get();
+        if (poll.getAccount().getId() == user.getId()) {
+            pollRepository.deleteById(pollId);
+            return "Poll with pollId: " + pollId + " has successfully been deleted.";
+        }
+        throw new IllegalArgumentException("You do not have permission to delete this poll."); 
     }
 
     @Override
