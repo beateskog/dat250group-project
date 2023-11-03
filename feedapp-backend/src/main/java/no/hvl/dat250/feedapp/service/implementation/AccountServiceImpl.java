@@ -104,7 +104,6 @@ public class AccountServiceImpl implements AccountService {
         return "Account with ID: " + accountId + " has been successfully deleted";
     }
 
-    // Vi må vurdere om vi skal ha denne metoden eller ikke. I så tilfelle bør vi sjekke ut Spring Security.
     @Override
     public String deleteMyAccount(String username) {
         if (accountRepository.findAccountByUsername(username).isEmpty()) {

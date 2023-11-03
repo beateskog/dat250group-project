@@ -92,9 +92,11 @@ public class PollController {
         }
     }
 
-    @GetMapping("/owner/{username}")
-    public ResponseEntity<?> findByPollsByOwnerUsername(@PathVariable String username) {
+    @GetMapping("/owner")
+    public ResponseEntity<?> findByPollsByOwnerUsername(UsernamePasswordAuthenticationToken token) {
         try{
+            Account user = (Account) token.getPrincipal();
+            String username = user.getUsername();
             List<Poll> polls = pollService.findPollsByOwnerUsername(username);
             List<PollDTO> pollDTOs = polls.stream().map(poll -> pollToPollDTO(poll)).toList();
             return ResponseEntity.ok(pollDTOs);
