@@ -15,7 +15,6 @@ import no.hvl.dat250.feedapp.model.*;
 import no.hvl.dat250.feedapp.repository.AccountRepository;
 import no.hvl.dat250.feedapp.repository.PollRepository;
 import no.hvl.dat250.feedapp.repository.VoteRepository;
-import no.hvl.dat250.feedapp.service.jpa.implementation.VoteServiceImpl;
 
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
