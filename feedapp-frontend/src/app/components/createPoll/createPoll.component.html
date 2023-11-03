@@ -1,1 +1,28 @@
-<p>createPoll works!</p>
+<div class="container">
+    <h2>Create new poll</h2>
+    <form (ngSubmit)="createPoll()">
+      <div class="form-group">
+        <label for="question">Poll Question</label>
+        <input type="text" id="question" name="question" [(ngModel)]="poll.question" class="input-field" required />
+      </div>
+      <div class="form-group">
+        <label for="privacy">Privacy</label>
+        <select id="privacy" name="privacy" [(ngModel)]="poll.pollPrivacy" class="input-field">
+          <option value="public">Public</option>
+          <option value="private">Private</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="startTime">Start Time</label>
+        <input type="datetime-local" id="startTime" name="startTime" [(ngModel)]="poll.startTime" class="input-field" />
+      </div>
+      <div class="form-group">
+        <label for="endTime">End Time</label>
+        <input type="datetime-local" id="endTime" name="endTime" [(ngModel)]="poll.endTime" class="input-field" />
+      </div>
+      <button type="submit" class="publish-button">Publish new poll</button>
+      <div class="error-message" *ngIf="error">
+        {{ error }}
+      </div>
+    </form>
+  </div>

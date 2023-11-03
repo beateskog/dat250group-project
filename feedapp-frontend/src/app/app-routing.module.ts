@@ -7,6 +7,7 @@ import { OverviewComponent } from './components/overview/overview.component';
 import { RegisterComponent } from './components/register/register.component';
 import { ResultsComponent } from './components/results/results.component';
 import { VoteComponent } from './components/vote/vote.component';
+import { CreatePollComponent } from './components/createPoll/createPoll.component';
 
 
 const routes: Routes = [
@@ -17,6 +18,7 @@ const routes: Routes = [
     { path: 'myPolls', component: MyPollsComponent},
     { path: 'vote', component: VoteComponent},
     { path: 'results', component: ResultsComponent},
+    { path: 'createPoll', component: CreatePollComponent},
     { path: '', redirectTo: '/login', pathMatch: 'full' },
 ];
 

@@ -16,8 +16,11 @@
         </div>
         <button type="submit" class="login-button">Login</button>
       </form>
+      <div class="error-message" *ngIf="error">
+        {{ error }}
+      </div>
       <p class="signup-text">Don't have an account? <button class="signup-button" routerLink="/register">Sign Up</button></p>
-      <p class="vote-text">Just here to Vote? <button class="vote-button" routerLink="/polls">Go to Polls</button></p>
+      <p class="vote-text">Just here to Vote? <button class="vote-button" routerLink="/overview">Go to Polls</button></p>
     </div>
   </div>
   

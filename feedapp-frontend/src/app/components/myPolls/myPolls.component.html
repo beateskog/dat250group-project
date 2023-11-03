@@ -1,1 +1,25 @@
-<p>myPolls works!</p>
+<div class="container">
+    <h1>My Polls</h1>
+    <ul>
+      <li *ngFor="let poll of userPolls">
+        <div class="poll-item">
+          <p><strong>Question:</strong> {{ poll.question }}</p>
+          <p><strong>Poll ID:</strong> {{ poll.pollId }}</p>
+          <p>
+            <ng-container *ngIf="poll.isClosed; else openPoll">
+              This poll is closed
+            </ng-container>
+            <ng-template #openPoll>
+              <ng-container *ngIf="poll.isStillActive; else closedPoll">
+                This poll is open until: {{ poll.endTime }}
+                <button (click)="redirectToPoll(poll)">Open</button>
+              </ng-container>
+              <ng-template #closedPoll>
+                This poll is closed
+              </ng-template>
+            </ng-template>
+          </p>
+        </div>
+      </li>
+    </ul>
+  </div>

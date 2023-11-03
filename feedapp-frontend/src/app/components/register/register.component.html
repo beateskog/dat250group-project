@@ -23,7 +23,10 @@
 
             <button type="submit" class="register-button">Register</button>
         </form>
+        <div class="error-message" *ngIf="error">
+            {{ error }}
+          </div>
         <p class="signup-text">Already have an account? <button class="signup-button" routerLink="/login">Log in here</button></p>
-        <p class="vote-text">Just here to Vote? <button class="vote-button" routerLink="/polls">Go to Polls</button></p>
+        <p class="vote-text">Just here to Vote? <button class="vote-button" routerLink="/overview">Go to Polls</button></p>
     </div>
 </div>

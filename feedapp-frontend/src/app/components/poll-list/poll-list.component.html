@@ -1,0 +1,6 @@
+<ul>
+    <li *ngFor="let poll of polls">
+      <span>{{ poll.question }}</span>
+      <button (click)="openPoll(poll)">Open</button>
+    </li>
+  </ul>
