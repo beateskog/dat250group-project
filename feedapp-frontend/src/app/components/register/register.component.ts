@@ -18,6 +18,8 @@ export class RegisterComponent {
 
   constructor(private authService: AuthService, private router: Router) {}
 
+  // Also add an error message if the username is already in use.
+
   register() {
     // Check if the password and confirm password match
     if (this.registrationForm.password !== this.registrationForm.confirmPassword) {
@@ -26,9 +28,10 @@ export class RegisterComponent {
     }
     this.authService.register({username: this.registrationForm.username, password: this.registrationForm.password}).subscribe(
         (response) => {
+          this.authService.setToken(response);
           // Successful login; you can redirect the user to another page, e.g., their dashboard.
           this.router.navigate(['/overview']);
-          console.log("yes");
+          console.log("success");
         },
     );
     // Perform user registration logic here.
