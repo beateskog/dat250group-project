@@ -27,7 +27,9 @@ public interface PollService {
     public List<Poll> findPublicPollsNotPassedEndTime();
     public List<Poll> findPublicPollsPassedEndTime();
     public List<Poll> findAllPublicPolls();
-   
+
+    public void findPollsEndToday();
+    public void findPollsOpenToday();
 
     // UPDATE
     public Poll updatePoll(PollDTO poll);

@@ -8,7 +8,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Profile;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
 
 import no.hvl.dat250.feedapp.dto.PollDTO;
 import no.hvl.dat250.feedapp.dto.VoteDTO;
@@ -25,11 +27,17 @@ import no.hvl.dat250.feedapp.service.VoteService;
 
 
 @SpringBootApplication(exclude = SecurityAutoConfiguration.class)
+@EnableScheduling
 public class FeedappApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(FeedappApplication.class, args);
 	}
+
+    @Bean
+    public RestTemplate restTemplate() {
+        return new RestTemplate();
+    }
 
 	@Bean
     @Transactional
@@ -48,7 +56,7 @@ public class FeedappApplication {
 
             PollDTO poll = new PollDTO();
             poll.setQuestion("Do you like dogs better than cats?");
-            poll.setStartTime(LocalDateTime.of(2023, 10, 10, 19, 0));
+            poll.setStartTime(LocalDateTime.of(2023, 11, 3, 19, 0));
             poll.setEndTime(LocalDateTime.of(2023, 12, 25, 20, 0));
             poll.setPollPrivacy(PollPrivacy.PUBLIC);
             pollService.createPoll(poll, user);

@@ -38,6 +38,13 @@ public interface PollRepository extends JpaRepository<Poll, Long> {
     @Query("SELECT p FROM Poll p WHERE p.pollPrivacy = PUBLIC")
     public List<Poll> findAllPublicPolls();
 
+    @Query("SELECT p FROM Poll p WHERE p.endTime = current_date" )
+    public List<Poll> findPollsEndToday();
+
+    @Query("SELECT p FROM Poll p WHERE p.startTime >= current_date AND p.startTime < current_date + 1")
+    public List<Poll> findPollsOpenToday();
+
+
 
   
 }

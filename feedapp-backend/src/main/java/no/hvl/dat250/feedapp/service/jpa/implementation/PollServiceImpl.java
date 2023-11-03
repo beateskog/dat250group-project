@@ -1,5 +1,6 @@
-package no.hvl.dat250.feedapp.service.implementation;
+package no.hvl.dat250.feedapp.service.jpa.implementation;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -12,14 +13,24 @@ import no.hvl.dat250.feedapp.exception.ResourceNotFoundException;
 import no.hvl.dat250.feedapp.model.Account;
 import no.hvl.dat250.feedapp.model.Poll;
 import no.hvl.dat250.feedapp.model.Role;
+import no.hvl.dat250.feedapp.model.messaging.PollClosedEvent;
+import no.hvl.dat250.feedapp.model.messaging.PollOpenedEvent;
 import no.hvl.dat250.feedapp.repository.PollRepository;
 import no.hvl.dat250.feedapp.service.PollService;
+import no.hvl.dat250.feedapp.service.messaging.DweetService;
+import no.hvl.dat250.feedapp.service.messaging.MessagingService;
 
 @Service
 public class PollServiceImpl implements PollService {
     
     @Autowired
+    private DweetService dweetService;
+
+    @Autowired
     private PollRepository pollRepository;
+
+    @Autowired
+    private MessagingService messagingService;
 
     // -------------------------------------------------- CREATE -------------------------------------------------------
     @Override
@@ -51,9 +62,17 @@ public class PollServiceImpl implements PollService {
         poll.setPollURL(uniqueUrl);
         poll.setPollPin(uniquePin);
         
+        //messagingService.sendMessageToQueue("pollResultQueue", poll);
+        if (poll.getStartTime().toLocalDate() == LocalDate()){
+            dweetService.postPollOpenedEvent(new PollOpenedEvent(poll.getId().toString(), poll.getQuestion(), poll.getStartTime().toString()));
 
+        }
         pollRepository.save(poll);
         return poll;
+    }
+
+    private LocalDate LocalDate() {
+        return null;
     }
 
     // --------------------------------------------------- READ --------------------------------------------------------
@@ -199,6 +218,31 @@ public class PollServiceImpl implements PollService {
     public List<Poll> findAllPublicPolls() {
         List<Poll> polls = pollRepository.findAllPublicPolls();
         return polls;
+    }
+
+    @Override
+    public void findPollsEndToday() {
+        List<Poll> endedPolls = pollRepository.findPollsEndToday();
+        for (Poll poll : endedPolls) {
+            PollClosedEvent pollClosedEvent = new PollClosedEvent(poll.getId().toString(), poll.getQuestion(), poll.getEndTime().toString());
+            pollClosedEvent.setPollId(poll.getId().toString());
+            pollClosedEvent.setPollQuestion(poll.getQuestion());
+            pollClosedEvent.setEndTime(poll.getEndTime().toString());
+            dweetService.postPollClosedEvent(pollClosedEvent);
+        }
+
+    }
+
+    @Override
+    public void findPollsOpenToday() {
+        List<Poll> openedPolls = pollRepository.findPollsOpenToday();
+        for (Poll poll : openedPolls) {
+            PollOpenedEvent pollOpenedEvent = new PollOpenedEvent(poll.getId().toString(), poll.getQuestion(), poll.getStartTime().toString());
+            pollOpenedEvent.setPollId(poll.getId().toString());
+            pollOpenedEvent.setPollQuestion(poll.getQuestion());
+            pollOpenedEvent.setStartTime(poll.getStartTime().toString());
+            dweetService.postPollOpenedEvent(pollOpenedEvent);
+        }
     }
     
 }
