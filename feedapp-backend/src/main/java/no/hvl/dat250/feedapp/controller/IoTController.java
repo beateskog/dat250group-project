@@ -19,7 +19,6 @@ import no.hvl.dat250.feedapp.dto.iot.IoTResponse;
 import no.hvl.dat250.feedapp.exception.AccessDeniedException;
 import no.hvl.dat250.feedapp.exception.ResourceNotFoundException;
 import no.hvl.dat250.feedapp.model.Poll;
-import no.hvl.dat250.feedapp.model.PollPrivacy;
 import no.hvl.dat250.feedapp.model.Role;
 import no.hvl.dat250.feedapp.model.Vote;
 import no.hvl.dat250.feedapp.repository.PollRepository;
