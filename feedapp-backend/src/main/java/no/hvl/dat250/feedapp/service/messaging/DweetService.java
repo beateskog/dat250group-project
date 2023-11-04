@@ -9,6 +9,8 @@ import org.springframework.web.client.RestTemplate;
 @Service
 public class DweetService {
 
+    //https://dweet.io/get/dweets/for/poll-opened-1
+    //https://dweet.io/get/dweets/for/poll-closed-1
     private final String DWEET_BASE_URL = "https://dweet.io/dweet/for/";
 
     @Autowired
