@@ -2,6 +2,10 @@ package no.hvl.dat250.feedapp.dto;
 
 import java.util.List;
 
+/**
+ * Data transfer object for accounts
+ * Used to transfer account information between the frontend and backend
+ */
 public class AccountDTO {
 
     public Long id;

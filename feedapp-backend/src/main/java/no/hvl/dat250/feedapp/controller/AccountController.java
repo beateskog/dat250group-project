@@ -24,17 +24,26 @@ import no.hvl.dat250.feedapp.model.Account;
 import no.hvl.dat250.feedapp.model.Poll;
 import no.hvl.dat250.feedapp.service.AccountService;
 
-
+/**
+ * The controller layer for the account entity
+ */
 @RestController
 @RequestMapping("/account")
 @CrossOrigin(origins = "http://localhost:4200")
 public class AccountController {
 
-    // The controller layer communicates with the service layer
     @Autowired
     private AccountService accountService;
 
     // READ
+    /**
+     * Finds an account by id
+     * @param accountId the id of the account to find
+     * @return the accountDTO of the found account
+     * @throws ResourceNotFoundException if the account is not found
+     * @throws Exception if something else goes wrong
+     * @throws BadRequestException if the id is null
+     */
     @GetMapping("/id/{accountId}")
     public ResponseEntity<?> findAccountById(@PathVariable("accountId") Long accountId) {
         try {
@@ -42,11 +51,20 @@ public class AccountController {
             return ResponseEntity.ok(AccountToAccountDTO(account));
         } catch (ResourceNotFoundException ex) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+        } catch(BadRequestException ex) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
         } catch (Exception ex){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ex.getMessage());
         }
     }
-
+    /**
+     * Finds an account by username
+     * @param username the username of the account to find
+     * @return the accountDTO of the found account
+     * @throws ResourceNotFoundException if the account is not found
+     * @throws BadRequestException if the username is null
+     * @throws Exception if something else goes wrong
+     */
     @GetMapping("/username/{username}")
     public ResponseEntity<?> findAccountByUsername(@PathVariable String username) {
         try {
@@ -55,11 +73,19 @@ public class AccountController {
         }
         catch (ResourceNotFoundException ex) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+        } catch(BadRequestException ex) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
         } catch (Exception ex){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ex.getMessage());
         }
     }
 
+    /**
+     * Finds all accounts
+     * @return a list of all accounts
+     * @throws ResourceNotFoundException if no accounts are found
+     * @throws Exception if something else goes wrong
+     */
     @GetMapping()
     public ResponseEntity<?> getAllAccounts() {
         try {

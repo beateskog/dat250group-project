@@ -1,5 +1,9 @@
 package no.hvl.dat250.feedapp.dto.authentication;
 
+/**
+ * Data transfer object for registration requests
+ * Used to transfer registration requests between the frontend and backend
+ */
 public class RegisterRequestDTO {
 
     private String username;

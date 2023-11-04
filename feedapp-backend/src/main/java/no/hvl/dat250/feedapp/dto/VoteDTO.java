@@ -2,6 +2,10 @@ package no.hvl.dat250.feedapp.dto;
 
 import no.hvl.dat250.feedapp.model.VotingPlatform;
 
+/**
+ * Data transfer object for votes
+ * Used to transfer votes between different layers of the application
+ */ 
 public class VoteDTO {
 
     private Long id;

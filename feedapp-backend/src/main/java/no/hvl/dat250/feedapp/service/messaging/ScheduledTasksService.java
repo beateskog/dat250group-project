@@ -12,10 +12,14 @@ public class ScheduledTasksService {
     @Autowired
     private PollService pollService;
     
+    /**
+     * Runs every midnight and dweets all polls that are open and all polls that are ending today
+     * It also publishes the poll results to the pollResultsQueue, so that the pollResultListener can save the results
+     */
     @Scheduled(cron = "0 0 0 * * ?")  // Every midnight
     public void dailyTask() {
         pollService.dweetPollsEndToday();
         pollService.dweetPollsOpenToday();
-        pollService.savePollsEndToday(); //Saving the pollresults  
+        pollService.savePollsEndToday();  
     }
 }

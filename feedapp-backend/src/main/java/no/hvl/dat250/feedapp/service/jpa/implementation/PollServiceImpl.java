@@ -64,7 +64,7 @@ public class PollServiceImpl implements PollService {
         poll.setPollPin(uniquePin);
         
         //messagingService.sendMessageToQueue("pollResultQueue", poll);
-        if (poll.getStartTime().toLocalDate() == LocalDate()){
+        if (poll.getStartTime().toLocalDate() == LocalDate.now()){
             dweetService.postPollOpenedEvent(new PollOpenedEvent(poll.getId().toString(), poll.getQuestion(), poll.getStartTime().toString()));
 
         }
@@ -72,9 +72,6 @@ public class PollServiceImpl implements PollService {
         return poll;
     }
 
-    private LocalDate LocalDate() {
-        return null;
-    }
 
     // --------------------------------------------------- READ --------------------------------------------------------
     @Override
@@ -102,16 +99,13 @@ public class PollServiceImpl implements PollService {
     @Override
     public List<Poll> findPollsByOwnerUsername(String username) {
         List<Poll> polls = pollRepository.findPollsByOwnerUsername(username);
-        if (polls.isEmpty()) {
-            throw new ResourceNotFoundException("No polls found for the user with username: " + username);
-        }
+
         return polls;
     }
 
     @Override
     public List<Poll> findAllPollsNotPassedEndTime() {
         List<Poll> polls = pollRepository.findAllPollsNotPassedEndTime();
-       
         return polls;
     }
 
@@ -122,17 +116,8 @@ public class PollServiceImpl implements PollService {
         return polls;
     }
 
-    public List<Poll> findPublicPolls() {
-        List<Poll> publicPolls = pollRepository.findAllPublicPolls();
-    
-        if (publicPolls.isEmpty()) {
-            throw new ResourceNotFoundException("No public polls found.");
-        }
-        return publicPolls;
-    }
-
     // -------------------------------------------------- UPDATE -------------------------------------------------------
-    
+
     @Override
     public Poll updatePoll(PollDTO poll) {
         // Retrieve the existing poll from the repository
@@ -181,7 +166,6 @@ public class PollServiceImpl implements PollService {
     }
 
     // -------------------------------------------------- DELETE -------------------------------------------------------
-
     @Override
     public String deletePollById(Long pollId, Account user) {
         if (user.getRole() == Role.ADMIN) {

@@ -31,7 +31,6 @@ public class JwtServiceImpl implements JwtService {
         return retrieveAllClaims(jwt).getSubject();
     }
 
-
     @Override
     public Claims retrieveAllClaims(String jwt) {
         return Jwts.parserBuilder()

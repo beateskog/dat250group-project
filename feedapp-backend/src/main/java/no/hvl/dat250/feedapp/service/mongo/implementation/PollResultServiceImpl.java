@@ -15,6 +15,12 @@ public class PollResultServiceImpl implements PollResultService {
     @Autowired
     private PollResultRepository pollResultRepository;
     
+    /**
+     * Saves the given poll result
+     * @param pollDTO the poll result to save
+     * @return the saved poll result
+     * If the poll result already exists, it will be updated
+     */
     public PollResult savePollResult(PollDTO pollDTO) {
         PollResult existingResults = pollResultRepository.findByPollId(pollDTO.id);
 

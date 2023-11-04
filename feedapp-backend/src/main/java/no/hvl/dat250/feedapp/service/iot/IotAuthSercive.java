@@ -11,6 +11,11 @@ public class IotAuthSercive {
     @Autowired
     ApplicationConfig applicationConfig;
 
+    /**
+     * Checks if the given api key is valid
+     * @param apiKey
+     * @return true if the api key is valid, false otherwise
+     */
     public boolean isValidApiKey(String apiKey) {
         return (applicationConfig.getApiKey().equals(apiKey)); 
             

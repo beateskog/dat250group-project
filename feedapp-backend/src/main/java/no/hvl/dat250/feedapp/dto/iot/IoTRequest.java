@@ -1,5 +1,9 @@
 package no.hvl.dat250.feedapp.dto.iot;
 
+/**
+ * Data transfer object for IoT requests
+ * Used to transfer IoT requests between the iot and backend
+ */
 public class IoTRequest {
 
     private Long pollId;

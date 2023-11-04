@@ -1,5 +1,9 @@
 package no.hvl.dat250.feedapp.dto.authentication;
 
+/**
+ * Data transfer object for authentication responses
+ * Used to transfer authentication responses between the frontend and backend
+ */
 public class AuthResponseDTO {
 
     public String jwt; 

@@ -8,6 +8,11 @@ import no.hvl.dat250.feedapp.model.Poll;
 import no.hvl.dat250.feedapp.model.PollPrivacy;
 import no.hvl.dat250.feedapp.model.Vote;
 
+/**
+ * Data transfer object for polls
+ * Used to transfer poll data between the frontend and backend
+ * Implements Serializable to be able to send Object over network (here: rabbitMQ)
+ */
 public class PollDTO implements Serializable {
 
     public Long id;

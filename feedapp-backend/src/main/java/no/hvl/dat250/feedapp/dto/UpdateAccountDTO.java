@@ -1,5 +1,9 @@
 package no.hvl.dat250.feedapp.dto;
 
+/**
+ * Data transfer object for updating accounts
+ * Used to transfer account updates between the frontend and backend
+ */
 public class UpdateAccountDTO {
 
     String username;

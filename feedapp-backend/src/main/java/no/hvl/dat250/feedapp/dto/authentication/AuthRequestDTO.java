@@ -1,5 +1,9 @@
 package no.hvl.dat250.feedapp.dto.authentication;
 
+/**
+ * Data transfer object for authentication requests
+ * Used to transfer authentication requests between the frontend and backend
+ */
 public class AuthRequestDTO {
 
     private String username;

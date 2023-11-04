@@ -10,6 +10,12 @@ public class MessagingService {
     @Autowired
     private AmqpTemplate amqpTemplate;
 
+    /**
+     * Sends a message to the given queue
+     * @param exchange the exchange to send the message to
+     * @param routingKey the routing key to use
+     * @param message the message to send
+     */
     public void sendMessageToQueue(String exchange, String routingKey, Object message) {
         amqpTemplate.convertAndSend(exchange, routingKey, message);
     }

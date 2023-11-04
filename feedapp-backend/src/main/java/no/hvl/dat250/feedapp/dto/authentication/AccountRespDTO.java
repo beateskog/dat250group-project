@@ -1,5 +1,9 @@
 package no.hvl.dat250.feedapp.dto.authentication;
 
+/**
+ * Data transfer object for account responses
+ * Used to transfer account responses between the frontend and backend
+ */
 public class AccountRespDTO {
 
     private Long id;

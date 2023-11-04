@@ -64,6 +64,7 @@ public class AccountServiceImpl implements AccountService {
         return account;
     }
 
+
     @Override
     public List<Account> getAllAccounts() {
         return accountRepository.findAll();
@@ -90,6 +91,7 @@ public class AccountServiceImpl implements AccountService {
 
     // -------------------------------------------------- DELETE -------------------------------------------------------
 
+    
     @Override
     public String deleteAccountById(Account account, Long accountId) {
         if (account.getRole() != Role.ADMIN) {
@@ -104,6 +106,7 @@ public class AccountServiceImpl implements AccountService {
         return "Account with ID: " + accountId + " has been successfully deleted";
     }
 
+   
     @Override
     public String deleteMyAccount(String username) {
         if (accountRepository.findAccountByUsername(username).isEmpty()) {
