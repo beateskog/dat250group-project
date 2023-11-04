@@ -8,6 +8,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import no.hvl.dat250.feedapp.service.messaging.ScheduledTasksService;
 
+/**
+ * Controller for running scheduled tasks manually
+ * @return
+ */
 @RestController
 @RequestMapping("/tasks")
 public class TaskController {
@@ -15,6 +19,10 @@ public class TaskController {
     @Autowired
     private ScheduledTasksService scheduledTasksService;
 
+    /**
+     * Runs the daily task manually
+     * @return a response entity with a message if the task was successful or not
+     */
     @GetMapping("/runDailyTask")
     public ResponseEntity<String> runDailyTask() {
         try {

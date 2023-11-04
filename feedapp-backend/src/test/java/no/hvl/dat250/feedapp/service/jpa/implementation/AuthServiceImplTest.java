@@ -4,6 +4,7 @@ import no.hvl.dat250.feedapp.dto.authentication.AuthRequestDTO;
 import no.hvl.dat250.feedapp.dto.authentication.RegisterRequestDTO;
 import no.hvl.dat250.feedapp.exception.AccessDeniedException;
 import no.hvl.dat250.feedapp.exception.BadRequestException;
+import no.hvl.dat250.feedapp.exception.ResourceNotFoundException;
 import no.hvl.dat250.feedapp.model.Account;
 import no.hvl.dat250.feedapp.repository.AccountRepository;
 import no.hvl.dat250.feedapp.service.JwtService;
@@ -87,7 +88,7 @@ public class AuthServiceImplTest {
         mockAccount.setUsername("testUser");
         mockAccount.setPassword("testPassword");
 
-        when(accountRepository.getByUsername(anyString())).thenReturn(mockAccount);
+        when(accountRepository.getByUsername(anyString())).thenReturn(Optional.of(mockAccount));
         when(jwtService.generateToken(any(Account.class))).thenReturn("token");
 
         assertNotNull(authService.authenticate(request));
@@ -108,9 +109,9 @@ public class AuthServiceImplTest {
         request.setUsername("nonExistentUser");
         request.setPassword("testPassword");
 
-        when(accountRepository.getByUsername("nonExistentUser")).thenReturn(null);
+        when(accountRepository.getByUsername("nonExistentUser")).thenReturn(Optional.empty());
        
-        assertThrows(AccessDeniedException.class, () -> authService.authenticate(request));  
+        assertThrows(ResourceNotFoundException.class, () -> authService.authenticate(request));  
     }
     
     @Test
@@ -123,7 +124,7 @@ public class AuthServiceImplTest {
         mockAccount.setUsername("testUser");
         mockAccount.setPassword("correctPassword");
 
-        when(accountRepository.getByUsername("testUser")).thenReturn(mockAccount);
+        when(accountRepository.getByUsername("testUser")).thenReturn(Optional.of(mockAccount));
         
         doThrow(new BadCredentialsException("Wrong password"))
         .when(authenticationManager)

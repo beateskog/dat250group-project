@@ -1,5 +1,6 @@
 package no.hvl.dat250.feedapp.security;
 
+import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -9,6 +10,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.core.Authentication;
 
@@ -37,14 +39,16 @@ public class ApplicationConfigTest {
 
         // Scenario 1: User doesn't exist
         String nonexistentUsername = "nonexistentUser";
-        when(accountRepository.getByUsername(nonexistentUsername)).thenReturn(null);
-        assertNull(service.loadUserByUsername(nonexistentUsername));
-
+        when(accountRepository.getByUsername(nonexistentUsername)).thenReturn(Optional.empty());
+        assertThrows(
+            UsernameNotFoundException.class,
+            () -> service.loadUserByUsername(nonexistentUsername)
+        );
         // Scenario 2: User exists
         String existingUsername = "testUser";
         Account mockAccount = mock(Account.class); 
         when(mockAccount.getUsername()).thenReturn(existingUsername);
-        when(accountRepository.getByUsername(existingUsername)).thenReturn(mockAccount);
+        when(accountRepository.getByUsername(existingUsername)).thenReturn(Optional.of(mockAccount));
 
         UserDetails retrievedUser = service.loadUserByUsername(existingUsername);
         assertNotNull(retrievedUser);
@@ -63,7 +67,7 @@ public class ApplicationConfigTest {
         when(mockAccount.isAccountNonExpired()).thenReturn(true);  
         when(mockAccount.isCredentialsNonExpired()).thenReturn(true);  
         when(mockAccount.isEnabled()).thenReturn(true);  
-        when(accountRepository.getByUsername("testUser")).thenReturn(mockAccount);
+        when(accountRepository.getByUsername("testUser")).thenReturn(Optional.of(mockAccount));
         
        
         DaoAuthenticationProvider provider = (DaoAuthenticationProvider) applicationConfig.authenticationProvider();

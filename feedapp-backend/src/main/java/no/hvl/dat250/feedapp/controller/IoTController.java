@@ -57,27 +57,12 @@ public class IoTController {
         }
     }
 
-    @GetMapping("/random-question")
-    public ResponseEntity<?> getRandomQuestion(@RequestHeader("X-API-KEY") String apiKey) {
-        try {
-            if (!iotAuthSercive.isValidApiKey(apiKey)) {
-                throw new AccessDeniedException("Invalid API key");
-            }
-            List<Poll> publicPolls = pollService.findAllPublicPolls();
-            
-            int randomNumber = (int) (Math.random() * publicPolls.size());
-            Poll randomPoll = publicPolls.get(randomNumber);
-            String question = randomPoll.getQuestion();
-            IoTRequest iotRequest = new IoTRequest();
-            iotRequest.setQuestion(question);
-            iotRequest.setPollId(randomPoll.getId());
-            
-            return ResponseEntity.ok(iotRequest);
-        } catch (Exception ex) {
-            return ResponseEntity.internalServerError().body(ex.getMessage());
-        }
-    }
-
+    /**
+     * Gets the question of a public poll
+     * @param apiKey the api key to authenticate the request
+     * @param pollPin the poll pin of the public poll
+     * @return the iot request object containing the question and poll id
+     */
     @GetMapping("/{pollPin}")
     public ResponseEntity<?> getQuestion(@RequestHeader("X-API-KEY") String apiKey, @PathVariable int pollPin) {
         try {

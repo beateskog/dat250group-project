@@ -17,21 +17,32 @@ import org.springframework.web.bind.annotation.RestController;
 
 import no.hvl.dat250.feedapp.dto.VoteDTO;
 import no.hvl.dat250.feedapp.exception.BadRequestException;
+import no.hvl.dat250.feedapp.exception.ResourceNotFoundException;
 import no.hvl.dat250.feedapp.model.Account;
 import no.hvl.dat250.feedapp.model.Role;
 import no.hvl.dat250.feedapp.model.Vote;
 import no.hvl.dat250.feedapp.service.VoteService;
 
+/**
+ * The VoteController class is responsible for handling requests from the client
+ * related to the Vote model. The controller layer is responsible for
+ * communicating with the service layer.
+ */
 @RestController
 @RequestMapping("/vote")
 @CrossOrigin(origins = "http://localhost:4200")
 public class VoteController {
 
-    // The Controller layer communicates with service layer
     @Autowired
     VoteService voteService;
 
     // CREATE
+    /**
+     * Creates a new vote. If the user is authenticated, the vote will be linked to the user, else the vote will be anonymous.
+     * @param authentication authentication object 
+     * @param vote The VoteDTO object that contains the information about the vote to be created.
+     * @return Returns the created vote as a VoteDTO object.
+     */
     @PostMapping
     public ResponseEntity<?> createVote(Authentication authentication, @RequestBody VoteDTO vote) {
         try {
@@ -54,6 +65,15 @@ public class VoteController {
     }
 
     // READ
+    /**
+     * Finds a vote by its ID.
+     * @param voteId The ID of the vote to be found.
+     * @return Returns the vote with the given ID as a VoteDTO object.
+     * @throws BadRequestException If a vote with the given ID does not exist.
+     * @throws IllegalArgumentException If the voteId is null
+     * @throws ResourceNotFoundException If a vote with the given ID does not exist.
+     * @throws Exception If something unexpected happens.
+     */
     @GetMapping("/{voteId}")
     public ResponseEntity<?> getVote(@PathVariable("voteId") Long voteId) {
         try {
@@ -61,9 +81,19 @@ public class VoteController {
             return ResponseEntity.ok(voteToVoteDTO(vote));
         } catch (BadRequestException ex) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+        } catch (IllegalArgumentException ex) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+        } catch (ResourceNotFoundException ex) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+        } catch (Exception ex) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ex.getMessage());
         }
     }
 
+    /**
+     * Finds all votes in the database.
+     * @return Returns a list of all votes in the database as a list of VoteDTO objects.
+     */
     @GetMapping
     public ResponseEntity<?> getAllVotes() {
         try {
@@ -72,10 +102,16 @@ public class VoteController {
             return ResponseEntity.ok(voteDTOs);
         } catch (BadRequestException ex) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+        } catch (Exception ex) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ex.getMessage());
         }
     }
 
-    //Data Transfer object 
+    /**
+     * Transforms a Vote object to a VoteDTO object.
+     * @param vote The Vote object to be transformed.
+     * @return Returns the transformed Vote object as a VoteDTO object.
+     */
     public VoteDTO voteToVoteDTO(Vote vote) {
 
         VoteDTO voteDTO = new VoteDTO();

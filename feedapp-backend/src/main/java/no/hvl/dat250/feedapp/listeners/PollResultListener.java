@@ -13,6 +13,12 @@ public class PollResultListener {
     @Autowired
     private PollResultService pollResultService;
 
+    /**
+     * Handles a pollResultMessage
+     * listens to the pollResultsQueue
+     * Saves the poll result to the mongo database
+     * @param pollDTO the poll result to handle
+     */
     @RabbitListener(queues = "pollResultsQueue")
     public void handlePollResultMessage(PollDTO pollDTO) {
         pollResultService.savePollResult(pollDTO);

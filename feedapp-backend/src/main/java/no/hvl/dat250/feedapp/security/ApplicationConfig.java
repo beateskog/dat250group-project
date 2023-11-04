@@ -12,6 +12,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
+import no.hvl.dat250.feedapp.model.Account;
 import no.hvl.dat250.feedapp.repository.AccountRepository;
 import org.springframework.context.annotation.Configuration;
 
@@ -48,7 +50,9 @@ public class ApplicationConfig {
 
 			@Override
 			public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-				return repository.getByUsername(username);
+				Account account = repository.getByUsername(username).
+						orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
+				return account;
 			}
 		};
 	}

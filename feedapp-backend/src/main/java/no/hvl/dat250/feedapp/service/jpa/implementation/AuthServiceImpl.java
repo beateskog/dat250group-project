@@ -14,6 +14,7 @@ import no.hvl.dat250.feedapp.dto.authentication.AuthResponseDTO;
 import no.hvl.dat250.feedapp.dto.authentication.RegisterRequestDTO;
 import no.hvl.dat250.feedapp.exception.AccessDeniedException;
 import no.hvl.dat250.feedapp.exception.BadRequestException;
+import no.hvl.dat250.feedapp.exception.ResourceNotFoundException;
 import no.hvl.dat250.feedapp.model.Account;
 import no.hvl.dat250.feedapp.model.Role;
 import no.hvl.dat250.feedapp.repository.AccountRepository;
@@ -62,12 +63,8 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public AuthResponseDTO authenticate(AuthRequestDTO authRequest) {
-        //check if user exists
-        Account user = accountRepository.getByUsername(authRequest.getUsername());
-
-        if (user == null) {
-            throw new AccessDeniedException("Invalid credentials.");
-        }
+        Account user = accountRepository.getByUsername(authRequest.getUsername())
+            .orElseThrow(() -> new ResourceNotFoundException("An account with the given username: " + authRequest.getUsername() + " does not exist."));
     
         try {
             String principal = authRequest.getUsername();
