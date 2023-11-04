@@ -24,18 +24,18 @@ public interface PollRepository extends JpaRepository<Poll, Long> {
 
 
     // ALL POLLS
-    @Query("SELECT p FROM Poll p WHERE p.endTime >= current_date")
+    @Query("SELECT p FROM Poll p WHERE CAST(p.endTime AS DATE) > CURRENT_DATE")
     public List<Poll> findAllPollsNotPassedEndTime();
 
-    @Query("SELECT p FROM Poll p WHERE p.endTime < current_date")
+    @Query("SELECT p FROM Poll p WHERE CAST(p.endTime AS DATE) <= CURRENT_DATE")
     public List<Poll> findAllPollsPassedEndTime();
 
 
     // ONLY PUBLIC POLLS
-    @Query("SELECT p FROM Poll p WHERE p.endTime >= current_date AND p.pollPrivacy = PUBLIC")
+    @Query("SELECT p FROM Poll p WHERE CAST(p.endTime AS DATE) > CURRENT_DATE AND p.pollPrivacy = PUBLIC")
     public List<Poll> findPublicPollsNotPassedEndTime();
 
-    @Query("SELECT p FROM Poll p WHERE p.endTime < current_date AND p.pollPrivacy = PUBLIC")
+    @Query("SELECT p FROM Poll p WHERE CAST(p.endTime AS DATE) <= CURRENT_DATE AND p.pollPrivacy = PUBLIC")
     public List<Poll> findPublicPollsPassedEndTime();
 
     @Query("SELECT p FROM Poll p WHERE p.pollPrivacy = PUBLIC")
@@ -44,7 +44,7 @@ public interface PollRepository extends JpaRepository<Poll, Long> {
     @Query("SELECT p FROM Poll p WHERE CAST(p.endTime AS DATE) = CURRENT_DATE")
     public List<Poll> findPollsEndToday();
 
-    @Query("SELECT p FROM Poll p WHERE p.startTime >= current_date AND p.startTime < current_date + 1")
+    @Query("SELECT p FROM Poll p WHERE CAST(p.startTime AS DATE) = CURRENT_DATE")
     public List<Poll> findPollsOpenToday();
 
 
