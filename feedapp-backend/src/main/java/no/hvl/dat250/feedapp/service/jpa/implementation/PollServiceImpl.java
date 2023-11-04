@@ -5,7 +5,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +19,7 @@ import no.hvl.dat250.feedapp.repository.PollRepository;
 import no.hvl.dat250.feedapp.service.PollService;
 import no.hvl.dat250.feedapp.service.messaging.DweetService;
 import no.hvl.dat250.feedapp.service.messaging.MessagingService;
-import no.hvl.dat250.feedapp.service.mongo.PollResultService;
+
 
 @Service
 public class PollServiceImpl implements PollService {
@@ -33,9 +32,6 @@ public class PollServiceImpl implements PollService {
 
     @Autowired
     private MessagingService messagingService;
-
-    @Autowired
-    private PollResultService pollResultService;
 
     // -------------------------------------------------- CREATE -------------------------------------------------------
     @Override
