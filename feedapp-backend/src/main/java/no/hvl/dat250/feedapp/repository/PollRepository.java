@@ -16,6 +16,9 @@ public interface PollRepository extends JpaRepository<Poll, Long> {
     public Optional<Poll> findPollByPollURL(String url);
     public Optional<Poll> findPollByPollPin(int pin);
 
+    @Query("SELECT p FROM Poll p WHERE p.pollPin = :pin AND p.pollPrivacy = PUBLIC")
+    public Optional<Poll> findPublicPollsByPollPin(int pin);
+
     @Query("SELECT p FROM Poll p WHERE p.account.username = :username")
     public List<Poll> findPollsByOwnerUsername(@Param("username") String username);
 
@@ -38,7 +41,7 @@ public interface PollRepository extends JpaRepository<Poll, Long> {
     @Query("SELECT p FROM Poll p WHERE p.pollPrivacy = PUBLIC")
     public List<Poll> findAllPublicPolls();
 
-    @Query("SELECT p FROM Poll p WHERE p.endTime = current_date" )
+    @Query("SELECT p FROM Poll p WHERE CAST(p.endTime AS DATE) = CURRENT_DATE")
     public List<Poll> findPollsEndToday();
 
     @Query("SELECT p FROM Poll p WHERE p.startTime >= current_date AND p.startTime < current_date + 1")

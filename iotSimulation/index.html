@@ -10,10 +10,14 @@
 </head>
 <body>
     <div class="container">
-        <h2 id="question">Loading question...</h2> <!-- This will display the question from your API -->
+        <div class="poll-pin-input">
+            <label for="pollPin">Poll Pin:</label>
+            <input type="text" id="pollPin" class="poll-pin-text">
+            <button onclick="fetchQuestion()" class="poll-pin-button">Fetch Question</button>
+        </div>
+        <h2 id="question">Enter a Poll Pin...</h2> 
         <button class="yes-button" onclick="addVote('yes')"><i class="fas fa-thumbs-up"></i> Yes</button>
         <button class="no-button" onclick="addVote('no')"><i class="fas fa-thumbs-down"></i> No</button>
-
 
         <p>Yes Count: <span id="yesCount">0</span></p>
         <p>No Count: <span id="noCount">0</span></p>

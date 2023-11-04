@@ -52,7 +52,11 @@
 - Run `kubectl get pods` to see the pods name 
 - `kubectl exec -it <pod-name>  -c mongodb-container -- mongosh`
 
-
 ## IotSimulation 
 - inside iotSimulation folder run `npm install -g http-server` to install dependencies
 - then run `http-server -p 8000` to start the server on `http://localhost:8000/`
+
+## RabbitMQ
+- When application is running, locate to:`http://localhost:15672`
+- Username: `guest`
+- Password: `guest`

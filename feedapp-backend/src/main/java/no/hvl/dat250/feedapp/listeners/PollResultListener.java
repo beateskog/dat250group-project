@@ -13,8 +13,8 @@ public class PollResultListener {
     @Autowired
     private PollResultService pollResultService;
 
-    // @RabbitListener(queues = "pollResultQueue")
-    // public void handlePollResultMessage(PollDTO pollDTO) {
-    //     pollResultService.savePollResult(pollDTO);
-    // }
+    @RabbitListener(queues = "pollResultsQueue")
+    public void handlePollResultMessage(PollDTO pollDTO) {
+        pollResultService.savePollResult(pollDTO);
+    }
 }

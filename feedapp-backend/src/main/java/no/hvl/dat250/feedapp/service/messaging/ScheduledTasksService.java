@@ -11,11 +11,11 @@ public class ScheduledTasksService {
 
     @Autowired
     private PollService pollService;
+    
     @Scheduled(cron = "0 0 0 * * ?")  // Every midnight
-
-
     public void dailyTask() {
-        pollService.findPollsEndToday();
-        pollService.findPollsOpenToday();  
+        pollService.dweetPollsEndToday();
+        pollService.dweetPollsOpenToday();
+        pollService.savePollsEndToday(); //Saving the pollresults  
     }
 }

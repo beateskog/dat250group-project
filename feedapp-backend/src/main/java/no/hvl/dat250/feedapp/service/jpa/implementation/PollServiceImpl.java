@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +20,7 @@ import no.hvl.dat250.feedapp.repository.PollRepository;
 import no.hvl.dat250.feedapp.service.PollService;
 import no.hvl.dat250.feedapp.service.messaging.DweetService;
 import no.hvl.dat250.feedapp.service.messaging.MessagingService;
+import no.hvl.dat250.feedapp.service.mongo.PollResultService;
 
 @Service
 public class PollServiceImpl implements PollService {
@@ -31,6 +33,9 @@ public class PollServiceImpl implements PollService {
 
     @Autowired
     private MessagingService messagingService;
+
+    @Autowired
+    private PollResultService pollResultService;
 
     // -------------------------------------------------- CREATE -------------------------------------------------------
     @Override
@@ -221,7 +226,7 @@ public class PollServiceImpl implements PollService {
     }
 
     @Override
-    public void findPollsEndToday() {
+    public void dweetPollsEndToday() {
         List<Poll> endedPolls = pollRepository.findPollsEndToday();
         for (Poll poll : endedPolls) {
             PollClosedEvent pollClosedEvent = new PollClosedEvent(poll.getId().toString(), poll.getQuestion(), poll.getEndTime().toString());
@@ -230,11 +235,10 @@ public class PollServiceImpl implements PollService {
             pollClosedEvent.setEndTime(poll.getEndTime().toString());
             dweetService.postPollClosedEvent(pollClosedEvent);
         }
-
     }
 
     @Override
-    public void findPollsOpenToday() {
+    public void dweetPollsOpenToday() {
         List<Poll> openedPolls = pollRepository.findPollsOpenToday();
         for (Poll poll : openedPolls) {
             PollOpenedEvent pollOpenedEvent = new PollOpenedEvent(poll.getId().toString(), poll.getQuestion(), poll.getStartTime().toString());
@@ -242,6 +246,15 @@ public class PollServiceImpl implements PollService {
             pollOpenedEvent.setPollQuestion(poll.getQuestion());
             pollOpenedEvent.setStartTime(poll.getStartTime().toString());
             dweetService.postPollOpenedEvent(pollOpenedEvent);
+        }
+    }
+
+    @Override
+    public void savePollsEndToday(){
+        List<Poll> polls = pollRepository.findPollsEndToday();
+        List<PollDTO> endedPollsDTO = polls.stream().map(poll -> PollDTO.pollToPollDTO(poll)).toList();
+        for (PollDTO pollDTO : endedPollsDTO) {
+            messagingService.sendMessageToQueue("pollResultsExchange", "", pollDTO);
         }
     }
     

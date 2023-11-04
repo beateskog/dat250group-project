@@ -10,7 +10,7 @@ public class MessagingService {
     @Autowired
     private AmqpTemplate amqpTemplate;
 
-    public void sendMessageToQueue(String queueName, Object message) {
-        amqpTemplate.convertAndSend(queueName, message);
+    public void sendMessageToQueue(String exchange, String routingKey, Object message) {
+        amqpTemplate.convertAndSend(exchange, routingKey, message);
     }
 }

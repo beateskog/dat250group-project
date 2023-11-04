@@ -28,8 +28,10 @@ public interface PollService {
     public List<Poll> findPublicPollsPassedEndTime();
     public List<Poll> findAllPublicPolls();
 
-    public void findPollsEndToday();
-    public void findPollsOpenToday();
+    public void dweetPollsEndToday();
+    public void dweetPollsOpenToday();
+
+    public void savePollsEndToday();
 
     // UPDATE
     public Poll updatePoll(PollDTO poll);

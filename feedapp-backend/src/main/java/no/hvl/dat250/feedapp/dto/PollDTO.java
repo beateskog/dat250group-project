@@ -1,11 +1,14 @@
 package no.hvl.dat250.feedapp.dto;
 
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
+import no.hvl.dat250.feedapp.model.Poll;
 import no.hvl.dat250.feedapp.model.PollPrivacy;
+import no.hvl.dat250.feedapp.model.Vote;
 
-public class PollDTO {
+public class PollDTO implements Serializable {
 
     public Long id;
     public String pollUrl;
@@ -19,6 +22,32 @@ public class PollDTO {
     public int totalVotes;
     public int yesVotes;
     public int noVotes;
+
+    public static PollDTO pollToPollDTO(Poll poll) {
+
+        PollDTO pollDTO = new PollDTO();
+        pollDTO.id = poll.getId();
+        pollDTO.pollUrl = poll.getPollURL();
+        pollDTO.pollPin = poll.getPollPin();
+        pollDTO.question = poll.getQuestion();
+        pollDTO.startTime = poll.getStartTime();
+        pollDTO.endTime = poll.getEndTime();
+        pollDTO.pollPrivacy = poll.getPollPrivacy();
+        pollDTO.pollOwner = poll.getAccount().getUsername();
+        pollDTO.pollOwnerId = poll.getAccount().getId();
+        pollDTO.totalVotes = poll.getVotes().size();
+        pollDTO.yesVotes = 0;
+        pollDTO.noVotes = 0;
+        for (Vote vote : poll.getVotes()) {
+            if (vote.isVote() == false) {
+                pollDTO.noVotes++;
+            } else {
+                pollDTO.yesVotes++;
+            }
+        }
+
+        return pollDTO;
+    }
 
     public Long getId() {
         return id;

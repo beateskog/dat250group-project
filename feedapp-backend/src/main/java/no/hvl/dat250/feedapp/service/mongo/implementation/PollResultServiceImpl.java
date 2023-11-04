@@ -18,6 +18,7 @@ public class PollResultServiceImpl implements PollResultService {
     public PollResult savePollResult(PollDTO pollDTO) {
         PollResult result = new PollResult();
         result.setPollId(pollDTO.id);
+        result.setQuestion(pollDTO.question);
         result.setYesVotes(pollDTO.yesVotes);
         result.setNoVotes(pollDTO.noVotes);
         result.setTotalVotes(pollDTO.totalVotes);

@@ -22,6 +22,16 @@ public class ApplicationConfig {
 	@Autowired
 	AccountRepository repository;
 
+	private String apiKey;
+
+	public String getApiKey() {
+		return apiKey;
+	}
+
+	public void setApiKey(String apiKey) {
+		this.apiKey = apiKey;
+	}
+
 	private String secretKey;
 
     public String getSecretKey() {

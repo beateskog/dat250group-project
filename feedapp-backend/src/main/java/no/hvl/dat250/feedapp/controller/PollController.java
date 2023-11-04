@@ -21,10 +21,8 @@ import no.hvl.dat250.feedapp.exception.AccessDeniedException;
 import no.hvl.dat250.feedapp.exception.BadRequestException;
 import no.hvl.dat250.feedapp.exception.ResourceNotFoundException;
 import no.hvl.dat250.feedapp.model.Account;
-import no.hvl.dat250.feedapp.model.Vote;
 import no.hvl.dat250.feedapp.model.Poll;
 import no.hvl.dat250.feedapp.service.PollService;
-import no.hvl.dat250.feedapp.service.mongo.PollResultService;
 
 @RestController
 @RequestMapping("/poll") // All request mappings start with poll
@@ -35,17 +33,13 @@ public class PollController {
     @Autowired
     private PollService pollService;
 
-    @Autowired
-    private PollResultService pollResultService;
-    
     // CREATE
     @PostMapping
     public ResponseEntity<?> createPoll(@RequestBody PollDTO poll, UsernamePasswordAuthenticationToken token) {
         try {
             Account user = (Account) token.getPrincipal();
             Poll createdPoll = pollService.createPoll(poll, user);
-            PollDTO pollDTO = pollToPollDTO(createdPoll);
-            pollResultService.savePollResult(pollDTO);
+            PollDTO pollDTO = PollDTO.pollToPollDTO(createdPoll);
             return ResponseEntity.status(HttpStatus.CREATED).body(pollDTO);
         } catch (BadRequestException ex) {
             return ResponseEntity.badRequest().body(ex.getMessage());
@@ -59,7 +53,7 @@ public class PollController {
     public ResponseEntity<?> findPollById(@PathVariable("pollId") Long pollId) {
         try {
             Poll poll = pollService.findPollById(pollId);
-            return ResponseEntity.ok(pollToPollDTO(poll));
+            return ResponseEntity.ok(PollDTO.pollToPollDTO(poll));
         } catch (ResourceNotFoundException ex) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
         } catch (Exception ex){
@@ -72,7 +66,7 @@ public class PollController {
     public ResponseEntity<?> findPollByUrl(@PathVariable String url) {
         try {
             Poll poll = pollService.findPollByUrl(url);
-            return ResponseEntity.ok(pollToPollDTO(poll));
+            return ResponseEntity.ok(PollDTO.pollToPollDTO(poll));
         } catch (ResourceNotFoundException ex) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
         } catch (Exception ex){
@@ -84,7 +78,7 @@ public class PollController {
     public ResponseEntity<?> findPollByPin(@PathVariable("id") int pin) {
         try {
             Poll poll = pollService.findPollByPin(pin);
-            return ResponseEntity.ok(pollToPollDTO(poll));
+            return ResponseEntity.ok(PollDTO.pollToPollDTO(poll));
         } catch (ResourceNotFoundException ex) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
         } catch (Exception ex){
@@ -98,7 +92,7 @@ public class PollController {
             Account user = (Account) token.getPrincipal();
             String username = user.getUsername();
             List<Poll> polls = pollService.findPollsByOwnerUsername(username);
-            List<PollDTO> pollDTOs = polls.stream().map(poll -> pollToPollDTO(poll)).toList();
+            List<PollDTO> pollDTOs = polls.stream().map(poll -> PollDTO.pollToPollDTO(poll)).toList();
             return ResponseEntity.ok(pollDTOs);
         } catch (ResourceNotFoundException ex) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
@@ -115,7 +109,7 @@ public class PollController {
                 throw new AccessDeniedException("You are not authorized to view this poll");
             }
             List<Poll> polls = pollService.findAllPollsNotPassedEndTime();
-            List<PollDTO> pollDTOs = polls.stream().map(poll -> pollToPollDTO(poll)).toList();
+            List<PollDTO> pollDTOs = polls.stream().map(poll -> PollDTO.pollToPollDTO(poll)).toList();
             return ResponseEntity.ok(pollDTOs);
         } catch (ResourceNotFoundException ex) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
@@ -134,7 +128,7 @@ public class PollController {
                 throw new AccessDeniedException("You are not authorized to view this poll");
             }
             List<Poll> polls = pollService.findAllPollsPassedEndTime();
-            List<PollDTO> pollDTOs = polls.stream().map(poll -> pollToPollDTO(poll)).toList();
+            List<PollDTO> pollDTOs = polls.stream().map(poll -> PollDTO.pollToPollDTO(poll)).toList();
             return ResponseEntity.ok(pollDTOs);
         } catch (ResourceNotFoundException ex) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
@@ -149,7 +143,7 @@ public class PollController {
     public ResponseEntity<?> findPublicPollsNotPassedEndTime() {
         try {
             List<Poll> polls = pollService.findPublicPollsNotPassedEndTime();
-            List<PollDTO> pollDTOs = polls.stream().map(poll -> pollToPollDTO(poll)).toList();
+            List<PollDTO> pollDTOs = polls.stream().map(poll -> PollDTO.pollToPollDTO(poll)).toList();
             return ResponseEntity.ok(pollDTOs);
         } catch (ResourceNotFoundException ex) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
@@ -162,7 +156,7 @@ public class PollController {
     public ResponseEntity<?> findPublicPollsPassedEndTime() {
         try {
             List<Poll> polls = pollService.findPublicPollsPassedEndTime();
-            List<PollDTO> pollDTOs = polls.stream().map(poll -> pollToPollDTO(poll)).toList();
+            List<PollDTO> pollDTOs = polls.stream().map(poll -> PollDTO.pollToPollDTO(poll)).toList();
             return ResponseEntity.ok(pollDTOs);
         } catch (ResourceNotFoundException ex) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
@@ -175,7 +169,7 @@ public class PollController {
     public ResponseEntity<?> findPublicPolls() {
        try {
             List<Poll> polls = pollService.findAllPublicPolls();
-            List<PollDTO> pollDTOs = polls.stream().map(poll -> pollToPollDTO(poll)).toList();
+            List<PollDTO> pollDTOs = polls.stream().map(poll -> PollDTO.pollToPollDTO(poll)).toList();
             return ResponseEntity.ok(pollDTOs);
         } catch (ResourceNotFoundException ex) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
@@ -192,7 +186,7 @@ public class PollController {
                 throw new AccessDeniedException("You are not authorized to view this poll");
             }
             List<Poll> polls = pollService.findAllPolls();
-            List<PollDTO> pollDTOs = polls.stream().map(poll -> pollToPollDTO(poll)).toList();
+            List<PollDTO> pollDTOs = polls.stream().map(poll -> PollDTO.pollToPollDTO(poll)).toList();
             return ResponseEntity.ok(pollDTOs);
         } catch (ResourceNotFoundException ex) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
@@ -216,7 +210,7 @@ public class PollController {
                 throw new AccessDeniedException("You are not authorized to update this poll");
             }
             Poll updatedPoll = pollService.updatePoll(poll);
-            return ResponseEntity.ok(pollToPollDTO(updatedPoll));
+            return ResponseEntity.ok(PollDTO.pollToPollDTO(updatedPoll));
         } catch (ResourceNotFoundException ex) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
         } catch (Exception ex){
@@ -239,29 +233,5 @@ public class PollController {
         }
     }
 
-    private PollDTO pollToPollDTO(Poll poll) {
-
-        PollDTO pollDTO = new PollDTO();
-        pollDTO.id = poll.getId();
-        pollDTO.pollUrl = poll.getPollURL();
-        pollDTO.pollPin = poll.getPollPin();
-        pollDTO.question = poll.getQuestion();
-        pollDTO.startTime = poll.getStartTime();
-        pollDTO.endTime = poll.getEndTime();
-        pollDTO.pollPrivacy = poll.getPollPrivacy();
-        pollDTO.pollOwner = poll.getAccount().getUsername();
-        pollDTO.pollOwnerId = poll.getAccount().getId();
-        pollDTO.totalVotes = poll.getVotes().size();
-        pollDTO.yesVotes = 0;
-        pollDTO.noVotes = 0;
-        for (Vote vote : poll.getVotes()) {
-            if (vote.isVote() == false) {
-                pollDTO.noVotes++;
-            } else {
-                pollDTO.yesVotes++;
-            }
-        }
-
-        return pollDTO;
-    }
+    
 }

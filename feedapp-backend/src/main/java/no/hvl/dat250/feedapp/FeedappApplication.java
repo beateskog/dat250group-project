@@ -56,7 +56,7 @@ public class FeedappApplication {
 
             PollDTO poll = new PollDTO();
             poll.setQuestion("Do you like dogs better than cats?");
-            poll.setStartTime(LocalDateTime.of(2023, 11, 3, 19, 0));
+            poll.setStartTime(LocalDateTime.of(2023, 11, 4, 10, 0));
             poll.setEndTime(LocalDateTime.of(2023, 12, 25, 20, 0));
             poll.setPollPrivacy(PollPrivacy.PUBLIC);
             pollService.createPoll(poll, user);
@@ -67,7 +67,7 @@ public class FeedappApplication {
             
             poll.setQuestion("Do you like Christmas?");
             poll.setStartTime(LocalDateTime.of(2023, 10, 10, 19, 0));
-            poll.setEndTime(LocalDateTime.of(2023, 12, 25, 20, 0));
+            poll.setEndTime(LocalDateTime.of(2023, 11, 4, 11, 0));
             poll.setPollPrivacy(PollPrivacy.PUBLIC);
             pollService.createPoll(poll, user1);
 

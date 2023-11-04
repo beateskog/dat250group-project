@@ -10,6 +10,7 @@ public class PollResult {
     private String id;
 
     private Long pollId;
+    private String question;
     private int yesVotes; 
     private int noVotes;
     private int totalVotes;
@@ -17,8 +18,9 @@ public class PollResult {
     public PollResult() {
     }
 
-    public PollResult(Long pollId, int yesVotes, int noVotes, int totalVotes) {
+    public PollResult(Long pollId, String question,int yesVotes, int noVotes, int totalVotes) {
         this.pollId = pollId;
+        this.question = question;
         this.yesVotes = yesVotes;
         this.noVotes = noVotes;
         this.totalVotes = totalVotes;
@@ -62,6 +64,14 @@ public class PollResult {
 
     public void setTotalVotes(int total) {
         this.totalVotes = total;
+    }
+
+    public String getQuestion() {
+        return question;
+    }
+
+    public void setQuestion(String question) {
+        this.question = question; 
     }
     
 }
