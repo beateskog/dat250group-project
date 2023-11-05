@@ -40,4 +40,6 @@ public class GlobalExceptionHandler {
 
         return new ResponseEntity<>(internalServerErrorException, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+    
 }

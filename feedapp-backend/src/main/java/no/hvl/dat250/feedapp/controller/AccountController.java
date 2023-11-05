@@ -21,7 +21,6 @@ import no.hvl.dat250.feedapp.exception.AccessDeniedException;
 import no.hvl.dat250.feedapp.exception.BadRequestException;
 import no.hvl.dat250.feedapp.exception.ResourceNotFoundException;
 import no.hvl.dat250.feedapp.model.Account;
-import no.hvl.dat250.feedapp.model.Poll;
 import no.hvl.dat250.feedapp.service.AccountService;
 
 /**
@@ -48,7 +47,7 @@ public class AccountController {
     public ResponseEntity<?> findAccountById(@PathVariable("accountId") Long accountId) {
         try {
             Account account = accountService.findAccountById(accountId);
-            return ResponseEntity.ok(AccountToAccountDTO(account));
+            return ResponseEntity.ok(AccountDTO.AccountToAccountDTO(account));
         } catch (ResourceNotFoundException ex) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
         } catch(BadRequestException ex) {
@@ -69,7 +68,7 @@ public class AccountController {
     public ResponseEntity<?> findAccountByUsername(@PathVariable String username) {
         try {
             Account account = accountService.findAccountByUsername(username);
-            return ResponseEntity.ok(AccountToAccountDTO(account));
+            return ResponseEntity.ok(AccountDTO.AccountToAccountDTO(account));
         }
         catch (ResourceNotFoundException ex) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
@@ -90,7 +89,7 @@ public class AccountController {
     public ResponseEntity<?> getAllAccounts() {
         try {
             List<Account> accounts = accountService.getAllAccounts();
-            List<AccountDTO> accountDTOs = accounts.stream().map(account -> AccountToAccountDTO(account)).toList();
+            List<AccountDTO> accountDTOs = accounts.stream().map(account -> AccountDTO.AccountToAccountDTO(account)).toList();
             return ResponseEntity.ok(accountDTOs);
         } catch (ResourceNotFoundException ex) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
@@ -101,13 +100,25 @@ public class AccountController {
     }
 
     // UPDATE
+    /**
+     * Updates an account
+     * @param token the token of the user
+     * @param account the accountDTO of the account to update
+     * @param accountId the id of the account to update
+     * @return the updated accountDTO
+     * @throws ResourceNotFoundException if the account is not found
+     * @throws BadRequestException if the username already exists
+     * @throws AccessDeniedException if the user is not updating their own account
+     * @throws Exception if something else goes wrong
+     * 
+     */
     @PutMapping("{accountId}")
     public ResponseEntity<?> updateAccount(UsernamePasswordAuthenticationToken token, @RequestBody UpdateAccountDTO account, @PathVariable("accountId") Long accountId) {
         try {
             Account user = (Account) token.getPrincipal();
             
             Account updatedAccount = accountService.updateAccount(account, user);
-            return ResponseEntity.ok(AccountToAccountDTO(updatedAccount));
+            return ResponseEntity.ok(AccountDTO.AccountToAccountDTO(updatedAccount));
         } catch (ResourceNotFoundException ex) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
         } catch (BadRequestException ex) {
@@ -120,6 +131,16 @@ public class AccountController {
     }
 
     // DELETE
+    /**
+     * Deletes an account by id
+     * @param token the token of the user
+     * @param accountId the id of the account to delete
+     * @return a string confirming that the account was deleted
+     * @throws ResourceNotFoundException if the account is not found
+     * @throws BadRequestException if the id is null
+     * @throws AccessDeniedException if the user is not an admin
+     * @throws Exception if something else goes wrong
+     */
     @DeleteMapping("/{accountId}")
     public ResponseEntity<?> deleteAccountById(UsernamePasswordAuthenticationToken token, @PathVariable("accountId") Long accountId) {
         try {
@@ -139,6 +160,13 @@ public class AccountController {
         }
     }
 
+    /**
+     * Deletes the account of the user
+     * @param token the token of the user
+     * @return a string confirming that the account was deleted
+     * @throws ResourceNotFoundException if the account is not found
+     * @throws Exception if something else goes wrong
+     */
     @DeleteMapping("/username")
     public ResponseEntity<?> deleteMyAccount(UsernamePasswordAuthenticationToken token) {
         try {
@@ -152,18 +180,4 @@ public class AccountController {
         }
     }
 
-    public AccountDTO AccountToAccountDTO (Account account) {
-
-        AccountDTO accountDTO = new AccountDTO();
-        accountDTO.id = account.getId();
-        accountDTO.username = account.getUsername();
-        accountDTO.role = account.getRole().toString();
-        accountDTO.numberOfpolls = account.getPolls().size();
-        accountDTO.polls = new java.util.ArrayList<Long>();
-        for (Poll poll : account.getPolls()) {
-            accountDTO.polls.add(poll.getId());
-        }
-
-        return accountDTO;
-    }
 }

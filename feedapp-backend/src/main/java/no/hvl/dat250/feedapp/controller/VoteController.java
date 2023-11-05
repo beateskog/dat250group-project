@@ -54,7 +54,7 @@ public class VoteController {
                 vote.setVoterRole(Role.ANONYMOUS_VOTER.toString());
             }
             Vote createdVote = voteService.createVote(vote);
-            return ResponseEntity.status(HttpStatus.CREATED).body(voteToVoteDTO(createdVote));
+            return ResponseEntity.status(HttpStatus.CREATED).body(VoteDTO.voteToVoteDTO(createdVote));
         } catch (BadRequestException ex) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
         } catch (IllegalArgumentException ex) {
@@ -78,7 +78,7 @@ public class VoteController {
     public ResponseEntity<?> getVote(@PathVariable("voteId") Long voteId) {
         try {
             Vote vote = voteService.getVote(voteId);
-            return ResponseEntity.ok(voteToVoteDTO(vote));
+            return ResponseEntity.ok(VoteDTO.voteToVoteDTO(vote));
         } catch (BadRequestException ex) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
         } catch (IllegalArgumentException ex) {
@@ -98,7 +98,7 @@ public class VoteController {
     public ResponseEntity<?> getAllVotes() {
         try {
             List<Vote> votes = voteService.getAllVotes();
-            List<VoteDTO> voteDTOs = votes.stream().map(vote -> voteToVoteDTO(vote)).toList();
+            List<VoteDTO> voteDTOs = votes.stream().map(vote -> VoteDTO.voteToVoteDTO(vote)).toList();
             return ResponseEntity.ok(voteDTOs);
         } catch (BadRequestException ex) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
@@ -107,26 +107,4 @@ public class VoteController {
         }
     }
 
-    /**
-     * Transforms a Vote object to a VoteDTO object.
-     * @param vote The Vote object to be transformed.
-     * @return Returns the transformed Vote object as a VoteDTO object.
-     */
-    public VoteDTO voteToVoteDTO(Vote vote) {
-
-        VoteDTO voteDTO = new VoteDTO();
-        voteDTO.setId(vote.getId());
-        if (vote.getAccount() == null) {
-            voteDTO.setVoterId(null);
-            voteDTO.setVoterRole(Role.ANONYMOUS_VOTER.toString());
-        } else {
-            voteDTO.setVoterId(vote.getAccount().getId());
-            voteDTO.setVoterRole(vote.getAccount().getRole().toString());
-        }
-        voteDTO.setVote(vote.isVote());
-        voteDTO.setVotingPlatform(vote.getPlatform());
-        voteDTO.setPollId(vote.getPoll().getId());
-        
-        return voteDTO;
-    }
 }

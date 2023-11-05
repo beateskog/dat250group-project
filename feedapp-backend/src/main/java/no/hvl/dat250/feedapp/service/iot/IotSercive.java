@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import no.hvl.dat250.feedapp.security.ApplicationConfig;
 
 @Service
-public class IotAuthSercive {
+public class IotSercive {
 
     @Autowired
     ApplicationConfig applicationConfig;

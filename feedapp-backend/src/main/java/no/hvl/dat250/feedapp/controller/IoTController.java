@@ -19,13 +19,15 @@ import no.hvl.dat250.feedapp.dto.iot.IoTResponse;
 import no.hvl.dat250.feedapp.exception.AccessDeniedException;
 import no.hvl.dat250.feedapp.exception.ResourceNotFoundException;
 import no.hvl.dat250.feedapp.model.Poll;
-import no.hvl.dat250.feedapp.model.Role;
 import no.hvl.dat250.feedapp.model.Vote;
 import no.hvl.dat250.feedapp.repository.PollRepository;
-import no.hvl.dat250.feedapp.service.iot.IotAuthSercive;
-import no.hvl.dat250.feedapp.service.PollService;
+import no.hvl.dat250.feedapp.service.iot.IotSercive;
 import no.hvl.dat250.feedapp.service.VoteService;
 
+/**
+ * The IoTController class is responsible for handling 
+ * requests from and to the IoT device
+ */
 @RestController
 @CrossOrigin(origins = "http://localhost:8000")
 @RequestMapping("/iot")
@@ -35,22 +37,25 @@ public class IoTController {
     private VoteService voteService;
 
     @Autowired
-    private PollService pollService;
-
-    @Autowired
     private PollRepository pollRepository;
 
     @Autowired
-    private IotAuthSercive iotAuthSercive;
+    private IotSercive iotSercive;
 
+    /**
+     * Creates votes from an IoT device
+     * @param apiKey the api key to authenticate the request
+     * @param response the iot response object containing the votes and poll id
+     * @return a list of the created votes as voteDTOs
+     */
     @PostMapping("/votes")
     public ResponseEntity<?> createIoTVote(@RequestHeader("X-API-KEY") String apiKey,@RequestBody IoTResponse response) {
         try {
-            if (!iotAuthSercive.isValidApiKey(apiKey)) {
+            if (!iotSercive.isValidApiKey(apiKey)) {
                 throw new AccessDeniedException("Invalid API key");
             }
             List<Vote> votes = voteService.createIoTVote(response);
-            List<VoteDTO> voteDTOs = votes.stream().map(vote -> voteToVoteDTO(vote)).toList();
+            List<VoteDTO> voteDTOs = votes.stream().map(vote -> VoteDTO.voteToVoteDTO(vote)).toList();
             return ResponseEntity.ok(voteDTOs);
         } catch (Exception ex) {
             return ResponseEntity.internalServerError().body(ex.getMessage());
@@ -66,7 +71,7 @@ public class IoTController {
     @GetMapping("/{pollPin}")
     public ResponseEntity<?> getQuestion(@RequestHeader("X-API-KEY") String apiKey, @PathVariable int pollPin) {
         try {
-            if (!iotAuthSercive.isValidApiKey(apiKey)) {
+            if (!iotSercive.isValidApiKey(apiKey)) {
                 throw new AccessDeniedException("Invalid API key");
             }
             Poll publicPoll = pollRepository.findPublicPollsByPollPin(pollPin)
@@ -82,24 +87,6 @@ public class IoTController {
         } catch (Exception ex) {
             return ResponseEntity.internalServerError().body(ex.getMessage());
         } 
-    }
-
-    public VoteDTO voteToVoteDTO(Vote vote) {
-
-        VoteDTO voteDTO = new VoteDTO();
-        voteDTO.setId(vote.getId());
-        if (vote.getAccount() == null) {
-            voteDTO.setVoterId(null);
-            voteDTO.setVoterRole(Role.ANONYMOUS_VOTER.toString());
-        } else {
-            voteDTO.setVoterId(vote.getAccount().getId());
-            voteDTO.setVoterRole(vote.getAccount().getRole().toString());
-        }
-        voteDTO.setVote(vote.isVote());
-        voteDTO.setVotingPlatform(vote.getPlatform());
-        voteDTO.setPollId(vote.getPoll().getId());
-        
-        return voteDTO;
     }
     
 }

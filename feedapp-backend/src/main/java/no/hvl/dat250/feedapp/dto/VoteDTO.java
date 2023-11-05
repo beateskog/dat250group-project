@@ -1,5 +1,7 @@
 package no.hvl.dat250.feedapp.dto;
 
+import no.hvl.dat250.feedapp.model.Role;
+import no.hvl.dat250.feedapp.model.Vote;
 import no.hvl.dat250.feedapp.model.VotingPlatform;
 
 /**
@@ -15,7 +17,29 @@ public class VoteDTO {
     private Long pollId;
     private VotingPlatform platform;
 
+    /**
+     * Converts a vote to a voteDTO
+     * @param vote the vote to convert
+     * @return the voteDTO
+     */
+    public static VoteDTO voteToVoteDTO(Vote vote) {
 
+        VoteDTO voteDTO = new VoteDTO();
+        voteDTO.setId(vote.getId());
+        if (vote.getAccount() == null) {
+            voteDTO.setVoterId(null);
+            voteDTO.setVoterRole(Role.ANONYMOUS_VOTER.toString());
+        } else {
+            voteDTO.setVoterId(vote.getAccount().getId());
+            voteDTO.setVoterRole(vote.getAccount().getRole().toString());
+        }
+        voteDTO.setVote(vote.isVote());
+        voteDTO.setVotingPlatform(vote.getPlatform());
+        voteDTO.setPollId(vote.getPoll().getId());
+        
+        return voteDTO;
+    }
+   
     public void setId(Long id) {
         this.id = id;
     }
