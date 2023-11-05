@@ -7,4 +7,6 @@ public interface PollResultService {
 
     public PollResult savePollResult(PollDTO pollDTO);
 
+    public PollResult getPollResult(Long pollId);
+
 }

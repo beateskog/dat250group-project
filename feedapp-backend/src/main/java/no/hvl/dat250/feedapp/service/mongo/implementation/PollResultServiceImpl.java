@@ -44,4 +44,9 @@ public class PollResultServiceImpl implements PollResultService {
         return pollResultRepository.save(result);
     }
 
+    @Override
+    public PollResult getPollResult(Long pollId) {
+        return pollResultRepository.findByPollId(pollId);
+    }
+
 }

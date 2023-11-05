@@ -23,17 +23,21 @@ import no.hvl.dat250.feedapp.exception.ResourceNotFoundException;
 import no.hvl.dat250.feedapp.model.Account;
 import no.hvl.dat250.feedapp.model.Poll;
 import no.hvl.dat250.feedapp.service.PollService;
+import no.hvl.dat250.feedapp.service.mongo.PollResultService;
 
 /**
  * The PollController class is responsible for handling requests from the client related to the Poll model.
  */
 @RestController
-@RequestMapping("/poll") // All request mappings start with poll
+@RequestMapping("/poll") 
 @CrossOrigin(origins = "http://localhost:4200")
 public class PollController {
 
     @Autowired
     private PollService pollService;
+
+    @Autowired
+    private PollResultService pollResultService;
 
     // CREATE
     /**
@@ -274,6 +278,22 @@ public class PollController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
         } catch (AccessDeniedException ex) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(ex.getMessage());
+        } catch (Exception ex){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ex.getMessage());
+        } 
+    }
+
+    /**
+     * Finds the result of a ended poll
+     * @param pollId the id of the ended poll
+     * @return the result of the poll if it exists
+     */ 
+    @GetMapping("/result/{pollId}")
+    public ResponseEntity<?> getPollResult(@PathVariable("pollId") Long pollId) {
+        try {
+            return ResponseEntity.ok(pollResultService.getPollResult(pollId));
+        } catch (ResourceNotFoundException ex) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
         } catch (Exception ex){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ex.getMessage());
         } 
