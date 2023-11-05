@@ -57,14 +57,20 @@ export class VoteComponent implements OnInit {
         console.log("Vote submitted successfully");
         this.showVoteMessage = true;
         console.log(this.showVoteMessage);
-        setTimeout(() => {
-          // this.voteMessageTimer = false;
-          this.router.navigate(['/results']);
+        this.voteMessageTimer = setTimeout(() => {
+          this.voteMessageTimer = false;
         }, 2000);
 
-        this.showVoteMessage = false;
         // Navigate to the results page after voting
-        // this.router.navigate(['/results']);
+        this.pollService.getResults(id).subscribe(
+          (pollData) => {
+            // Navigate to the results page and pass the results content
+            this.router.navigate([`/poll/${id}`]);
+          },
+          (error) => {
+            console.error('Error fetching results: ', error);
+          }
+        );
       },
       (error) => {
         console.error('Error while voting: ', error)

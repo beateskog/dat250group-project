@@ -26,6 +26,12 @@ navigateToLogin() {
       });
   }
 
+  isPollActive(poll: any): boolean {
+    const currentTime = new Date(); // Get the current time
+    const endTime = new Date(poll.endTime); // Parse poll's end time
+    return endTime > currentTime; // Return true if the poll is open, false if closed
+  }
+
   searchPollsById(id: number) {
     this.id = id;
 
@@ -55,14 +61,9 @@ navigateToLogin() {
     this.router.navigate(['/vote', question]);
   }
 
-  navigateToResults(question: string) {
-    this.router.navigate(['/results', question]);
-  }
-
-  isPollActive(poll: any): boolean {
-    const currentTime = new Date(); // Get the current time
-    const endTime = new Date(poll.endTime); // Parse poll's end time
-    return endTime > currentTime; // Return true if the poll is open, false if closed
+  navigateToResults(id: number) {
+    this.pollService.getEndedPollResults
+    this.router.navigate(['/results', id]);
   }
 
 }

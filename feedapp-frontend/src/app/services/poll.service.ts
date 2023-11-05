@@ -95,5 +95,22 @@ export class PollService {
     return endTime > currentTime; // Return true if poll is open, false if closed
   }
 
+  getEndedPollResults(pollId: number) {
+    const authToken = this.authService.getToken();
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${authToken}`,
+    });
+    return this.http.get(`http://localhost:8080/result/${pollId}`, {headers});
+  }
+
+  getResults(pollId: number) {
+    const authToken = this.authService.getToken();
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${authToken}`,
+    });
+    // Send a request to retrieve poll results based on the question
+    return this.http.get(`http://localhost:8080/poll/${pollId}`, {headers});
+  }
+
 }
 
