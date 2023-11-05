@@ -32,6 +32,11 @@ public class VoteServiceImpl implements VoteService {
 
     @Override
     public Vote createVote(VoteDTO vote) {
+        Vote existingVote = voteRepository.findVoteByPollIdAndAccountId(vote.getPollId(), vote.getVoterId());
+        if (existingVote != null) {
+            throw new IllegalArgumentException("A vote with the given pollId and voterId already exists.");
+        }
+        
         if (vote.getVote() == null) {
             throw new IllegalArgumentException("Vote cannot be null");
         }

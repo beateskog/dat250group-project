@@ -13,6 +13,9 @@ public interface VoteService {
      * Creates a vote and saves it to the database.
      * @param vote The voteDTO for the vote to be created.
      * @return The created vote.
+     * @throws IllegalArgumentException if the vote is null. 
+     * the pollId is null. the votingPlatform is null. 
+     * Or if there already exists a vote with the given pollId and voterId.
      */
     public Vote createVote(VoteDTO vote);
 
