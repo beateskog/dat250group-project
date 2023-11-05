@@ -1,8 +1,17 @@
+<header>Polls</header>
+<button (click)="navigateToLogin()">Return to login</button>
+<div id="search-bar">
+  <input type="text" placeholder="Search for Poll ID:" [(ngModel)]="id">
+  <button (click)="searchPollsById(id)">Search</button>
+  <div class="error-message" *ngIf="errorMessage">
+    {{ errorMessage }}
+  </div>
+</div>
 <div id="poll-container">
   <!-- Loop through polls and display them dynamically -->
   <div class="poll-box" *ngFor="let poll of polls">
     <div class="poll-header">
-      <!-- Use the isPollActive function to check if the poll is open -->
+      <!-- Use the isPollOpen function to check if the poll is open -->
       <ng-container *ngIf="isPollActive(poll); else resultsButton">
         <button (click)="navigateToVote(poll.id)">Vote</button>
       </ng-container>
