@@ -41,7 +41,7 @@ export class CreatePollComponent {
       this.pollService.createPoll(request).subscribe(
         (response) => {
           // Handle success, e.g., navigate to "my-polls" page
-          this.router.navigate(['myPolls']);
+          this.router.navigate(['overview']);
         },
         (error) => {
           // Handle error, e.g., display an error message

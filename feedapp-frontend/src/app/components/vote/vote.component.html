@@ -1,5 +1,8 @@
 <div class="container">
-    <h1>{{ question }}</h1>
-    <button (click)="vote()">Yes</button>
-    <button (click)="vote()">No</button>
-  </div>
+  <h1>{{ question }}</h1>
+  <p>Poll ID: {{ pollId }}</p>
+  <button (click)="vote(pollId, true)">Yes</button>
+  <button (click)="vote(pollId, false)">No</button>
+</div>
+
+<div class="vote-message" *ngIf="showVoteMessage">Thanks for your vote!</div>

@@ -8,25 +8,61 @@ import { PollService } from 'src/app/services/poll.service';
   styleUrls: ['./overview.component.css']
 })
 export class OverviewComponent {
+navigateToLogin() {
+  this.router.navigate(['/login']);
+}
 
-  polls: any[] = []; // Replace 'any[]' with the actual type of your poll objects
-
+  polls: any[] = []; 
+  id!: number;
+  userId!: number;
+  errorMessage: string | null = null;
   constructor(private router: Router, private pollService: PollService) {}
 
   ngOnInit() {
-    // Fetch the list of polls from your backend service
-    this.pollService.getPolls().subscribe(() => {
-    });
+    this.pollService.getPolls().subscribe({
+      next: (polls:any) => {this.polls = polls;}
+      ,
+      error: () => {}
+      });
   }
 
+  searchPollsById(id: number) {
+    this.id = id;
+
+    this.pollService.searchPollsById(this.id).subscribe(
+      (poll: any) => {
+        if (poll) {
+          // A poll with the given ID exists
+          this.router.navigate([`/vote`, id]);
+        } else {
+          // No poll found for the provided ID
+          this.errorMessage = `There is no poll with ID ${id}`;
+        }
+      },
+      (error) => {
+        if (error.status === 404) {
+          // Poll not found (404 error)
+          this.errorMessage = `There is no poll with ID ${id}`;;
+        } else {
+          this.errorMessage = 'The poll ID must be a number. Please try again.'
+          console.error('Error searching for the poll:', error);
+        }
+      }
+    );
+    }
+
   navigateToVote(question: string) {
-    // Navigate to the 'vote' page for the selected poll
     this.router.navigate(['/vote', question]);
   }
 
   navigateToResults(question: string) {
-    // Navigate to the 'results' page for the selected poll
     this.router.navigate(['/results', question]);
+  }
+
+  isPollActive(poll: any): boolean {
+    const currentTime = new Date(); // Get the current time
+    const endTime = new Date(poll.endTime); // Parse poll's end time
+    return endTime > currentTime; // Return true if the poll is open, false if closed
   }
 
 }

@@ -1,25 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { PollService } from 'src/app/services/poll.service';
 import { PollListComponent } from '../poll-list/poll-list.component';
 import { DateTime } from 'luxon';
 import { PollPrivacy } from '../pollPrivacy.enum';
 import { Router } from '@angular/router';
-
-interface PollDTO{
-  id: number;
-  pollUrl: string;
-  pollPin: number;
-  question: string;
-  startTime: DateTime;
-  endTime: DateTime;
-  PollPrivacy: PollPrivacy;
-  pollOwner: string;
-  pollOwnerId: number;
-  totalVotes: number;
-  yesVotes: number;
-  noVotes: number;
-}
-
+import { HttpHeaders } from '@angular/common/http';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-my-polls',
@@ -28,58 +14,87 @@ interface PollDTO{
 })
 
 
-export class MyPollsComponent {
-  // pollDTO = {
-  //   id!: '',
-  //   pollUrl!: '',
-  //   pollPin: '';
-  //   question: '';
-  //   startTime: '';
-  //   endTime: '';
-  //   PollPrivacy: '';
-  //   pollOwner: '';
-  //   pollOwnerId: '';
-  //   totalVotes: '';
-  //   yesVotes: '';
-  //   noVotes: '';
-  // }
+export class MyPollsComponent implements OnInit {
 
-  // const pollObject: PollDTO = {
-  //   question: this.question,
-  //   startTime: this.poll.startTime,
-  //   endTime: this.poll.endTime,
-  //   pollPrivacy: this.poll.pollPrivacy === PollPrivacy.PUBLIC ? PollPrivacy.PUBLIC : PollPrivacy.PRIVATE
-  // };
+  userPolls: any[] = [];
+  isConfirmationDialogOpen = false;
+  confirmationMessage = '';
+  noPollsMessage = ''
+  pollIdToDelete: number | null = null;
+  public noPolls: boolean = false;
+
+  constructor(private pollService: PollService, private router: Router, private authService: AuthService) {}
 
 
-openPoll(_t6: any) {
-  console.log("you pressed the 'Open poll' button")
-// throw new Error('Method not implemented.');
-}
+  ngOnInit() {
+    this.pollService.getUserPolls().subscribe((polls: any) => {
+      if (polls.length === 0) {
+        // Handle the case when the user has no polls
+        this.noPolls = true;
+        this.noPollsMessage = "It looks like you haven't made any polls yet. Create your first poll!";
+      } else {
+        this.userPolls = polls;
+      }
+    });
+  }
 
-  userPolls: any[] = []; // Replace 'any[]' with the actual type of your poll objects
 
-  constructor(private pollService: PollService, private router: Router) {}
+  openPoll() {
+    console.log("you pressed the 'Open poll' button")
+  }
 
-  redirectToPoll(poll: any): void {
-    if (poll.isStillActive) {
-      // Redirect to the "poll" page for an active poll
-      this.router.navigate(['/poll', poll.pollId]);
-    } else {
-      // Redirect to the "results" page for a closed poll
-      this.router.navigate(['/results', poll.pollId]);
+
+  deletePoll(pollId: number): void {
+    // Implement logic to delete the poll by its ID
+    this.pollService.deletePoll(pollId).subscribe(
+      () => {
+        // Handle successful deletion, e.g., remove the poll from the userPolls array
+        this.userPolls = this.userPolls.filter((poll) => poll.id !== pollId);
+      },
+      (error) => {
+        // Handle deletion error, e.g., display an error message
+        console.error('Error deleting poll:', error);
+      }
+    );
+  }
+
+  openConfirmationDialog(pollId: number): void {
+    this.pollIdToDelete = pollId; // Ensure pollIdToDelete is assigned correctly
+    console.log('Poll ID to delete:', this.pollIdToDelete); // Add a console log for debugging
+    this.isConfirmationDialogOpen = true;
+    this.confirmationMessage = 'Are you sure you want to delete this poll?';
+  }
+
+  onNoClick(): void {
+    this.isConfirmationDialogOpen = false;
+    this.pollIdToDelete = null;
+  }
+
+  onYesClick(): void {
+    console.log("Pollid to delete: ", this.pollIdToDelete)
+    if (this.pollIdToDelete !== null) {
+      this.isConfirmationDialogOpen = false;
+
+      // Perform the poll deletion and remove it from the list using this.pollIdToDelete
+      this.pollService.deletePoll(this.pollIdToDelete).subscribe(
+        () => {
+          // Poll deletion successful, remove it from the list
+          this.userPolls = this.userPolls.filter(poll => poll.id !== this.pollIdToDelete);
+        },
+        (error) => {
+          console.error('Error deleting poll:', error);
+        }
+      );
+      const deletedPollIndex = this.userPolls.findIndex(poll => poll.id === this.pollIdToDelete);
+      if (deletedPollIndex !== -1) {
+        this.userPolls.splice(deletedPollIndex, 1); // Remove the poll from the array
+      }
+      this.confirmationMessage = '';
+      this.pollIdToDelete = null;
     }
   }
 
-  ngOnInit() {
-    // Fetch the list of user's polls from the backend based on the username
-    const username = "test"; // Replace with the actual username
-    this.pollService.getUserPolls().subscribe({
-      next: (polls:any) => {this.userPolls = polls;}
-        ,
-      error: () => {}
-  });
-
-  
+  navigateToOverview() {
+    this.router.navigate(['/overview']);
   }
 }

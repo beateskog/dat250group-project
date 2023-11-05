@@ -3,12 +3,18 @@ import { Injectable } from '@angular/core';
 import { PollPrivacy } from '../components/pollPrivacy.enum';
 import { DateTime } from 'luxon';
 import { AuthService } from './auth.service';
+import { Observable, catchError, map, of, throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 
 export class PollService {
+  public noPolls: boolean = false;
+  public confirmationMessage: string = '';
+  public isConfirmationDialogOpen: boolean = false;
+  userPolls: any[] = [];
+
 
   constructor(private http: HttpClient, private authService: AuthService) {}
 
@@ -20,7 +26,6 @@ export class PollService {
     };
     
     const authToken = this.authService.getToken();
-
     // Create the HttpHeaders with the authorization token
     const headers = new HttpHeaders({
     Authorization: `Bearer ${authToken}`
@@ -28,28 +33,67 @@ export class PollService {
 
     return this.http.post(`http://localhost:8080/poll`, request, {headers});
   }
+
+  deletePoll(id: number) {
+    const authToken = this.authService.getToken();
+    const headers = new HttpHeaders({
+    Authorization: `Bearer ${authToken}`
+    });
+    return this.http.delete(`http://localhost:8080/poll/${id}`, {headers});
+  }
+
+  navigateToVote() {
+    const authToken = this.authService.getToken();
+    const headers = new HttpHeaders({
+    Authorization: `Bearer ${authToken}`
+    });
+
+    return this.http.get(`http://localhost:8080/vote`, {headers});
+  }
   
   getPolls() {
     const authToken = this.authService.getToken();
-
-    // Create the HttpHeaders with the authorization token
     const headers = new HttpHeaders({
     Authorization: `Bearer ${authToken}`
     });
     return this.http.get(`http://localhost:8080/poll/all`, {headers});
   }
 
-
-  getUserPolls() {
+  getUserPolls(): Observable<any> {
 
     const authToken = this.authService.getToken();
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${authToken}`
+    });
+  
+    return this.http.get(`http://localhost:8080/poll/owner`, { headers }).pipe(
+      catchError((error) => {
+        if (error.status === 404) {
+          // Handle the case when the user has no polls
+          this.noPolls = true;
+          this.confirmationMessage = "It looks like you haven't made any polls yet. Create your first poll!";
+          return of([]);
+        } else {
+          return (error);
+        }
+      })
+    );
+  }
 
-    // Create the HttpHeaders with the authorization token
+  searchPollsById(id: number) {
+    const authToken = this.authService.getToken();
     const headers = new HttpHeaders({
     Authorization: `Bearer ${authToken}`
     });
-    return this.http.get(`http://localhost:8080/poll/owner`)
-
+    return this.http.get(`http://localhost:8080/poll/${id}`);
   }
+
+  isPollActive(poll: any): boolean {
+    const currentTime = DateTime.local(); // Get the current time
+    const endTime = DateTime.fromISO(poll.endTime); // Parse poll's end time
+
+    return endTime > currentTime; // Return true if poll is open, false if closed
+  }
+
 }
 

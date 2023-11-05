@@ -19,6 +19,7 @@ const routes: Routes = [
     { path: 'vote', component: VoteComponent},
     { path: 'results', component: ResultsComponent},
     { path: 'createPoll', component: CreatePollComponent},
+    { path: 'vote/:id', component: VoteComponent},
     { path: '', redirectTo: '/login', pathMatch: 'full' },
 ];
 
