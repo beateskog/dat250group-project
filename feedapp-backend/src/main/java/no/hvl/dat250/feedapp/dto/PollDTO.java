@@ -54,6 +54,10 @@ public class PollDTO implements Serializable {
         return pollDTO;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public Long getId() {
         return id;
     }

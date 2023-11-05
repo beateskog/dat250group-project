@@ -85,14 +85,14 @@ public class PollServiceImpl implements PollService {
     @Override
     public Poll findPollByUrl(String url) {
         Poll poll = pollRepository.findPollByPollURL(url)
-            .orElseThrow(() -> new ResourceNotFoundException("A poll with the given url: " + url + "does not exist."));
+            .orElseThrow(() -> new ResourceNotFoundException("A poll with the given url: " + url + " does not exist."));
         return poll;
     }
 
     @Override
     public Poll findPollByPin(int pin) {
         Poll poll = pollRepository.findPollByPollPin(pin)
-            .orElseThrow(() -> new ResourceNotFoundException("A poll with the given pin: " + pin + "does not exist."));
+            .orElseThrow(() -> new ResourceNotFoundException("A poll with the given pin: " + pin + " does not exist."));
         return poll;
     }
 
@@ -145,11 +145,11 @@ public class PollServiceImpl implements PollService {
         }
 
         if (poll.getEndTime() != null) {
-            if (poll.getEndTime().isBefore(existingPoll.getStartTime())) {
-                throw new IllegalArgumentException("End time cannot be before start time.");
-            }
             if (poll.getEndTime().isBefore(LocalDateTime.now())) {
                 throw new IllegalArgumentException("End time cannot be before current time.");
+            }
+            if (poll.getEndTime().isBefore(existingPoll.getStartTime())) {
+                throw new IllegalArgumentException("End time cannot be before start time.");
             }
             existingPoll.setEndTime(poll.getEndTime());
         }
