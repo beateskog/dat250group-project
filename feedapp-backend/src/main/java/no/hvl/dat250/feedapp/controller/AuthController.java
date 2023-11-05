@@ -1,6 +1,7 @@
 package no.hvl.dat250.feedapp.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import no.hvl.dat250.feedapp.dto.authentication.AccountRespDTO;
 import no.hvl.dat250.feedapp.dto.authentication.AuthRequestDTO;
 import no.hvl.dat250.feedapp.dto.authentication.RegisterRequestDTO;
+import no.hvl.dat250.feedapp.exception.AccessDeniedException;
 import no.hvl.dat250.feedapp.exception.BadRequestException;
 import no.hvl.dat250.feedapp.model.Account;
 import no.hvl.dat250.feedapp.service.AuthService;
@@ -45,6 +47,8 @@ public class AuthController {
             return ResponseEntity.ok(authService.authenticate(authRequest));
         } catch (BadRequestException ex) {
             return ResponseEntity.badRequest().body(ex.getMessage());
+        } catch (AccessDeniedException ex) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(ex.getMessage());
         } catch (Exception ex) {
             return ResponseEntity.internalServerError().body(ex.getMessage());
         }
@@ -57,7 +61,6 @@ public class AuthController {
             AccountRespDTO accountRespDTO = new AccountRespDTO();
             accountRespDTO.setUsername(user.getUsername());
             return ResponseEntity.ok(accountRespDTO);
-
         } catch (BadRequestException ex) {
             return ResponseEntity.badRequest().body(ex.getMessage());
         } catch (Exception ex) {

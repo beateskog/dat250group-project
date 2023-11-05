@@ -87,4 +87,12 @@ public class VoteRepositoryTest {
     
     }
 
+    @Test
+    public void testFindVoteByPollIdAndAccountIdNotFound() {
+        Vote foundvote = voteRepository.findVoteByPollIdAndAccountId(2L, 2L);
+
+        assertEquals(foundvote, null);
+    
+    }
+
 }

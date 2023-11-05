@@ -17,6 +17,7 @@ import no.hvl.dat250.feedapp.dto.VoteDTO;
 import no.hvl.dat250.feedapp.dto.iot.IoTRequest;
 import no.hvl.dat250.feedapp.dto.iot.IoTResponse;
 import no.hvl.dat250.feedapp.exception.AccessDeniedException;
+import no.hvl.dat250.feedapp.exception.BadRequestException;
 import no.hvl.dat250.feedapp.exception.ResourceNotFoundException;
 import no.hvl.dat250.feedapp.model.Poll;
 import no.hvl.dat250.feedapp.model.Vote;
@@ -57,6 +58,10 @@ public class IoTController {
             List<Vote> votes = voteService.createIoTVote(response);
             List<VoteDTO> voteDTOs = votes.stream().map(vote -> VoteDTO.voteToVoteDTO(vote)).toList();
             return ResponseEntity.ok(voteDTOs);
+        } catch (AccessDeniedException ex ) {
+            return ResponseEntity.status(403).body(ex.getMessage());
+        } catch(BadRequestException ex){
+            return ResponseEntity.badRequest().body(ex.getMessage());
         } catch (Exception ex) {
             return ResponseEntity.internalServerError().body(ex.getMessage());
         }
@@ -84,7 +89,11 @@ public class IoTController {
             return ResponseEntity.ok(iotRequest);
         } catch (ResourceNotFoundException ex) {
             return ResponseEntity.badRequest().body(ex.getMessage());
-        } catch (Exception ex) {
+        } catch (AccessDeniedException ex) {
+            return ResponseEntity.status(403).body(ex.getMessage());
+        } catch (BadRequestException ex) {
+            return ResponseEntity.badRequest().body(ex.getMessage());
+        }catch (Exception ex) {
             return ResponseEntity.internalServerError().body(ex.getMessage());
         } 
     }
