@@ -3,13 +3,17 @@ package no.hvl.dat250.feedapp.repository;
 // using from the JPA repository (such as FingById), because the JPA repository
 // already has these methods implemented and tested.
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.time.LocalDateTime;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ActiveProfiles;
 
 import no.hvl.dat250.feedapp.model.Account;
 import no.hvl.dat250.feedapp.model.Poll;
@@ -19,6 +23,7 @@ import no.hvl.dat250.feedapp.model.Vote;
 import no.hvl.dat250.feedapp.model.VotingPlatform;
 
 @DataJpaTest
+@ActiveProfiles("test")
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 public class VoteRepositoryTest {
 
@@ -57,6 +62,8 @@ public class VoteRepositoryTest {
             true,
             VotingPlatform.WEB,
             LocalDateTime.of(2023, 10, 10, 19, 45));
+        vote.setAccount(account);
+        vote.setPoll(poll);
         voteRepository.save(vote);
     
     }
@@ -67,6 +74,17 @@ public class VoteRepositoryTest {
         
     }
 
-    //We have not implemented any methods in the VoteRepository, so there is no need to test it.
+    @Test
+    public void testFindVoteByPollIdAndAccountId() {
+        Vote foundvote = voteRepository.findVoteByPollIdAndAccountId(poll.getId(), account.getId());
+
+        assertEquals(foundvote.getId(), vote.getId());
+        assertEquals(foundvote.getAccount().getId(), vote.getAccount().getId());
+        assertEquals(foundvote.getAccount().getUsername(), vote.getAccount().getUsername());
+        assertEquals(foundvote.getPoll().getId(), vote.getPoll().getId());
+        assertEquals(foundvote.getPoll().getQuestion(), vote.getPoll().getQuestion());
+        assertEquals(foundvote.isVote(), vote.isVote());
+    
+    }
 
 }
