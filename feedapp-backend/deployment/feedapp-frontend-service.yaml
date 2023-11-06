@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: feedapp-frontend
+spec:
+  selector:
+    app: feedapp-frontend
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+  type: ClusterIP

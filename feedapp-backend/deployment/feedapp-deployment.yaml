@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: feedapp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: feedapp
+  template:
+    metadata:
+      labels:
+        app: feedapp
+    spec:
+      containers:
+        - name: feedapp-container
+          image: feedapp:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+          env:
+            - name: SPRING_DATA_MONGODB_URI
+              value: "mongodb://mongo:27017/feedappdb"
+            - name: RABBITMQ_HOST
+              value: "rabbitmq"

@@ -34,16 +34,19 @@
 - to delete the elements inside the collection, run `db.pollResult.deleteMany({})`
 
 ## Kubernetes 
-** U have to locally have the docker image of the application before running the following commands **
+** U have to locally have the docker images of the application before running the following commands **
 
 - If you dont have kubernetes installed in terminal, run `brew install kubernetes-cli` (MacOS)
 - You also have to enable kubernetes inside docker desktop 
   - Go to docker desktop -> settings -> kubernetes -> enable kubernetes
-- Inside deployment file run `kubectl apply -f deployment.yaml` to create a deployment
+- Inside feedapp-backend folder run `kubectl apply -f deployment/` to create a deployment
 - Run `kubectl get deployments` to see the deployment
 - Run `kubectl get pods` to see the pods
 
-- To test that the application inside the pod is running, run `kubectl port-forward <pod-name> 8080:8080` and go to `localhost:8080` in postman or browser.
+- To expose the backend `kubectl port-forward service/feedapp 8080:8080` 
+
+- To expose the frontend run `kubectl port-forward service/feedapp-frontend 4200:80`
+
 
 ### Stop 
 - To stop the deployment, run `kubectl delete -f deployment.yaml`, inside the deployment folder

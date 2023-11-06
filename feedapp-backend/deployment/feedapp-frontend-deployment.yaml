@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: feedapp-frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: feedapp-frontend
+  template:
+    metadata:
+      labels:
+        app: feedapp-frontend
+    spec:
+      containers:
+        - name: feedapp-frontend-container
+          image: feedapp-frontend:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 80

@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: iot-simulation
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: iot-simulation
+  template:
+    metadata:
+      labels:
+        app: iot-simulation
+    spec:
+      containers:
+        - name: iot-simulation-container
+          image: iot-simulation:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 80
