@@ -10,6 +10,7 @@ import { Observable, catchError, map, of, throwError } from 'rxjs';
 })
 
 export class PollService {
+
   public noPolls: boolean = false;
   public confirmationMessage: string = '';
   public isConfirmationDialogOpen: boolean = false;
@@ -33,6 +34,24 @@ export class PollService {
 
     return this.http.post(`http://localhost:8080/poll`, request, {headers});
   }
+
+  updatePoll(credentials: {pollPrivacy: PollPrivacy, startTime: DateTime, endTime: DateTime, id: number, pollOwnerId: number}) {
+    const authToken = this.authService.getToken();
+    const headers = new HttpHeaders({
+    Authorization: `Bearer ${authToken}`
+    })
+    const request = {
+      id: credentials.id,
+      pollOwnerId: credentials.pollOwnerId,
+      pollPrivacy: credentials.pollPrivacy,
+      startTime: credentials.startTime.toString(),
+      endTime: credentials.endTime.toString(),
+    };
+
+    // throw new Error('Method not implemented.');
+    return this.http.put(`http://localhost:8080/poll`, request, {headers});
+  }
+
 
   deletePoll(id: number) {
     const authToken = this.authService.getToken();

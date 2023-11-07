@@ -21,6 +21,10 @@ export class MyPollsComponent implements OnInit {
   confirmationMessage = '';
   noPollsMessage = ''
   pollIdToDelete: number | null = null;
+  pollToUpdate: any;
+  updatedPoll: any = null;
+  // isUpdateFormVisible: boolean = true;
+  isUpdateFormVisible: { [key: number]: boolean } = {};
   public noPolls: boolean = false;
 
   constructor(private pollService: PollService, private router: Router, private authService: AuthService) {}
@@ -34,6 +38,7 @@ export class MyPollsComponent implements OnInit {
         this.noPollsMessage = "It looks like you haven't made any polls yet. Create your first poll!";
       } else {
         this.userPolls = polls;
+        this.userPolls.forEach(poll => this.isUpdateFormVisible[poll.id] = false);
       }
     });
   }
@@ -43,6 +48,23 @@ export class MyPollsComponent implements OnInit {
     console.log("you pressed the 'Open poll' button")
   }
 
+  updatePoll(updatedPoll: any) {
+    if (updatedPoll) {
+      // Make the PUT request to update the poll
+      this.pollService.updatePoll(updatedPoll).subscribe(
+        (response) => {
+          // Handle successful update, e.g., display a success message
+          console.log('Poll updated successfully');
+          // Clear the form
+          this.isUpdateFormVisible[updatedPoll.id] = false;
+        },
+        (error) => {
+          // Handle update error, e.g., display an error message
+          console.error('Error updating poll:', error);
+        }
+      );
+    }
+  }
 
   deletePoll(pollId: number): void {
     // Implement logic to delete the poll by its ID
@@ -96,5 +118,9 @@ export class MyPollsComponent implements OnInit {
 
   navigateToOverview() {
     this.router.navigate(['/overview']);
+  }
+
+  toggleUpdateFormVisibility(pollId: number) {
+    this.isUpdateFormVisible[pollId] = !this.isUpdateFormVisible[pollId];
   }
 }
