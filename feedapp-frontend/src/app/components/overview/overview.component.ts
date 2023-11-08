@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthService } from 'src/app/services/auth.service';
 import { PollService } from 'src/app/services/poll.service';
 
 @Component({
@@ -16,7 +17,7 @@ navigateToLogin() {
   id!: number;
   userId!: number;
   errorMessage: string | null = null;
-  constructor(private router: Router, private pollService: PollService) {}
+  constructor(private router: Router, private pollService: PollService, private authService: AuthService) {}
 
   ngOnInit() {
     this.pollService.getPolls().subscribe({
@@ -37,10 +38,14 @@ navigateToLogin() {
 
     this.pollService.searchPollsById(this.id).subscribe(
       (poll: any) => {
-        if (poll) {
+        if (this.isPollActive(poll)) {
           // A poll with the given ID exists
           this.router.navigate([`/vote`, id]);
-        } else {
+        } 
+        else if (!this.isPollActive(poll)) {
+          this.navigateToResults(id)
+        }
+        else {
           // No poll found for the provided ID
           this.errorMessage = `There is no poll with ID ${id}`;
         }
@@ -64,6 +69,11 @@ navigateToLogin() {
   navigateToResults(id: number) {
     this.pollService.getEndedPollResults
     this.router.navigate(['/results', id]);
+  }
+
+  logout() {
+    this.authService.removeToken();
+    this.router.navigate(['/login'])
   }
 
 }

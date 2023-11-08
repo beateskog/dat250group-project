@@ -26,6 +26,7 @@ export class MyPollsComponent implements OnInit {
   // isUpdateFormVisible: boolean = true;
   isUpdateFormVisible: { [key: number]: boolean } = {};
   public noPolls: boolean = false;
+  errorMessage = '';
 
   constructor(private pollService: PollService, private router: Router, private authService: AuthService) {}
 
@@ -50,19 +51,30 @@ export class MyPollsComponent implements OnInit {
 
   updatePoll(updatedPoll: any) {
     if (updatedPoll) {
-      // Make the PUT request to update the poll
-      this.pollService.updatePoll(updatedPoll).subscribe(
-        (response) => {
-          // Handle successful update, e.g., display a success message
-          console.log('Poll updated successfully');
-          // Clear the form
-          this.isUpdateFormVisible[updatedPoll.id] = false;
-        },
-        (error) => {
-          // Handle update error, e.g., display an error message
-          console.error('Error updating poll:', error);
-        }
-      );
+      // Convert the startTime to a DateTime object
+      const startTime = DateTime.fromISO(updatedPoll.startTime);
+      const currentTime = DateTime.local(); // Get the current time
+  
+      // Check if the startTime is before the current time
+      if (startTime < currentTime) {
+        // Handle the case where startTime is before the current time
+        this.errorMessage = 'Start time cannot be in the past';
+        // You can display an error message to the user or prevent form submission.
+      } else {
+        // Make the PUT request to update the poll
+        this.pollService.updatePoll(updatedPoll).subscribe(
+          (response) => {
+            // Handle successful update, e.g., display a success message
+            console.log('Poll updated successfully');
+            // Clear the form
+            this.isUpdateFormVisible[updatedPoll.id] = false;
+          },
+          (error) => {
+            // Handle update error, e.g., display an error message
+            console.error('Error updating poll:', error);
+          }
+        );
+      }
     }
   }
 
