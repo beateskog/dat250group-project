@@ -47,8 +47,6 @@ export class PollService {
       startTime: credentials.startTime.toString(),
       endTime: credentials.endTime.toString(),
     };
-
-    // throw new Error('Method not implemented.');
     return this.http.put(`http://localhost:8080/poll`, request, {headers});
   }
 
@@ -99,6 +97,10 @@ export class PollService {
     );
   }
 
+  getPublicPolls() {
+    return this.http.get('http://localhost:8080/poll/all/public');
+  }
+
   searchPollsById(id: number) {
     const authToken = this.authService.getToken();
     const headers = new HttpHeaders({
@@ -110,7 +112,6 @@ export class PollService {
   isPollActive(poll: any): boolean {
     const currentTime = DateTime.local(); // Get the current time
     const endTime = DateTime.fromISO(poll.endTime); // Parse poll's end time
-
     return endTime > currentTime; // Return true if poll is open, false if closed
   }
 
@@ -127,7 +128,6 @@ export class PollService {
     const headers = new HttpHeaders({
       Authorization: `Bearer ${authToken}`,
     });
-    // Send a request to retrieve poll results based on the question
     return this.http.get(`http://localhost:8080/poll/${pollId}`, {headers});
   }
 

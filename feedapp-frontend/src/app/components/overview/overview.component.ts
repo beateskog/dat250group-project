@@ -1,3 +1,4 @@
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
@@ -16,16 +17,47 @@ navigateToLogin() {
   polls: any[] = []; 
   id!: number;
   userId!: number;
+  publicPollsOnly: boolean = false
   errorMessage: string | null = null;
-  constructor(private router: Router, private pollService: PollService, private authService: AuthService) {}
+  constructor(private router: Router, private pollService: PollService, private authService: AuthService, private http: HttpClient) {}
+
 
   ngOnInit() {
-    this.pollService.getPolls().subscribe({
-      next: (polls:any) => {this.polls = polls;}
-      ,
-      error: () => {}
-      });
+    const authToken = this.authService.getToken();
+      if (!authToken) {
+        this.getPublicPolls();
+      } else {
+        this.getPolls();
+      };
   }
+
+  private getPolls() {
+    this.pollService.getPolls().subscribe({
+      next: (polls: any) => {
+        this.polls = polls;
+      },
+      error: () => {}
+    });
+  }
+
+  private getPublicPolls() {
+    this.pollService.getPublicPolls().subscribe({
+      next: (publicPolls: any) => {
+        this.polls = publicPolls;
+      },
+      error: () => {}
+    });
+  }
+
+  // ... other methods ...
+
+  // ngOnInit() {
+  //   this.pollService.getPolls().subscribe({
+  //     next: (polls:any) => {this.polls = polls;}
+  //     ,
+  //     error: () => {}
+  //     });
+  // }
 
   isPollActive(poll: any): boolean {
     const currentTime = new Date(); // Get the current time
