@@ -17,19 +17,24 @@ import { AuthService } from 'src/app/services/auth.service';
 export class MyPollsComponent implements OnInit {
 
   userPolls: any[] = [];
+  publicPolls: any[] = [];
   isConfirmationDialogOpen = false;
   confirmationMessage = '';
   noPollsMessage = ''
   pollIdToDelete: number | null = null;
   pollToUpdate: any;
   updatedPoll: any = null;
+  isAuthenticated!: boolean;
   // isUpdateFormVisible: boolean = true;
   isUpdateFormVisible: { [key: number]: boolean } = {};
   public noPolls: boolean = false;
   errorMessage = '';
 
-  constructor(private pollService: PollService, private router: Router, private authService: AuthService) {}
-
+  constructor(private pollService: PollService, private router: Router, private authService: AuthService) {
+    if (this.authService.getToken()) {
+      this.isAuthenticated = true;
+    }
+  }
 
   ngOnInit() {
     this.pollService.getUserPolls().subscribe((polls: any) => {
@@ -130,6 +135,10 @@ export class MyPollsComponent implements OnInit {
 
   navigateToOverview() {
     this.router.navigate(['/overview']);
+  }
+
+  navigateToLogin() {
+    this.router.navigate(['/login'])
   }
 
   toggleUpdateFormVisibility(pollId: number) {

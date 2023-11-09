@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { PollService } from 'src/app/services/poll.service';
 import { PollPrivacy } from '../pollPrivacy.enum';
 import { DateTime } from 'luxon';
+import { AuthService } from 'src/app/services/auth.service';
 
 interface CreatePollRequest {
   question: string;
@@ -26,8 +27,13 @@ export class CreatePollComponent {
     };
 
   error: string = '';
+  isAuthenticated!: boolean;
 
-  constructor(private pollService: PollService, private router: Router) {}
+  constructor(private pollService: PollService, private router: Router, private authService: AuthService) {
+    if (this.authService.getToken()) {
+      this.isAuthenticated = true;
+    }
+  }
     createPoll() {
 
       const request: CreatePollRequest = {

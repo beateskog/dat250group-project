@@ -49,16 +49,6 @@ navigateToLogin() {
     });
   }
 
-  // ... other methods ...
-
-  // ngOnInit() {
-  //   this.pollService.getPolls().subscribe({
-  //     next: (polls:any) => {this.polls = polls;}
-  //     ,
-  //     error: () => {}
-  //     });
-  // }
-
   isPollActive(poll: any): boolean {
     const currentTime = new Date(); // Get the current time
     const endTime = new Date(poll.endTime); // Parse poll's end time

@@ -1,35 +1,47 @@
 <div class="container">
     <h1>My Polls</h1>
-    <button (click)="navigateToOverview()">Back to the main page</button>
+    <div *ngIf="isAuthenticated; else notAuthenticated">
+        <button (click)="navigateToOverview()">Back to the main page</button>
+        <!-- Content for authenticated users -->
+        <!-- Place your content here for logged-in users -->
+        <li *ngFor="let poll of userPolls">
+            <div class="poll-item">
+              <p><strong>Question:</strong> {{ poll.question }}</p>
+              <p><strong>Poll ID:</strong> {{ poll.id }}</p>
+              <button (click)="openConfirmationDialog(poll.id)">Delete</button>
+              <!-- Add an Update button to trigger the form -->
+              <button (click)="toggleUpdateFormVisibility(poll.id)">Update</button>
+              <!-- Add a form for updating the poll -->
+              <div [hidden]="!isUpdateFormVisible[poll.id]">
+                <form (submit)="updatePoll(poll)">
+                  <label for="privacy">Privacy:</label>
+                  <select name="privacy" id="privacy" [(ngModel)]="poll.pollPrivacy">
+                    <option value="PUBLIC">Public</option>
+                    <option value="PRIVATE">Private</option>
+                  </select>
+                  <br>
+                  <label for="startTime">Start Time:</label>
+                  <input type="datetime-local" name="startTime" id="startTime" [(ngModel)]="poll.startTime">
+                  <br>
+                  <label for="endTime">End Time:</label>
+                  <input type="datetime-local" name="endTime" id="endTime" [(ngModel)]="poll.endTime">
+                  <br>
+                  <button type="submit">Update Poll</button>
+                </form>
+                <p class="error-message" *ngIf="errorMessage">{{ errorMessage }}</p>
+              </div>
+            </div>
+          </li>
+    </div>
+
+    <ng-template #notAuthenticated>
+            <!-- Content for non-authenticated users -->
+    <p>You have to be logged in to see your polls.</p>
+    <button (click)="navigateToLogin()">Login</button>
+    <button (click)="navigateToOverview()">Back</button>
+  </ng-template>
     <ul>
-      <li *ngFor="let poll of userPolls">
-        <div class="poll-item">
-          <p><strong>Question:</strong> {{ poll.question }}</p>
-          <p><strong>Poll ID:</strong> {{ poll.id }}</p>
-          <button (click)="openConfirmationDialog(poll.id)">Delete</button>
-          <!-- Add an Update button to trigger the form -->
-          <button (click)="toggleUpdateFormVisibility(poll.id)">Update</button>
-          <!-- Add a form for updating the poll -->
-          <div [hidden]="!isUpdateFormVisible[poll.id]">
-            <form (submit)="updatePoll(poll)">
-              <label for="privacy">Privacy:</label>
-              <select name="privacy" id="privacy" [(ngModel)]="poll.pollPrivacy">
-                <option value="PUBLIC">Public</option>
-                <option value="PRIVATE">Private</option>
-              </select>
-              <br>
-              <label for="startTime">Start Time:</label>
-              <input type="datetime-local" name="startTime" id="startTime" [(ngModel)]="poll.startTime">
-              <br>
-              <label for="endTime">End Time:</label>
-              <input type="datetime-local" name="endTime" id="endTime" [(ngModel)]="poll.endTime">
-              <br>
-              <button type="submit">Update Poll</button>
-            </form>
-            <p class="error-message" *ngIf="errorMessage">{{ errorMessage }}</p>
-          </div>
-        </div>
-      </li>
+
     </ul>
     <p *ngIf="noPolls">{{ noPollsMessage }}</p>
   </div>
