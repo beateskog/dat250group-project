@@ -35,6 +35,14 @@ public interface PollRepository extends JpaRepository<Poll, Long> {
     public Optional<Poll> findPublicPollsByPollPin(int pin);
 
     /**
+     * Find a public poll by its id
+     * @param id the id of the poll
+     * @return an optional that contains the poll if it exists
+     */
+    @Query("SELECT p FROM Poll p WHERE p.id = :id AND p.pollPrivacy = PUBLIC")
+    public Optional<Poll> findPublicPollById(Long id);
+    
+    /**
      * Find all polls created by a given user
      * @param username
      * @return a list of all polls created by the given user

@@ -237,5 +237,14 @@ public class PollServiceImpl implements PollService {
             messagingService.sendMessageToQueue("pollResultsExchange", "", pollDTO);
         }
     }
+
+
+    @Override
+    public Poll findPublicPollById(Long pollId) {
+        if (pollRepository.findPublicPollById(pollId).isEmpty()) {
+            throw new ResourceNotFoundException("No public polls with ID: " + pollId);
+        }
+        return pollRepository.findById(pollId).get();
+    }
     
 }

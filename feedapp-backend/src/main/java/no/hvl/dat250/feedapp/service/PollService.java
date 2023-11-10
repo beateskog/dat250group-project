@@ -95,6 +95,12 @@ public interface PollService {
     public List<Poll> findAllPublicPolls();
 
     /**
+     * Finds the public poll with the given ID.
+     * @return The public poll with the given ID.
+     */
+    public Poll findPublicPollById(Long pollId);
+
+    /**
      * Goes through all polls in the database that ends today
      * and posts a pollClosedEvent to dweet.io if the poll has ended today.
      */

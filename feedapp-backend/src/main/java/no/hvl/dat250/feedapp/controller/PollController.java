@@ -81,7 +81,23 @@ public class PollController {
         } catch (Exception ex){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ex.getMessage());
         }
+    }
 
+     /**
+     * Finds a public poll by its ID.
+     * @param pollId The ID of the poll to be found.
+     * @return The found poll as a PollDTO object.
+     */
+    @GetMapping("/public/{pollId}")
+    public ResponseEntity<?> findPublicPollById(@PathVariable("pollId") Long pollId) {
+        try {
+            Poll poll = pollService.findPublicPollById(pollId);
+            return ResponseEntity.ok(PollDTO.pollToPollDTO(poll));
+        } catch (ResourceNotFoundException ex) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+        } catch (Exception ex){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ex.getMessage());
+        }
     }
 
     /**
