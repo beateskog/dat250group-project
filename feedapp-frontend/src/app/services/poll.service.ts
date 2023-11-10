@@ -15,6 +15,9 @@ export class PollService {
   public confirmationMessage: string = '';
   public isConfirmationDialogOpen: boolean = false;
   userPolls: any[] = [];
+  publicPolls: any[] = [];
+  poll!: any;
+  privacy!: any;
 
 
   constructor(private http: HttpClient, private authService: AuthService) {}
@@ -109,10 +112,20 @@ export class PollService {
     return this.http.get(`http://localhost:8080/poll/${id}`);
   }
 
+  searchPublicPollsById(id: number) {
+      return this.http.get(`http://localhost:8080/poll/public/${id}`);
+  }
+
   isPollActive(poll: any): boolean {
     const currentTime = DateTime.local(); // Get the current time
     const endTime = DateTime.fromISO(poll.endTime); // Parse poll's end time
     return endTime > currentTime; // Return true if poll is open, false if closed
+  }
+
+  isPollPublic(poll: any) {
+    console.log(this.poll)
+    this.privacy = poll.pollPrivacy
+    return this.privacy == "PUBLIC";
   }
 
   getEndedPollResults(pollId: number) {

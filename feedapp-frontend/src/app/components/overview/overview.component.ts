@@ -19,7 +19,13 @@ navigateToLogin() {
   userId!: number;
   publicPollsOnly: boolean = false
   errorMessage: string | null = null;
-  constructor(private router: Router, private pollService: PollService, private authService: AuthService, private http: HttpClient) {}
+  isAuthenticated: boolean = false;
+
+  constructor(private router: Router, private pollService: PollService, private authService: AuthService, private http: HttpClient) {
+    if (this.authService.getToken()) {
+      this.isAuthenticated = true;
+    }
+  }
 
 
   ngOnInit() {
@@ -55,19 +61,71 @@ navigateToLogin() {
     return endTime > currentTime; // Return true if the poll is open, false if closed
   }
 
+  // isPollPublic(id: number) {
+  //   return this.pollService.pollPrivacy == "PUBLIC";
+  // }
+
   searchPollsById(id: number) {
     this.id = id;
-
+    if (!this.isAuthenticated) {
+      this.pollService.searchPublicPollsById(this.id).subscribe(
+          (poll: any) => {
+            console.log("Poll: ", poll)
+            if (this.isPollActive(poll)) {
+              // A poll with the given ID exists
+              this.router.navigate([`/vote`, id]);
+            } 
+            else if (!this.isPollActive(poll)) {
+              this.navigateToResults(id);
+            }
+            else {
+              // No poll found for the provided ID
+              this.errorMessage = `There is no poll with ID ${id}`;
+            }
+          },
+          (error:any) => {
+            if (error.status === 404) {
+              // Poll not found (404 error)
+              this.errorMessage = `There is no poll with ID ${id}`;;
+            } else {
+              this.errorMessage = 'The poll ID must be a number. Please try again.'
+              console.error('Error searching for the poll:', error);
+            }
+          }
+      )
+      console.log("Not authenticated")
+      // if (this.pollService.isPollPublic(id)) {
+      //   this.pollService.searchPublicPollsById(this.id).subscribe(
+      //     (poll: any) => {
+      //       if (this.isPollActive(poll)) {
+      //         // A poll with the given ID exists
+      //         this.router.navigate([`/vote`, id]);
+      //       } 
+      //       else if (!this.isPollActive(poll)) {
+      //         this.navigateToResults(id);
+      //       }
+      //       else {
+      //         // No poll found for the provided ID
+      //         this.errorMessage = `There is no poll with ID ${id}`;
+      //       }
+      //     },
+      //     (error:any) => {
+      //       if (error.status === 404) {
+      //         // Poll not found (404 error)
+      //         this.errorMessage = `There is no poll with ID ${id}`;;
+      //       } else {
+      //         this.errorMessage = 'The poll ID must be a number. Please try again.'
+      //         console.error('Error searching for the poll:', error);
+      //       }
+      //     }
+      // )};
+   } else {
     this.pollService.searchPollsById(this.id).subscribe(
       (poll: any) => {
         if (this.isPollActive(poll)) {
           // A poll with the given ID exists
           this.router.navigate([`/vote`, id]);
-        } 
-        else if (!this.isPollActive(poll)) {
-          this.navigateToResults(id)
-        }
-        else {
+        } else {
           // No poll found for the provided ID
           this.errorMessage = `There is no poll with ID ${id}`;
         }
@@ -75,14 +133,15 @@ navigateToLogin() {
       (error) => {
         if (error.status === 404) {
           // Poll not found (404 error)
-          this.errorMessage = `There is no poll with ID ${id}`;;
+          this.errorMessage = `There is no poll with ID ${id}`;
         } else {
-          this.errorMessage = 'The poll ID must be a number. Please try again.'
+          this.errorMessage = 'The poll ID must be a number. Please try again.';
           console.error('Error searching for the poll:', error);
         }
       }
     );
     }
+  }
 
   navigateToVote(question: string) {
     this.router.navigate(['/vote', question]);
