@@ -6,6 +6,8 @@ import { HttpClient } from '@angular/common/http';
 })
 export class AuthService {
 
+  constructor(private http: HttpClient) {}
+
   getToken(): string | null {
     return localStorage.getItem('jwt');
   }
@@ -18,8 +20,6 @@ export class AuthService {
   removeToken(): void {
     localStorage.removeItem('jwt');
   }
-
-  constructor(private http: HttpClient) {}
 
   login(credentials: { username: string, password: string }) {
     // Make an HTTP request to your Spring Boot backend for user authentication.

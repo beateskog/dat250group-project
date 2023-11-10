@@ -26,4 +26,11 @@ import { AuthService } from '../../services/auth.service'; // You'll need to cre
         }
       );
     }
+
+    goToPolls() {
+      // Redirect to the overview page without user authentication
+      this.router.navigate(['/overview'], { queryParams: { publicPollsOnly: true } });
+    }
+
+
   }

@@ -17,14 +17,24 @@ import { AuthService } from 'src/app/services/auth.service';
 export class MyPollsComponent implements OnInit {
 
   userPolls: any[] = [];
+  publicPolls: any[] = [];
   isConfirmationDialogOpen = false;
   confirmationMessage = '';
   noPollsMessage = ''
   pollIdToDelete: number | null = null;
+  pollToUpdate: any;
+  updatedPoll: any = null;
+  isAuthenticated!: boolean;
+  // isUpdateFormVisible: boolean = true;
+  isUpdateFormVisible: { [key: number]: boolean } = {};
   public noPolls: boolean = false;
+  errorMessage = '';
 
-  constructor(private pollService: PollService, private router: Router, private authService: AuthService) {}
-
+  constructor(private pollService: PollService, private router: Router, private authService: AuthService) {
+    if (this.authService.getToken()) {
+      this.isAuthenticated = true;
+    }
+  }
 
   ngOnInit() {
     this.pollService.getUserPolls().subscribe((polls: any) => {
@@ -34,6 +44,7 @@ export class MyPollsComponent implements OnInit {
         this.noPollsMessage = "It looks like you haven't made any polls yet. Create your first poll!";
       } else {
         this.userPolls = polls;
+        this.userPolls.forEach(poll => this.isUpdateFormVisible[poll.id] = false);
       }
     });
   }
@@ -43,6 +54,34 @@ export class MyPollsComponent implements OnInit {
     console.log("you pressed the 'Open poll' button")
   }
 
+  updatePoll(updatedPoll: any) {
+    if (updatedPoll) {
+      // Convert the startTime to a DateTime object
+      const startTime = DateTime.fromISO(updatedPoll.startTime);
+      const currentTime = DateTime.local(); // Get the current time
+  
+      // Check if the startTime is before the current time
+      if (startTime < currentTime) {
+        // Handle the case where startTime is before the current time
+        this.errorMessage = 'Start time cannot be in the past';
+        // You can display an error message to the user or prevent form submission.
+      } else {
+        // Make the PUT request to update the poll
+        this.pollService.updatePoll(updatedPoll).subscribe(
+          (response) => {
+            // Handle successful update, e.g., display a success message
+            console.log('Poll updated successfully');
+            // Clear the form
+            this.isUpdateFormVisible[updatedPoll.id] = false;
+          },
+          (error) => {
+            // Handle update error, e.g., display an error message
+            console.error('Error updating poll:', error);
+          }
+        );
+      }
+    }
+  }
 
   deletePoll(pollId: number): void {
     // Implement logic to delete the poll by its ID
@@ -96,5 +135,13 @@ export class MyPollsComponent implements OnInit {
 
   navigateToOverview() {
     this.router.navigate(['/overview']);
+  }
+
+  navigateToLogin() {
+    this.router.navigate(['/login'])
+  }
+
+  toggleUpdateFormVisibility(pollId: number) {
+    this.isUpdateFormVisible[pollId] = !this.isUpdateFormVisible[pollId];
   }
 }

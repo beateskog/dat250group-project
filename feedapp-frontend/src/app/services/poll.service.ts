@@ -10,6 +10,7 @@ import { Observable, catchError, map, of, throwError } from 'rxjs';
 })
 
 export class PollService {
+
   public noPolls: boolean = false;
   public confirmationMessage: string = '';
   public isConfirmationDialogOpen: boolean = false;
@@ -33,6 +34,22 @@ export class PollService {
 
     return this.http.post(`http://localhost:8080/poll`, request, {headers});
   }
+
+  updatePoll(credentials: {pollPrivacy: PollPrivacy, startTime: DateTime, endTime: DateTime, id: number, pollOwnerId: number}) {
+    const authToken = this.authService.getToken();
+    const headers = new HttpHeaders({
+    Authorization: `Bearer ${authToken}`
+    })
+    const request = {
+      id: credentials.id,
+      pollOwnerId: credentials.pollOwnerId,
+      pollPrivacy: credentials.pollPrivacy,
+      startTime: credentials.startTime.toString(),
+      endTime: credentials.endTime.toString(),
+    };
+    return this.http.put(`http://localhost:8080/poll`, request, {headers});
+  }
+
 
   deletePoll(id: number) {
     const authToken = this.authService.getToken();
@@ -80,6 +97,10 @@ export class PollService {
     );
   }
 
+  getPublicPolls() {
+    return this.http.get('http://localhost:8080/poll/all/public');
+  }
+
   searchPollsById(id: number) {
     const authToken = this.authService.getToken();
     const headers = new HttpHeaders({
@@ -91,7 +112,6 @@ export class PollService {
   isPollActive(poll: any): boolean {
     const currentTime = DateTime.local(); // Get the current time
     const endTime = DateTime.fromISO(poll.endTime); // Parse poll's end time
-
     return endTime > currentTime; // Return true if poll is open, false if closed
   }
 
@@ -108,7 +128,6 @@ export class PollService {
     const headers = new HttpHeaders({
       Authorization: `Bearer ${authToken}`,
     });
-    // Send a request to retrieve poll results based on the question
     return this.http.get(`http://localhost:8080/poll/${pollId}`, {headers});
   }
 
