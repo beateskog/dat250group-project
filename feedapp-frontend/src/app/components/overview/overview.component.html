@@ -1,6 +1,14 @@
 <header>Polls</header>
 <button (click)="navigateToLogin()">Return to login</button>
 <button (click)="logout()">Logout</button>
+
+
+<div *ngIf="isAdmin">
+  <!-- Render admin-specific functionality here -->
+  <button (click)="adminFunctionality()">Admin Functionality</button>
+</div>
+
+
 <div *ngIf="!isAuthenticated">
   <p>You are not logged in</p>
 </div>

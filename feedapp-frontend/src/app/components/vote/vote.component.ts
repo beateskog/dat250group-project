@@ -22,6 +22,7 @@ export class VoteComponent implements OnInit {
   showVoteMessage: boolean = false;
   voteMessageTimer: any;
   errorMessage!: string;
+  hasVoted: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -74,17 +75,17 @@ export class VoteComponent implements OnInit {
               console.error('Error fetching results: ', error);
             }
           );
-          // this.voteMessageTimer = setTimeout(() => {
-          //   this.voteMessageTimer = false;
-          // }, 2000);
-
         }, 1500);
 
   
       },
       (error) => {
-        this.errorMessage = "You have already voted in this poll.";
         console.error('Error while voting: ', error)
+        this.hasVoted = true;
       });
   }
+
+  seeResults(id: number) {
+    this.router.navigate([`/poll/${id}`]);
+    }
 }

@@ -24,7 +24,7 @@ export class ResultsComponent implements OnInit {
       if (pollId !== null) {
         this.pollId = +pollId;
   
-        // Fetch poll data based on pollId using your PollService method
+        // Fetch poll data based on pollId using our PollService method
         this.pollService.getResults(this.pollId).subscribe((data) => {
           this.pollData = data;
           // Additional code to process the poll data if needed

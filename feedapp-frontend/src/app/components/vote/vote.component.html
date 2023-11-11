@@ -10,3 +10,10 @@
 </div>
 
 <div class="vote-message" *ngIf="showVoteMessage">Thanks for your vote!</div>
+<div>
+  <!-- Conditionally render the message if the user has voted -->
+  <p *ngIf="hasVoted">You have already voted in this poll.</p>
+  
+  <!-- Conditionally render the button if the user has voted -->
+  <button *ngIf="hasVoted" (click)="seeResults(pollId)">See Results</button>
+</div>

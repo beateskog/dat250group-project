@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 import { PollService } from 'src/app/services/poll.service';
 import { LoginComponent } from '../login/login.component';
-import { AccountService } from 'src/app/services/account.service';
+import { Account, AccountService } from 'src/app/services/account.service';
 
 @Component({
   selector: 'app-overview',
@@ -12,6 +12,9 @@ import { AccountService } from 'src/app/services/account.service';
   styleUrls: ['./overview.component.css']
 })
 export class OverviewComponent {
+
+adminFunctionality() {
+}
 navigateToLogin() {
   this.router.navigate(['/login']);
 }
@@ -21,17 +24,21 @@ navigateToLogin() {
   pollUrl!: string;
   userId!: number;
   username!: string;
+  role!: string;
   publicPollsOnly: boolean = false
   errorMessage: string | null = null;
   isAuthenticated: boolean = false;
+  error!: string;
+  isAdmin: boolean = false;
 
+  account: { id: number, username: string, role: string, numberOfPolls: number, polls: [] } = { id: 0, username: '', role: '', numberOfPolls: 0, polls: []};
 
   constructor(private router: Router, private pollService: PollService, private authService: AuthService, private accountService: AccountService, private http: HttpClient) {
     if (this.authService.getToken()) {
       this.isAuthenticated = true;
+
     }
   }
-
 
   ngOnInit() {
     const authToken = this.authService.getToken();
@@ -42,7 +49,26 @@ navigateToLogin() {
         this.username = this.accountService.getUsername();
         this.getPolls();
         this.isAuthenticated = true
+
+
+        this.accountService.getAccountByUsername(this.username).subscribe(
+          (account) => {
+            this.role = account.role
+            console.log("Role: ", this.role)
+            if (this.role == "ADMIN") {
+              this.isAdmin = true;
+              console.log("You are now logged in as administrator.");
+            }
+          },
+          (error: any) => {
+            this.error = "Something went wrong when trying to fetch the account";
+            console.error("Login failed:", error);
+          }
+        );
       };
+
+
+
   }
 
   private getPolls() {

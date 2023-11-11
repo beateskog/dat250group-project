@@ -18,6 +18,7 @@ export interface Account {
 export class AccountService {
 
   private username: string = '';
+  private role!: string;
 
   constructor(private http: HttpClient) { }
 
@@ -29,10 +30,9 @@ export class AccountService {
     return this.username;
   }
 
-  // getAccountDetails(): Account {
-
-  //   return 
-  // }
+  getRole(): string {
+    return this.role;
+  }
 
   getAccountByUsername(username: string): Observable<Account> {
     return this.http.get<Account>(`http://localhost:8080/account/username/${username}`);
