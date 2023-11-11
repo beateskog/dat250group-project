@@ -1,13 +1,27 @@
 <header>Polls</header>
 <button (click)="navigateToLogin()">Return to login</button>
 <button (click)="logout()">Logout</button>
+<div *ngIf="!isAuthenticated">
+  <p>You are not logged in</p>
+</div>
+<div *ngIf="isAuthenticated">
+  <p>You are logged in as: "{{this.username}}" </p>
+</div>
 <div id="search-bar">
   <input type="text" placeholder="Search for Poll ID:" [(ngModel)]="id">
   <button (click)="searchPollsById(id)">Search</button>
   <div class="error-message" *ngIf="errorMessage">
     {{ errorMessage }}
   </div>
+  <div id="poll-url-search">
+    <input type="text" placeholder="Enter Poll URL:" [(ngModel)]="pollUrl">
+    <button (click)="searchPollsByURL(pollUrl)">Search</button>
+  </div>
 </div>
+
+
+
+
 <div id="poll-container">
   <!-- Loop through polls and display them dynamically -->
   <div class="poll-box" *ngFor="let poll of polls">

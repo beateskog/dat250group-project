@@ -3,6 +3,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 import { PollService } from 'src/app/services/poll.service';
+import { LoginComponent } from '../login/login.component';
+import { AccountService } from 'src/app/services/account.service';
 
 @Component({
   selector: 'app-overview',
@@ -16,12 +18,15 @@ navigateToLogin() {
 
   polls: any[] = []; 
   id!: number;
+  pollUrl!: string;
   userId!: number;
+  username!: string;
   publicPollsOnly: boolean = false
   errorMessage: string | null = null;
   isAuthenticated: boolean = false;
 
-  constructor(private router: Router, private pollService: PollService, private authService: AuthService, private http: HttpClient) {
+
+  constructor(private router: Router, private pollService: PollService, private authService: AuthService, private accountService: AccountService, private http: HttpClient) {
     if (this.authService.getToken()) {
       this.isAuthenticated = true;
     }
@@ -32,8 +37,11 @@ navigateToLogin() {
     const authToken = this.authService.getToken();
       if (!authToken) {
         this.getPublicPolls();
+        this.isAuthenticated = false;
       } else {
+        this.username = this.accountService.getUsername();
         this.getPolls();
+        this.isAuthenticated = true
       };
   }
 
@@ -61,9 +69,6 @@ navigateToLogin() {
     return endTime > currentTime; // Return true if the poll is open, false if closed
   }
 
-  // isPollPublic(id: number) {
-  //   return this.pollService.pollPrivacy == "PUBLIC";
-  // }
 
   searchPollsById(id: number) {
     this.id = id;
@@ -94,38 +99,18 @@ navigateToLogin() {
           }
       )
       console.log("Not authenticated")
-      // if (this.pollService.isPollPublic(id)) {
-      //   this.pollService.searchPublicPollsById(this.id).subscribe(
-      //     (poll: any) => {
-      //       if (this.isPollActive(poll)) {
-      //         // A poll with the given ID exists
-      //         this.router.navigate([`/vote`, id]);
-      //       } 
-      //       else if (!this.isPollActive(poll)) {
-      //         this.navigateToResults(id);
-      //       }
-      //       else {
-      //         // No poll found for the provided ID
-      //         this.errorMessage = `There is no poll with ID ${id}`;
-      //       }
-      //     },
-      //     (error:any) => {
-      //       if (error.status === 404) {
-      //         // Poll not found (404 error)
-      //         this.errorMessage = `There is no poll with ID ${id}`;;
-      //       } else {
-      //         this.errorMessage = 'The poll ID must be a number. Please try again.'
-      //         console.error('Error searching for the poll:', error);
-      //       }
-      //     }
-      // )};
+ 
    } else {
     this.pollService.searchPollsById(this.id).subscribe(
       (poll: any) => {
         if (this.isPollActive(poll)) {
           // A poll with the given ID exists
           this.router.navigate([`/vote`, id]);
-        } else {
+        } 
+        else if (!this.isPollActive(poll)) {
+          this.navigateToResults(id)
+        }
+        else {
           // No poll found for the provided ID
           this.errorMessage = `There is no poll with ID ${id}`;
         }
@@ -141,6 +126,22 @@ navigateToLogin() {
       }
     );
     }
+  }
+
+  searchPollsByURL(pollUrl: string) {
+
+    const urlPattern = /^http:\/\/localhost:8080\/poll\/\d+$/;
+    if (!urlPattern.test(pollUrl)) {
+      // The provided URL is not valid, display an error message
+      this.errorMessage = 'Please enter a valid URL';
+      return; // Exit the method
+    }
+      // If the URL is valid, extract the poll ID
+    const urlParts = pollUrl.split('/');
+    const pollId = Number(urlParts[urlParts.length - 1]); // You can use Number() or parseInt() as needed
+    console.log(pollId)
+
+    this.searchPollsById(pollId);
   }
 
   navigateToVote(question: string) {
