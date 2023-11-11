@@ -21,6 +21,7 @@ export class VoteComponent implements OnInit {
   pollId!: number;
   showVoteMessage: boolean = false;
   voteMessageTimer: any;
+  errorMessage!: string;
 
   constructor(
     private route: ActivatedRoute,
@@ -57,22 +58,32 @@ export class VoteComponent implements OnInit {
         console.log("Vote submitted successfully");
         this.showVoteMessage = true;
         console.log(this.showVoteMessage);
-        this.voteMessageTimer = setTimeout(() => {
-          this.voteMessageTimer = false;
-        }, 2000);
 
-        // Navigate to the results page after voting
-        this.pollService.getResults(id).subscribe(
-          (pollData) => {
-            // Navigate to the results page and pass the results content
-            this.router.navigate([`/poll/${id}`]);
-          },
-          (error) => {
-            console.error('Error fetching results: ', error);
-          }
-        );
+        setTimeout(() => {
+          this.showVoteMessage = false;
+        }, 2000);
+    
+        // Navigate to the results page after a brief delay
+        setTimeout(() => {
+          this.pollService.getResults(id).subscribe(
+            (pollData) => {
+              // Navigate to the results page and pass the results content
+              this.router.navigate([`/poll/${id}`]);
+            },
+            (error) => {
+              console.error('Error fetching results: ', error);
+            }
+          );
+          // this.voteMessageTimer = setTimeout(() => {
+          //   this.voteMessageTimer = false;
+          // }, 2000);
+
+        }, 1500);
+
+  
       },
       (error) => {
+        this.errorMessage = "You have already voted in this poll.";
         console.error('Error while voting: ', error)
       });
   }

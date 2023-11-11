@@ -1,8 +1,12 @@
 <div class="container">
+  <a class="go-back-button" routerLink="/overview">Back</a>
   <h1>{{ question }}</h1>
   <p>Poll ID: {{ pollId }}</p>
   <button (click)="vote(pollId, true)">Yes</button>
   <button (click)="vote(pollId, false)">No</button>
+  <div class="error-message" *ngIf="errorMessage">
+    {{ errorMessage }}
+  </div>
 </div>
 
 <div class="vote-message" *ngIf="showVoteMessage">Thanks for your vote!</div>
