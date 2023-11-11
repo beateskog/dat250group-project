@@ -59,6 +59,9 @@
 - inside iotSimulation folder run `npm install -g http-server` to install dependencies
 - then run `http-server -p 8000` to start the server on `http://localhost:8000/`
 
+**Docker image**
+`docker build -t iot-simulation:latest .`
+
 ## RabbitMQ
 - When application is running, locate to:`http://localhost:15672`
 - Username: `guest`
