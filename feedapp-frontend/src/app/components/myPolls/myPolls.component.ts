@@ -7,6 +7,14 @@ import { Router } from '@angular/router';
 import { HttpHeaders } from '@angular/common/http';
 import { AuthService } from 'src/app/services/auth.service';
 
+interface PollUpdate {
+  id: number; 
+  pollOwnerId: number;
+  pollPrivacy?: PollPrivacy;
+  startTime?: DateTime;
+  endTime?: DateTime;
+}
+
 @Component({
   selector: 'app-my-polls',
   templateUrl: './myPolls.component.html',
@@ -49,11 +57,6 @@ export class MyPollsComponent implements OnInit {
     });
   }
 
-
-  openPoll() {
-    console.log("you pressed the 'Open poll' button")
-  }
-
   updatePoll(updatedPoll: any) {
     if (updatedPoll) {
       // Convert the startTime to a DateTime object
@@ -82,6 +85,48 @@ export class MyPollsComponent implements OnInit {
       }
     }
   }
+
+
+  openPoll() {
+    console.log("you pressed the 'Open poll' button")
+  }
+
+  // updatePoll(updatedPoll: PollUpdate) {
+
+  //   // Create a copy of the original poll object
+  //   const originalPoll = { ...this.userPolls.find(p => p.id === updatedPoll.id) };
+  //   const changes: PollUpdate = {
+  //     id: updatedPoll.id,
+  //     pollOwnerId: updatedPoll.pollOwnerId
+  //   };
+
+  //   if (originalPoll.pollPrivacy !== updatedPoll.pollPrivacy) {
+  //     changes['pollPrivacy'] = updatedPoll.pollPrivacy;
+  //   }
+
+  //   if (originalPoll.startTime !== updatedPoll.startTime) {
+  //     changes['startTime'] = updatedPoll.startTime;
+  //   }
+
+  //   if (originalPoll.endTime !== updatedPoll.endTime) {
+  //     changes['endTime'] = updatedPoll.endTime;
+  //   }
+
+  //   if (updatedPoll) {
+  //     // Make the PUT request to update the poll with only the changed fields
+  //     this.pollService.updatePoll(changes).subscribe(
+  //       (response) => {
+  //         // Handle successful update, e.g., display a success message
+  //         console.log('Poll updated successfully');
+  //         // Clear the form
+  //         this.isUpdateFormVisible[updatedPoll.id] = false;
+  //       },
+  //       (error) => {
+  //         // Handle update error, e.g., display an error message
+  //         console.error('Error updating poll:', error);
+  //       }
+  //     );
+  //   }
 
   deletePoll(pollId: number): void {
     // Implement logic to delete the poll by its ID

@@ -12,6 +12,10 @@ import { Account, AccountService } from 'src/app/services/account.service';
   styleUrls: ['./overview.component.css']
 })
 export class OverviewComponent {
+  isConfirmationDialogOpen!: boolean;
+  pollIdToDelete: number | null = null;
+  confirmationMessage!: string;
+
 
 adminFunctionality() {
 }
@@ -42,42 +46,43 @@ navigateToLogin() {
 
   ngOnInit() {
     const authToken = this.authService.getToken();
-      if (!authToken) {
-        this.getPublicPolls();
-        this.isAuthenticated = false;
-      } else {
-        this.username = this.accountService.getUsername();
-        this.getPolls();
-        this.isAuthenticated = true
 
+    if (!authToken) {
+      this.getPublicPolls();
+      this.isAuthenticated = false;
+    } else {
+      this.username = this.accountService.getUsername();
+      this.getPolls();
+      this.isAuthenticated = true;
+      console.log("polls: ", this.polls)
 
-        this.accountService.getAccountByUsername(this.username).subscribe(
-          (account) => {
-            this.role = account.role
-            console.log("Role: ", this.role)
-            if (this.role == "ADMIN") {
-              this.isAdmin = true;
-              console.log("You are now logged in as administrator.");
-            }
-          },
-          (error: any) => {
-            this.error = "Something went wrong when trying to fetch the account";
-            console.error("Login failed:", error);
+      this.accountService.getAccountByUsername(this.username).subscribe(
+        (account) => {
+          this.role = account.role;
+          console.log("Role: ", this.role);
+          if (this.role == "ADMIN") {
+            this.isAdmin = true;
+            console.log("You are now logged in as administrator.");
           }
-        );
-      };
-
-
-
+        },
+        (error: any) => {
+          this.error = "Something went wrong when trying to fetch the account";
+          console.error("Login failed:", error);
+        }
+      );
+    }
   }
 
   private getPolls() {
-    this.pollService.getPolls().subscribe({
-      next: (polls: any) => {
+    this.pollService.getPolls().subscribe(
+      (polls: any) => {
         this.polls = polls;
+        console.log("Fetched polls: ", this.polls)
       },
-      error: () => {}
-    });
+      (error) => {
+        console.error('Error fetching polls:', error);
+      }
+    );
   }
 
   private getPublicPolls() {
@@ -177,6 +182,63 @@ navigateToLogin() {
   navigateToResults(id: number) {
     this.pollService.getEndedPollResults
     this.router.navigate(['/results', id]);
+  }
+
+
+  deletePoll(id: number): void {
+  
+    // Make sure to subscribe to the HTTP request
+    this.pollService.deletePoll(id).subscribe(
+      (response) => {
+        // Handle successful deletion here
+        console.log("the response is: ", response)
+        console.log(`Poll with ID ${id} deleted successfully`);
+        this.polls = this.polls.filter((poll) => poll.id !== id);
+        // const index = this.polls.findIndex((poll) => poll.id === id);
+        // if (index !== -1) {
+        //   this.polls.splice(index, 1);
+        //   console.log(this.polls)
+        // }
+        // You might want to refresh the list of polls or update the view as needed
+      },
+      (error) => {
+        // Handle error here
+        console.error(`Error deleting poll with ID ${id}:`, error);
+      }
+    );
+  }
+
+  onNoClick(): void {
+    this.isConfirmationDialogOpen = false;
+    this.pollIdToDelete = null;
+  }
+
+  onYesClick(): void {
+    console.log("Pollid to delete: ", this.pollIdToDelete)
+    if (this.pollIdToDelete !== null) {
+      this.isConfirmationDialogOpen = false;
+
+      // Perform the poll deletion and remove it from the list using this.pollIdToDelete
+      this.pollService.deletePoll(this.pollIdToDelete).subscribe(
+        () => {
+          // Poll deletion successful, remove it from the list
+          console.log(`Poll ${this.pollIdToDelete} was deleted successfully!`)
+        },
+        (error) => {
+          console.error('Error deleting poll:', error);
+        }
+      );
+
+      this.confirmationMessage = '';
+      this.pollIdToDelete = null;
+    }
+  }
+
+  openConfirmationDialog(pollId: number): void {
+    this.pollIdToDelete = pollId; // Ensure pollIdToDelete is assigned correctly
+    console.log('Poll ID to delete:', this.pollIdToDelete); // Add a console log for debugging
+    this.isConfirmationDialogOpen = true;
+    this.confirmationMessage = 'Are you sure you want to delete this poll?';
   }
 
   logout() {

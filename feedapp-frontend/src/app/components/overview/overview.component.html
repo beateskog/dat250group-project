@@ -42,6 +42,7 @@
       <ng-template #resultsButton>
         <button (click)="navigateToResults(poll.id)">View Results</button>
       </ng-template>
+      <button *ngIf="isAdmin" (click)="openConfirmationDialog(poll.id)">Delete</button>
     </div>
     <h2 class="poll-question">{{ poll.question }}</h2>
     <div class="poll-content">
@@ -57,6 +58,13 @@
       <div class="poll-id">Poll ID: {{ poll.id }}</div>
     </div>
   </div>
+</div>
+
+<div *ngIf="isConfirmationDialogOpen" class="confirmation-dialog">
+  <h1>Confirmation</h1>
+  <p>{{ confirmationMessage }}</p>
+  <button (click)="onNoClick()">No, go back</button>
+  <button class="warn" (click)="onYesClick()">Yes, delete</button>
 </div>
 
 <a class="my-profile-button" routerLink="/myPolls">My Profile</a>
