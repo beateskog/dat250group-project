@@ -278,8 +278,8 @@ public class PollServiceImplTest {
     @Test
     void updatePoll_EndTimeBeforeStartTime(){
         pollDTO.setId(1L);
-        pollDTO.setStartTime(LocalDateTime.of(2023, 11, 11, 10, 0));
-        pollDTO.setEndTime(LocalDateTime.of(2023, 11, 10, 19, 0));
+        pollDTO.setStartTime(LocalDateTime.of(2099, 11, 11, 10, 0));
+        pollDTO.setEndTime(LocalDateTime.of(2099, 11, 10, 19, 0));
         when(pollRepository.findById(1L)).thenReturn(Optional.of(poll));
 
         assertThatExceptionOfType(IllegalArgumentException.class)
