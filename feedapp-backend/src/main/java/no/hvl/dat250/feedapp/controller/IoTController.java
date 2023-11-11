@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import no.hvl.dat250.feedapp.dto.VoteDTO;
@@ -23,6 +24,7 @@ import no.hvl.dat250.feedapp.model.Poll;
 import no.hvl.dat250.feedapp.model.Vote;
 import no.hvl.dat250.feedapp.repository.PollRepository;
 import no.hvl.dat250.feedapp.service.iot.IotSercive;
+import no.hvl.dat250.feedapp.service.JwtService;
 import no.hvl.dat250.feedapp.service.VoteService;
 
 /**
@@ -42,6 +44,28 @@ public class IoTController {
 
     @Autowired
     private IotSercive iotSercive;
+
+    @Autowired
+    private JwtService jwtservice;
+
+    /**
+     * Authenticates the IoT device
+     * @param apiKey the api key to authenticate the request
+     * @return a jwt token
+     */
+    @PostMapping("/authenticate")
+    public ResponseEntity<?> authenticate(@RequestParam String apiKey) {
+        try {
+            if (iotSercive.isValidApiKey(apiKey)) {
+                String jwt = jwtservice.generateTokenForApiKey(apiKey);
+                return ResponseEntity.ok(jwt);
+            } else {
+                throw new AccessDeniedException("Invalid API key");
+            }
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body("Authentication failed: " + e.getMessage());
+        }
+    }
 
     /**
      * Creates votes from an IoT device
@@ -66,6 +90,7 @@ public class IoTController {
             return ResponseEntity.internalServerError().body(ex.getMessage());
         }
     }
+
 
     /**
      * Gets the question of a public poll

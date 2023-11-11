@@ -7,6 +7,7 @@ package no.hvl.dat250.feedapp.dto.iot;
 public class IoTRequest {
 
     private Long pollId;
+    private int pollPin;
     private String question;
 
     public void setPollId(Long pollId) {
@@ -23,6 +24,14 @@ public class IoTRequest {
 
     public String getQuestion() {
         return question;
+    }
+
+    public int getPollPin() {
+        return pollPin;
+    }
+
+    public void setPollPin(int pollPin) {
+        this.pollPin = pollPin;
     }
 
     

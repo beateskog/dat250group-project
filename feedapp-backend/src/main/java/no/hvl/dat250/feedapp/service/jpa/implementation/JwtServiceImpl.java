@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
@@ -73,4 +74,36 @@ public class JwtServiceImpl implements JwtService {
         return Keys.hmacShaKeyFor(keyBytes);
 
     }
+
+    public String generateTokenForApiKey(String apiKey) {
+        Map<String, Object> claims = new HashMap<>();
+        return generateTokenForApiKey(apiKey, claims);
+    }
+
+    public String generateTokenForApiKey(String string, Map<String, Object> claims) {
+        return Jwts.builder()
+            .setClaims(claims)
+            .setSubject(string)
+            .setIssuedAt(new Date(System.currentTimeMillis()))
+            .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60* 1))
+            .signWith(getKey(), SignatureAlgorithm.HS256)
+            .compact();
+    }
+
+    public boolean isValidSessionToken(String token) {
+        try {
+            Jwts.parserBuilder()
+                .setSigningKey(getKey())
+                .build()
+                .parseClaimsJws(token);
+            return true;
+        } catch (JwtException e) {
+            return false;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+
+
 }

@@ -20,6 +20,7 @@ public class SecurityConfig {
     @Autowired
     JwtAuthFilter jwtAuthFilter;
 
+   
     /*
      * This method configures the security filter chain.
      * It is responsible for authenticating the user and checking if the user has the correct permissions.
@@ -28,8 +29,9 @@ public class SecurityConfig {
     @Bean 
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-			.csrf()
-            .disable()
+			.csrf().disable()
+            .cors()
+            .and()
 			.authorizeHttpRequests()
             // update here based on what should be authentication or not
 			.requestMatchers("/**").permitAll()

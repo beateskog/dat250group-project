@@ -51,4 +51,11 @@ public interface JwtService {
      * @return the generated jwt
      */
     public String generateToken(UserDetails userDetails);
+
+    public String generateTokenForApiKey(String apiKey);
+
+    public String generateTokenForApiKey(String string, Map<String, Object> claims);
+
+    public boolean isValidSessionToken(String token);
+    
 }
