@@ -1,5 +1,5 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 import { PollService } from 'src/app/services/poll.service';
@@ -12,6 +12,7 @@ import { Account, AccountService } from 'src/app/services/account.service';
   styleUrls: ['./overview.component.css']
 })
 export class OverviewComponent {
+
   isConfirmationDialogOpen!: boolean;
   pollIdToDelete: number | null = null;
   confirmationMessage!: string;
@@ -34,10 +35,11 @@ navigateToLogin() {
   isAuthenticated: boolean = false;
   error!: string;
   isAdmin: boolean = false;
+  accounts!: Account[]
 
   account: { id: number, username: string, role: string, numberOfPolls: number, polls: [] } = { id: 0, username: '', role: '', numberOfPolls: 0, polls: []};
 
-  constructor(private router: Router, private pollService: PollService, private authService: AuthService, private accountService: AccountService, private http: HttpClient) {
+  constructor(private router: Router, private pollService: PollService, private authService: AuthService, private accountService: AccountService, private http: HttpClient, private changeDetectorRef: ChangeDetectorRef) {
     if (this.authService.getToken()) {
       this.isAuthenticated = true;
 
@@ -47,10 +49,13 @@ navigateToLogin() {
   ngOnInit() {
     const authToken = this.authService.getToken();
 
+
     if (!authToken) {
       this.getPublicPolls();
       this.isAuthenticated = false;
-    } else {
+    } 
+    
+    else {
       this.username = this.accountService.getUsername();
       this.getPolls();
       this.isAuthenticated = true;
@@ -63,6 +68,16 @@ navigateToLogin() {
           if (this.role == "ADMIN") {
             this.isAdmin = true;
             console.log("You are now logged in as administrator.");
+
+            this.accountService.getAllAccounts().subscribe(
+              (account: Account[]) => {
+                this.accounts = account;
+                console.log("The accounts are: ", this.accounts)
+              },
+              (error) => {
+                console.error('Error fetching accounts:', error);
+              }
+            );
           }
         },
         (error: any) => {
@@ -233,6 +248,26 @@ navigateToLogin() {
       this.pollIdToDelete = null;
     }
   }
+
+  deleteAccount(accountId: number) {
+    if (confirm("Are you sure you want to delete this account? This action cannot be undone.")) {
+      // Send a DELETE request to delete the account
+      this.accountService.deleteAccountById(accountId).subscribe(
+        () => {
+          // Account deleted successfully, remove it from the list
+          this.accounts = this.accounts.filter(account => account.id !== accountId);
+          this.changeDetectorRef.detectChanges();
+        },
+        (error) => {
+          console.error('Error deleting account:', error);
+        }
+      );
+    }
+  }
+  
+  trackAccountBy(index: number, account: Account): number {
+    return account.id
+  } 
 
   openConfirmationDialog(pollId: number): void {
     this.pollIdToDelete = pollId; // Ensure pollIdToDelete is assigned correctly

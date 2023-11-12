@@ -3,11 +3,6 @@
 <button (click)="logout()">Logout</button>
 
 
-<div *ngIf="isAdmin">
-  <!-- Render admin-specific functionality here -->
-  <button (click)="adminFunctionality()">Admin Functionality</button>
-</div>
-
 
 <div *ngIf="!isAuthenticated">
   <p>You are not logged in</p>
@@ -21,10 +16,27 @@
   <div class="error-message" *ngIf="errorMessage">
     {{ errorMessage }}
   </div>
-  <div id="poll-url-search">
+  <!-- <div id="poll-url-search">
     <input type="text" placeholder="Enter Poll URL:" [(ngModel)]="pollUrl">
     <button (click)="searchPollsByURL(pollUrl)">Search</button>
-  </div>
+  </div> -->
+</div>
+
+<div *ngIf="isAdmin">
+  <!-- Render admin-specific functionality here -->
+  <!-- <button (click)="adminFunctionality()">Admin Functionality</button> -->
+  
+  <h2>Accounts</h2>
+  <ul>
+    <li *ngFor="let account of accounts; trackBy: trackAccountBy">
+      Username: "{{ account.username }}"
+      Role: {{ account.role }}
+      Account-id: {{ account.id }} 
+      Number of polls: {{ account.numberOfpolls }}
+      Polls: {{ account.polls }}
+      <button (click)="deleteAccount(account.id)">Delete account</button>
+    </li>
+  </ul>
 </div>
 
 

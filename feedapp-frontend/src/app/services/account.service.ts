@@ -34,6 +34,10 @@ export class AccountService {
     return this.role;
   }
 
+  getAllAccounts(): Observable<Account[]> {
+    return this.http.get<Account[]>(`http://localhost:8080/account`);
+  }
+
   getAccountByUsername(username: string): Observable<Account> {
     return this.http.get<Account>(`http://localhost:8080/account/username/${username}`);
   }
@@ -41,4 +45,9 @@ export class AccountService {
   getAccountById(id: number) {
     return this.http.get(`http://localhost:8080/account/id/${id}`);
   }
+
+  deleteAccountById(id: number) {
+    return this.http.delete(`http://localhost:8080/account/${id}`)
+  }
+
 }
