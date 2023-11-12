@@ -16,6 +16,7 @@ import { ResultsComponent } from './components/results/results.component';
 import { VoteComponent } from './components/vote/vote.component';
 import { AuthService } from './services/auth.service';
 import { PollListComponent } from './components/poll-list/poll-list.component';
+// import { PollComponent } from './components/poll/poll.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { PollListComponent } from './components/poll-list/poll-list.component';
     VoteComponent,
     LoginComponent,
     CreatePollComponent,
-    PollListComponent
+    PollListComponent,
+    // PollComponent
   ],
   imports: [
     BrowserModule,

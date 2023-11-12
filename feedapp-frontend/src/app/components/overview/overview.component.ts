@@ -42,7 +42,6 @@ navigateToLogin() {
   constructor(private router: Router, private pollService: PollService, private authService: AuthService, private accountService: AccountService, private http: HttpClient, private changeDetectorRef: ChangeDetectorRef) {
     if (this.authService.getToken()) {
       this.isAuthenticated = true;
-
     }
   }
 

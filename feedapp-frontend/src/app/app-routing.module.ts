@@ -8,6 +8,7 @@ import { RegisterComponent } from './components/register/register.component';
 import { ResultsComponent } from './components/results/results.component';
 import { VoteComponent } from './components/vote/vote.component';
 import { CreatePollComponent } from './components/createPoll/createPoll.component';
+// import { PollComponent } from './components/poll/poll.component';
 
 
 const routes: Routes = [
@@ -22,6 +23,7 @@ const routes: Routes = [
     { path: 'poll/:pollId', component: ResultsComponent},
     { path: 'createPoll', component: CreatePollComponent},
     { path: 'vote/:id', component: VoteComponent},
+    // { path: 'poll/:id', component: PollComponent},
     { path: '', redirectTo: '/login', pathMatch: 'full' },
 ];
 
