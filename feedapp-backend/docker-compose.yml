@@ -10,9 +10,14 @@ services:
     environment:
       SPRING_DATA_MONGODB_URI: mongodb://mongo:27017/feedappdb
       RABBITMQ_HOST: rabbitmq
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/postgres
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
     depends_on:
       - mongo
       - rabbitmq
+      - postgres
+      - iot-simulation
 
   feedapp-frontend:
     image: feedapp-frontend:latest
@@ -23,9 +28,17 @@ services:
       - 4200:80
     depends_on:
       - feedapp
-      - mongo
-      - rabbitmq
-      - iot-simulation
+
+  postgres:
+    image: postgres:latest
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
 
   mongo:
     image: mongo:latest
@@ -49,5 +62,5 @@ services:
       - 5672:5672
 
 volumes:
-  mongodb_data:
-
+  mongodb_data: {}
+  postgres_data: {}

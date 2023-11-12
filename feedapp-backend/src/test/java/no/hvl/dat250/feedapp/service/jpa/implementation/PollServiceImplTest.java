@@ -253,16 +253,17 @@ public class PollServiceImplTest {
             .withMessage("Poll ID must be provided.");
     }
 
-    @Test
-    void updatePoll_StartTimeBeforeCurrentTime(){
-        pollDTO.setId(1L);
-        pollDTO.setStartTime(LocalDateTime.of(2010, 11, 10, 19, 0));
-        when(pollRepository.findById(1L)).thenReturn(Optional.of(poll));
+    //THIS FEATURE HAS BEEN REMOVED
+    // @Test
+    // void updatePoll_StartTimeBeforeCurrentTime(){
+    //     pollDTO.setId(1L);
+    //     pollDTO.setStartTime(LocalDateTime.of(2010, 11, 10, 19, 0));
+    //     when(pollRepository.findById(1L)).thenReturn(Optional.of(poll));
 
-        assertThatExceptionOfType(IllegalArgumentException.class)
-            .isThrownBy(() -> pollService.updatePoll(pollDTO))
-            .withMessage("Start time cannot be before current time.");
-    }
+    //     assertThatExceptionOfType(IllegalArgumentException.class)
+    //         .isThrownBy(() -> pollService.updatePoll(pollDTO))
+    //         .withMessage("Start time cannot be before current time.");
+    // }
 
     @Test
     void updatePoll_StartTimeAfterEndTime(){

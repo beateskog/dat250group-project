@@ -39,84 +39,84 @@ public class FeedappApplication {
         return new RestTemplate();
     }
 
-	@Bean
-    @Transactional
-    @Profile("!test")
-    public CommandLineRunner demo(AccountService accountService, AuthService authService, PollService pollService, VoteService voteService, AccountRepository accountRepository) {
-        return (args) -> {
-            RegisterRequestDTO adminaccount = new RegisterRequestDTO("admin", "admin");
-            authService.register(adminaccount);
-            Account admin = accountService.findAccountByUsername("admin");
-            admin.setRole(Role.ADMIN);
-            accountRepository.save(admin);
+	// @Bean
+    // @Transactional
+    // @Profile("!test")
+    // public CommandLineRunner demo(AccountService accountService, AuthService authService, PollService pollService, VoteService voteService, AccountRepository accountRepository) {
+    //     return (args) -> {
+    //         RegisterRequestDTO adminaccount = new RegisterRequestDTO("admin", "admin");
+    //         authService.register(adminaccount);
+    //         Account admin = accountService.findAccountByUsername("admin");
+    //         admin.setRole(Role.ADMIN);
+    //         accountRepository.save(admin);
 
-            RegisterRequestDTO account = new RegisterRequestDTO("Kari", "Kari");
-            authService.register(account);
-            Account user = accountService.findAccountByUsername("Kari");
+    //         RegisterRequestDTO account = new RegisterRequestDTO("Kari", "Kari");
+    //         authService.register(account);
+    //         Account user = accountService.findAccountByUsername("Kari");
 
-            PollDTO poll = new PollDTO();
-            poll.setQuestion("Do you like dogs better than cats?");
-            poll.setStartTime(LocalDateTime.of(2023, 11, 5, 10, 0));
-            poll.setEndTime(LocalDateTime.of(2023, 12, 25, 20, 0));
-            poll.setPollPrivacy(PollPrivacy.PUBLIC);
-            pollService.createPoll(poll, user);
+    //         PollDTO poll = new PollDTO();
+    //         poll.setQuestion("Do you like dogs better than cats?");
+    //         poll.setStartTime(LocalDateTime.of(2023, 11, 5, 10, 0));
+    //         poll.setEndTime(LocalDateTime.of(2023, 12, 25, 20, 0));
+    //         poll.setPollPrivacy(PollPrivacy.PUBLIC);
+    //         pollService.createPoll(poll, user);
 
-            RegisterRequestDTO account1 = new RegisterRequestDTO("test","test");
-            authService.register(account1);
-            Account user1 = accountService.findAccountByUsername("test");
+    //         RegisterRequestDTO account1 = new RegisterRequestDTO("test","test");
+    //         authService.register(account1);
+    //         Account user1 = accountService.findAccountByUsername("test");
             
-            poll.setQuestion("Do you like Christmas?");
-            poll.setStartTime(LocalDateTime.of(2023, 10, 10, 19, 0));
-            poll.setEndTime(LocalDateTime.of(2023, 11, 5, 11, 0));
-            poll.setPollPrivacy(PollPrivacy.PUBLIC);
-            pollService.createPoll(poll, user1);
+    //         poll.setQuestion("Do you like Christmas?");
+    //         poll.setStartTime(LocalDateTime.of(2023, 10, 10, 19, 0));
+    //         poll.setEndTime(LocalDateTime.of(2023, 11, 5, 11, 0));
+    //         poll.setPollPrivacy(PollPrivacy.PUBLIC);
+    //         pollService.createPoll(poll, user1);
 
-            poll.setQuestion("Do you like cats better than dogs?");
-            poll.setPollPrivacy(PollPrivacy.PRIVATE);
-            pollService.createPoll(poll, user1);
+    //         poll.setQuestion("Do you like cats better than dogs?");
+    //         poll.setPollPrivacy(PollPrivacy.PRIVATE);
+    //         pollService.createPoll(poll, user1);
             
-            RegisterRequestDTO account2 = new RegisterRequestDTO("Ola", "Ola");
-            authService.register(account2);
-            VoteDTO vote = new VoteDTO();
-            vote.setVote(true);
-            vote.setVotingPlatform(VotingPlatform.WEB);
-            vote.setPollId(2L);
-            vote.setVoterId(4L);
-            voteService.createVote(vote);
+    //         RegisterRequestDTO account2 = new RegisterRequestDTO("Ola", "Ola");
+    //         authService.register(account2);
+    //         VoteDTO vote = new VoteDTO();
+    //         vote.setVote(true);
+    //         vote.setVotingPlatform(VotingPlatform.WEB);
+    //         vote.setPollId(2L);
+    //         vote.setVoterId(4L);
+    //         voteService.createVote(vote);
 
-            vote.setVote(false);
-            vote.setVotingPlatform(VotingPlatform.WEB);
-            vote.setPollId(1L);
-            vote.setVoterId(4L);
-            voteService.createVote(vote);
+    //         vote.setVote(false);
+    //         vote.setVotingPlatform(VotingPlatform.WEB);
+    //         vote.setPollId(1L);
+    //         vote.setVoterId(4L);
+    //         voteService.createVote(vote);
 
-            vote.setVote(false);
-            vote.setVotingPlatform(VotingPlatform.WEB);
-            vote.setPollId(3L);
-            vote.setVoterId(4L);
-            voteService.createVote(vote);
+    //         vote.setVote(false);
+    //         vote.setVotingPlatform(VotingPlatform.WEB);
+    //         vote.setPollId(3L);
+    //         vote.setVoterId(4L);
+    //         voteService.createVote(vote);
 
-            RegisterRequestDTO account3 = new RegisterRequestDTO("Per", "Per");
-            authService.register(account3);
-            vote.setVote(false);
-            vote.setVotingPlatform(VotingPlatform.WEB);
-            vote.setPollId(2L);
-            vote.setVoterId(5L);
-            voteService.createVote(vote);
+    //         RegisterRequestDTO account3 = new RegisterRequestDTO("Per", "Per");
+    //         authService.register(account3);
+    //         vote.setVote(false);
+    //         vote.setVotingPlatform(VotingPlatform.WEB);
+    //         vote.setPollId(2L);
+    //         vote.setVoterId(5L);
+    //         voteService.createVote(vote);
 
-            vote.setVote(false);
-            vote.setVotingPlatform(VotingPlatform.WEB);
-            vote.setPollId(1L);
-            vote.setVoterId(5L);
-            voteService.createVote(vote);
+    //         vote.setVote(false);
+    //         vote.setVotingPlatform(VotingPlatform.WEB);
+    //         vote.setPollId(1L);
+    //         vote.setVoterId(5L);
+    //         voteService.createVote(vote);
 
-            vote.setVote(false);
-            vote.setVotingPlatform(VotingPlatform.WEB);
-            vote.setPollId(3L);
-            vote.setVoterId(5L);
-            voteService.createVote(vote);
+    //         vote.setVote(false);
+    //         vote.setVotingPlatform(VotingPlatform.WEB);
+    //         vote.setPollId(3L);
+    //         vote.setVoterId(5L);
+    //         voteService.createVote(vote);
             
-        };
-    }
+    //     };
+    // }
 
 }

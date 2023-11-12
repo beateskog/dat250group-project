@@ -17,11 +17,12 @@ import no.hvl.dat250.feedapp.repository.PollRepository;
 import no.hvl.dat250.feedapp.repository.VoteRepository;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@SpringBootTest
+@ExtendWith(MockitoExtension.class)
 public class VoteServiceImplTest {
 
     @Mock

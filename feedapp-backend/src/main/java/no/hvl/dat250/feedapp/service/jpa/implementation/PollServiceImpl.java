@@ -59,7 +59,7 @@ public class PollServiceImpl implements PollService {
         pollRepository.save(poll);
 
         int uniquePin = poll.getId().intValue();
-        String uniqueUrl = "http://localhost:8080/poll/" + uniquePin;
+        String uniqueUrl = "http://localhost:4200/vote/" + uniquePin;
         poll.setPollURL(uniqueUrl);
         poll.setPollPin(uniquePin);
         
@@ -138,9 +138,10 @@ public class PollServiceImpl implements PollService {
             if (poll.getStartTime().isAfter(existingPoll.getEndTime())) {
                 throw new IllegalArgumentException("Start time cannot be after end time.");
             }
-            if (poll.getStartTime().isBefore(LocalDateTime.now())) {
-                throw new IllegalArgumentException("Start time cannot be before current time.");
-            }
+            //REMOVED BECAUSE OG FRONTEND ISSUES
+            // if (poll.getStartTime().isBefore(LocalDateTime.now())) {
+            //     throw new IllegalArgumentException("Start time cannot be before current time.");
+            // }
             existingPoll.setStartTime(poll.getStartTime());
         }
 
