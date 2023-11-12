@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: feedapp-container
-          image: feedapp:latest
+          image: feedapp-clr:latest
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8080
@@ -23,3 +23,10 @@ spec:
               value: "mongodb://mongo:27017/feedappdb"
             - name: RABBITMQ_HOST
               value: "rabbitmq"
+            - name: DB_HOST
+              value: "postgres"
+            - name: DB_USERNAME
+              value: "postgres"
+            - name: DB_PASSWORD
+              value: "postgres"
+              
