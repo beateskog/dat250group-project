@@ -63,8 +63,7 @@ public class PollServiceImpl implements PollService {
         poll.setPollURL(uniqueUrl);
         poll.setPollPin(uniquePin);
         
-        //messagingService.sendMessageToQueue("pollResultQueue", poll);
-        if (poll.getStartTime().toLocalDate() == LocalDate.now()){
+        if (poll.getStartTime().toLocalDate().equals(LocalDate.now())){
             dweetService.postPollOpenedEvent(new PollOpenedEvent(poll.getId().toString(), poll.getQuestion(), poll.getStartTime().toString()));
 
         }

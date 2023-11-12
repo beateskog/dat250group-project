@@ -17,20 +17,20 @@ public class DweetService {
     /**
      * Posts a poll opened event to dweet.io
      * @param event the event to post
-     * Locate tohttps://dweet.io/get/dweets/for/poll-opened-{pollId} to see the event
+     * Locate to https://dweet.io/get/latest/dweet/for/feedapp-poll-opened to see the event
      */
     public void postPollOpenedEvent(PollOpenedEvent event) {
-        String thingName = "poll-opened-" + event.getPollId(); 
+        String thingName = "feedapp-poll-opened";
         restTemplate.postForObject(DWEET_BASE_URL + thingName, event, String.class);
     }
 
     /**
      * Posts a poll closed event to dweet.io
      * @param event the event to post
-     * Locate to https://dweet.io/get/dweets/for/poll-closed-{pollId} to see the event
+     * Locate to https://dweet.io/get/latest/dweet/for/feedapp-poll-closed to see the event
      */
     public void postPollClosedEvent(PollClosedEvent event) {
-        String thingName = "poll-closed-" + event.getPollId(); 
+        String thingName = "feedapp-poll-closed";
         restTemplate.postForObject(DWEET_BASE_URL + thingName, event, String.class);
     }
 }
