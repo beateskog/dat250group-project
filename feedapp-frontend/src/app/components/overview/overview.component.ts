@@ -48,6 +48,7 @@ navigateToLogin() {
 
   ngOnInit() {
     const authToken = this.authService.getToken();
+    // localStorage.setItem('role', )
 
 
     if (!authToken) {
@@ -56,35 +57,47 @@ navigateToLogin() {
     } 
     
     else {
-      this.username = this.accountService.getUsername();
+      const loggedInUsername = localStorage.getItem('loggedInUsername');
+      // this.username = this.accountService.getUsername();
+      // localStorage.setItem('loggedInUsername', this.username);
+
       this.getPolls();
-      this.isAuthenticated = true;
-      console.log("polls: ", this.polls)
+      if (loggedInUsername !== null) {
 
-      this.accountService.getAccountByUsername(this.username).subscribe(
-        (account) => {
-          this.role = account.role;
-          console.log("Role: ", this.role);
-          if (this.role == "ADMIN") {
-            this.isAdmin = true;
-            console.log("You are now logged in as administrator.");
-
-            this.accountService.getAllAccounts().subscribe(
-              (account: Account[]) => {
-                this.accounts = account;
-                console.log("The accounts are: ", this.accounts)
-              },
-              (error) => {
-                console.error('Error fetching accounts:', error);
-              }
-            );
+        this.isAuthenticated = true;
+        console.log("polls: ", this.polls)
+        this.username = loggedInUsername
+  
+        this.accountService.getAccountByUsername(this.username).subscribe(
+          (account) => {
+            localStorage.setItem('loggedInRole', account.role)
+            const loggedInRole = localStorage.getItem('loggedInRole');
+            if (loggedInRole !== null) {
+              this.role = loggedInRole
+            }
+            console.log("Role: ", this.role);
+            if (this.role == "ADMIN") {
+              this.isAdmin = true;
+              console.log("You are now logged in as administrator.");
+  
+              this.accountService.getAllAccounts().subscribe(
+                (account: Account[]) => {
+                  this.accounts = account;
+                  console.log("The accounts are: ", this.accounts)
+                },
+                (error) => {
+                  console.error('Error fetching accounts:', error);
+                }
+              );
+            }
+          },
+          (error: any) => {
+            this.error = "Something went wrong when trying to fetch the account";
+            console.error("Login failed:", error);
           }
-        },
-        (error: any) => {
-          this.error = "Something went wrong when trying to fetch the account";
-          console.error("Login failed:", error);
-        }
-      );
+        );
+
+      }
     }
   }
 

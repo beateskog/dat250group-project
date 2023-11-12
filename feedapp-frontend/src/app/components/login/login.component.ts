@@ -23,6 +23,7 @@ import { OverviewComponent } from '../overview/overview.component';
     login() {
       this.authService.login(this.loginForm).subscribe(
         (response) => {
+          localStorage.setItem('loggedInUsername', this.loginForm.username);
           this.authService.setToken(response);
           console.log("account", this.username);
           console.log("username", this.loginForm.username);
