@@ -21,10 +21,10 @@
 <div *ngIf="isAdmin">
   <h2>Accounts</h2>
   <ul>
-    <li *ngFor="let account of accounts; trackBy: trackAccountBy">
-      Username: "{{ account.username }}"
-      Role: {{ account.role }}
-      Account-id: {{ account.id }} 
+    <li *ngFor="let account of accounts">
+      Username: "{{ account.username }}",
+      <span *ngIf="account.role === 'ADMIN'">Role: {{ account.role }},</span>
+      id: {{ account.id }}, 
       Number of polls: {{ account.numberOfpolls }}
       Polls: {{ account.polls }}
       <button (click)="deleteAccount(account.id)">Delete account</button>

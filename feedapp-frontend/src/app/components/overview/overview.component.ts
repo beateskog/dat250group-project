@@ -3,7 +3,6 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 import { PollService } from 'src/app/services/poll.service';
-import { LoginComponent } from '../login/login.component';
 import { Account, AccountService } from 'src/app/services/account.service';
 
 @Component({
@@ -16,14 +15,6 @@ export class OverviewComponent {
   isConfirmationDialogOpen!: boolean;
   pollIdToDelete: number | null = null;
   confirmationMessage!: string;
-
-
-adminFunctionality() {
-}
-navigateToLogin() {
-  this.router.navigate(['/login']);
-}
-
   polls: any[] = []; 
   id!: number;
   pollUrl!: string;
@@ -47,8 +38,6 @@ navigateToLogin() {
 
   ngOnInit() {
     const authToken = this.authService.getToken();
-    // localStorage.setItem('role', )
-
 
     if (!authToken) {
       this.getPublicPolls();
@@ -57,9 +46,6 @@ navigateToLogin() {
     
     else {
       const loggedInUsername = localStorage.getItem('loggedInUsername');
-      // this.username = this.accountService.getUsername();
-      // localStorage.setItem('loggedInUsername', this.username);
-
       this.getPolls();
       if (loggedInUsername !== null) {
 
@@ -95,7 +81,6 @@ navigateToLogin() {
             console.error("Login failed:", error);
           }
         );
-
       }
     }
   }
@@ -213,23 +198,14 @@ navigateToLogin() {
 
 
   deletePoll(id: number): void {
-  
-    // Make sure to subscribe to the HTTP request
     this.pollService.deletePoll(id).subscribe(
       (response) => {
         // Handle successful deletion here
         console.log("the response is: ", response)
         console.log(`Poll with ID ${id} deleted successfully`);
         this.polls = this.polls.filter((poll) => poll.id !== id);
-        // const index = this.polls.findIndex((poll) => poll.id === id);
-        // if (index !== -1) {
-        //   this.polls.splice(index, 1);
-        //   console.log(this.polls)
-        // }
-        // You might want to refresh the list of polls or update the view as needed
       },
       (error) => {
-        // Handle error here
         console.error(`Error deleting poll with ID ${id}:`, error);
       }
     );
@@ -245,7 +221,6 @@ navigateToLogin() {
     if (this.pollIdToDelete !== null) {
       this.isConfirmationDialogOpen = false;
 
-      // Perform the poll deletion and remove it from the list using this.pollIdToDelete
       this.pollService.deletePoll(this.pollIdToDelete).subscribe(
         () => {
           // Poll deletion successful, remove it from the list
@@ -286,6 +261,10 @@ navigateToLogin() {
     console.log('Poll ID to delete:', this.pollIdToDelete); // Add a console log for debugging
     this.isConfirmationDialogOpen = true;
     this.confirmationMessage = 'Are you sure you want to delete this poll?';
+  }
+
+  navigateToLogin() {
+    this.router.navigate(['/login']);
   }
 
   logout() {

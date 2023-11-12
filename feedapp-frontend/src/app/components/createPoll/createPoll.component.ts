@@ -7,8 +7,8 @@ import { AuthService } from 'src/app/services/auth.service';
 
 interface CreatePollRequest {
   question: string;
-  startTime: DateTime; // Use ISO string for LocalDateTime
-  endTime: DateTime;   // Use ISO string for LocalDateTime
+  startTime: DateTime; 
+  endTime: DateTime;  
   pollPrivacy: PollPrivacy;
 }
 

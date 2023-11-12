@@ -2,8 +2,6 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service'; // You'll need to create an AuthService for handling authentication.
 import { AccountService } from 'src/app/services/account.service';
-import { Account } from 'src/app/services/account.service';
-import { OverviewComponent } from '../overview/overview.component';
 
 @Component({
     selector: 'app-login',
@@ -14,7 +12,6 @@ import { OverviewComponent } from '../overview/overview.component';
   export class LoginComponent {
     loginForm: { username: string, password: string } = { username: '', password: '' };
     error: string = '';
-
     account: any;
     username!: string;
   

@@ -75,9 +75,8 @@ export class VoteComponent implements OnInit {
               console.error('Error fetching results: ', error);
             }
           );
-        }, 1500);
+        }, 1000);
 
-  
       },
       (error) => {
         console.error('Error while voting: ', error)
