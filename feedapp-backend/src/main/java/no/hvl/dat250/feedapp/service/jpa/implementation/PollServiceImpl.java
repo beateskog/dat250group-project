@@ -12,6 +12,7 @@ import no.hvl.dat250.feedapp.dto.PollDTO;
 import no.hvl.dat250.feedapp.exception.ResourceNotFoundException;
 import no.hvl.dat250.feedapp.model.Account;
 import no.hvl.dat250.feedapp.model.Poll;
+import no.hvl.dat250.feedapp.model.PollPrivacy;
 import no.hvl.dat250.feedapp.model.Role;
 import no.hvl.dat250.feedapp.model.messaging.PollClosedEvent;
 import no.hvl.dat250.feedapp.model.messaging.PollOpenedEvent;
@@ -64,7 +65,12 @@ public class PollServiceImpl implements PollService {
         poll.setPollPin(uniquePin);
         
         if (poll.getStartTime().toLocalDate().equals(LocalDate.now())){
-            dweetService.postPollOpenedEvent(new PollOpenedEvent(poll.getId().toString(), poll.getQuestion(), poll.getStartTime().toString()));
+            if (poll.getPollPrivacy().equals(PollPrivacy.PUBLIC)) {
+                String message = "You dont need a user to vote on this poll!";
+                dweetService.postPollOpenedEvent(new PollOpenedEvent(poll.getId().toString(), message,poll.getQuestion(), poll.getStartTime().toString()));
+            }
+            String message = "You have to create a user to vote on this poll!";
+            dweetService.postPollOpenedEvent(new PollOpenedEvent(poll.getId().toString(), message,poll.getQuestion(), poll.getStartTime().toString()));
 
         }
         pollRepository.save(poll);
@@ -221,10 +227,12 @@ public class PollServiceImpl implements PollService {
     public void dweetPollsOpenToday() {
         List<Poll> openedPolls = pollRepository.findPollsOpenToday();
         for (Poll poll : openedPolls) {
-            PollOpenedEvent pollOpenedEvent = new PollOpenedEvent(poll.getId().toString(), poll.getQuestion(), poll.getStartTime().toString());
-            pollOpenedEvent.setPollId(poll.getId().toString());
-            pollOpenedEvent.setPollQuestion(poll.getQuestion());
-            pollOpenedEvent.setStartTime(poll.getStartTime().toString());
+            if (poll.getPollPrivacy().equals(PollPrivacy.PUBLIC)) {
+                String message = "You dont need a user to vote on this poll!";
+                dweetService.postPollOpenedEvent(new PollOpenedEvent(poll.getId().toString(), message,poll.getQuestion(), poll.getStartTime().toString()));
+            }
+            String message = "You have to create a user to vote on this poll!";
+            PollOpenedEvent pollOpenedEvent = new PollOpenedEvent(poll.getId().toString(),message, poll.getQuestion(), poll.getStartTime().toString());
             dweetService.postPollOpenedEvent(pollOpenedEvent);
         }
     }
