@@ -26,6 +26,7 @@ export class MyPollsComponent implements OnInit {
   isUpdateFormVisible: { [key: number]: boolean } = {};
   public noPolls: boolean = false;
   errorMessage = '';
+  updateSuccess: boolean = false;
 
   constructor(private pollService: PollService, private router: Router, private authService: AuthService) {
     if (this.authService.getToken()) {
@@ -58,6 +59,7 @@ export class MyPollsComponent implements OnInit {
           console.log('Poll updated successfully');
           // Clear the form
           this.isUpdateFormVisible[updatedPoll.id] = false;
+          this.updateSuccess = true;
         },
         (error) => {
           // Handle update error, e.g., display an error message

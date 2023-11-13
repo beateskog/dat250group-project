@@ -1,88 +1,178 @@
+/* Reset box model and margin on body */
+* {
+  box-sizing: border-box;
+  margin: 0;
+}
+
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f0f0f0;
-    margin: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Header, including role */
+.header {
+  padding: 80px;
+  text-align: center;
+  background: #95909b;
+  color: white;
+}
+
+h1 {
+  font-size: 40px;
+}
+
+p {
+  margin: 10px;
+}
+
+/* Navigation bar */
+.navbar {
+  overflow: hidden;
+  background-color: #333;
+  position: sticky;
+  position: -webkit-sticky;
+  top: 0;
+}
+
+.navbar a {
+  float: left;
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 20px;
+  text-decoration: none;
+}
+
+.navbar a.right {
+  float: right;
+}
+
+.navbar a:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+/* Buttons for navigation bar */
+/* .button {
+  float: right;
+  padding: 6px;
+  border: none;
+  margin-top: 8px;
+  margin-right: 16px;
+  font-size: 17px;
+  cursor: pointer;
+  outline: none;
+  color: 333;
+  background-color: #666;
+  color: white;
+  border-radius: 3px;
+}
+
+.navbar input[type=number] {
+  float: right;
+  padding: 6px;
+  border: none;
+  margin-top: 8px;
+  margin-right: 16px;
+  font-size: 17px;
+  border-radius: 3px;
+}
+
+.error-message {
+  float: right;
+  margin-right: 70px;
+  color: red;
+} */
+
+
+/* Responsive layout - when the screen is less than 700px wide, make the two
+columns stack on top of each other instead of next to each other */
+@media screen and (max-width: 700px) {
+  .row {
+      flex-direction: column;
   }
-  
-  .container {
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
-    text-align: center;
+}
+
+/* Responsive layout - when the screen is less than 400px wide, make the
+navigation links stack on top of each other instead of next to each other */
+@media screen and (max-width: 400px) {
+  .navbar a {
+      float: none;
+      width: 100%;
   }
-  
-  .header {
-    text-align: left;
-  }
-  
-  h1 {
-    font-size: 24px;
-    font-weight: bold;
-    color: #000;
-  }
-  
-  .app-name {
-    font-weight: normal;
-  }
-  
-  .login-form {
-    margin-top: 20px;
-  }
-  
-  h2 {
-    font-size: 20px;
-    font-weight: bold;
-    color: #000;
-  }
-  
-  .form-group {
-    margin: 10px 0;
-    text-align: left;
-  }
-  
-  label {
-    display: block;
-    font-weight: bold;
-    color: #000;
-  }
-  
-  .input-field {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #000;
-    border-radius: 5px;
-    background-color: #f0f0f0;
-  }
-  
-  .line {
-    border-top: 1px solid #000;
-    margin: 10px 0;
-  }
-  
-  .login-button {
-    background-color: #555;
-    color: #fff;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .signup-text, .vote-text {
-    margin-top: 20px;
-    color: #000;
-  }
-  
-  .signup-button, .vote-button {
-    background-color: #000;
-    color: #fff;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
+}
+
+/* Vote */
+.main {
+  width: 90%;
+  padding: 20px;
+  background-color: #fff;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+  border-radius: 3px;
+  text-align: center;
+  align-self: center;
+  /* Center the container within the body */
+  margin: 0 auto;
+  /* Add this to horizontally center the container */
+  margin-top: 20px;
+}
+
+.poll-question {
+  margin-top: 30px;
+  color: #333;
+}
+
+#id {
+  margin-top: 20px;
+  font-weight: bold;
+}
+
+#yes-vote,
+#no-vote {
+  background-color: #95909b;
+  color: #fff;
+  padding: 30px 30px;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  width: 200px;
+  font-size: 20px;
+  margin-right: 24px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.error-already-voted {
+  color: red;
+}
+
+#results-button {
+  font-size: 17px;
+  padding: 10px 20px;
+  color: #fff;
+  border: 0;
+  background: #666;
+  cursor: pointer;
+  margin-top: 20px;
+  margin-right: 5px;
+  margin-bottom: 5px;
+  border-radius: 3px;
+}
+
+/* Footer */
+.footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  height: 70px;
+  display: flex;
+  align-items: center;
+  background: #ddd;
+  margin-top: 20px;
+}
+
+.footer img {
+  display: block;
+  margin: 0 auto;
+  margin-top: 9px;
+  /* Center the image within the container */
+}

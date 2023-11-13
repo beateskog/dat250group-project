@@ -34,7 +34,6 @@ export class PollService {
     const headers = new HttpHeaders({
     Authorization: `Bearer ${authToken}`
     });
-
     return this.http.post(`http://localhost:8080/poll`, request, {headers});
   }
 

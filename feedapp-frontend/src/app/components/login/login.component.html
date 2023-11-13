@@ -1,26 +1,53 @@
-<div class="container">
-    <div class="header">
-      <h1>Welcome to</h1>
-      <h1 class="app-name">FeedApp</h1>
-    </div>
+<!DOCTYPE html>
+<html>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<body>
+  <div class="logo">
+    <img height="400" src="../../../assets/Logo-new.png">
+  </div>
+
+  <div class="header">
+    <h1> Welcome to</h1>
+    <h1 class="app-name">FeedApp</h1>
+  </div>
+
+  <div class="container">
     <div class="login-form">
       <h2>Login</h2>
       <form (ngSubmit)="login()">
+
         <div class="form-group">
-          <label for="username">Username</label>
-          <input type="text" id="username" name="username" [(ngModel)]="loginForm.username" placeholder="Enter your username" class="input-field" required />
+          <label for="username" class="left-label"><i class="fa fa-user"> Username</i></label>
+          <input type="text" id="username" name="username" [(ngModel)]="loginForm.username" placeholder="Enter Username"
+            class="input-field" required />
         </div>
+
         <div class="form-group">
-          <label for="password">Password</label>
-          <input type="password" id="password" name="password" [(ngModel)]="loginForm.password" placeholder="Enter your password" class="input-field" required />
+          <label for="password" class="left-label"><i class="fa fa-lock"> Password</i></label>
+          <input type="password" id="password" name="password" [(ngModel)]="loginForm.password"
+            placeholder="Enter Password" class="input-field" required />
         </div>
+
         <button type="submit" class="login-button">Login</button>
       </form>
+
       <div class="error-message" *ngIf="error">
         {{ error }}
       </div>
-      <p class="signup-text">Don't have an account? <button class="signup-button" routerLink="/register">Sign Up</button></p>
-      <p class="vote-text">Just here to Vote? <button class="vote-button" routerLink="/overview">Go to Polls</button></p>
+
+      <p class="signup-text">Don't have an account?
+        <button class="signup-button" routerLink="/register">Sign Up</button>
+      </p>
+      <p class="vote-text">Just here to Vote?
+        <button class="vote-button" routerLink="/overview">Go to Polls</button>
+      </p>
     </div>
   </div>
-  
+
+  <div class="footer">
+    <img height="110" src="../../../assets/Logo-new.png">
+  </div>
+</body>
+
+</html>

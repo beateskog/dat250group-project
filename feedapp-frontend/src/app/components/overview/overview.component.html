@@ -1,78 +1,135 @@
-<header>Polls</header>
-<button (click)="navigateToLogin()">Return to login</button>
-<button (click)="logout()">Logout</button>
+<!DOCTYPE html>
+<html>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-
-
-<div *ngIf="!isAuthenticated">
-  <p>You are not logged in</p>
-</div>
-<div *ngIf="isAuthenticated">
-  <p>You are logged in as: "{{this.username}}" </p>
-</div>
-<div id="search-bar">
-  <input type="text" placeholder="Search for Poll ID:" [(ngModel)]="id">
-  <button (click)="searchPollsById(id)">Search</button>
-  <div class="error-message" *ngIf="errorMessage">
-    {{ errorMessage }}
-  </div>
-</div>
-
-<div *ngIf="isAdmin">
-  <h2>Accounts</h2>
-  <ul>
-    <li *ngFor="let account of accounts">
-      Username: "{{ account.username }}",
-      <span *ngIf="account.role === 'ADMIN'">Role: {{ account.role }},</span>
-      id: {{ account.id }}, 
-      Number of polls: {{ account.numberOfpolls }}
-      Polls: {{ account.polls }}
-      <button (click)="deleteAccount(account.id)">Delete account</button>
-    </li>
-  </ul>
-</div>
-
-
-<div id="poll-container">
-  <!-- Loop through polls and display them dynamically -->
-  <div class="poll-box" *ngFor="let poll of polls">
-    <div class="poll-privacy">
-      {{ poll.pollPrivacy === 'PUBLIC' ? 'Public' : 'Private' }}
+<body>
+    <div class="header">
+        <h1>FeedApp</h1>
+        <p>A <b>voting application</b> developed to facilitate user feedback through binary yes/no votes on polls.</p>
     </div>
-    <div class="poll-header">
-      <!-- Use the isPollOpen function to check if the poll is open -->
-      <ng-container *ngIf="isPollActive(poll); else resultsButton">
-        <button (click)="navigateToVote(poll.id)">Vote</button>
-      </ng-container>
-      <ng-template #resultsButton>
-        <button (click)="navigateToResults(poll.id)">View Results</button>
-      </ng-template>
-      <button *ngIf="isAdmin" (click)="openConfirmationDialog(poll.id)">Delete</button>
-    </div>
-    <h2 class="poll-question">{{ poll.question }}</h2>
-    <div class="poll-content">
-      <!-- Check if the poll is open to display the end time -->
-      <ng-container *ngIf="isPollActive(poll); else closedPoll">
-        Open until: {{ poll.endTime | date: 'dd.MM.yyyy - HH:mm'}}
-      </ng-container>
-      <ng-template #closedPoll>
-        This poll is closed
-      </ng-template>
-    </div>
-    <div class="poll-footer">
-      <div class="poll-id">Poll ID: {{ poll.id }}</div>
-    </div>
-  </div>
-</div>
 
-<div *ngIf="isConfirmationDialogOpen" class="confirmation-dialog">
-  <h1>Confirmation</h1>
-  <p>{{ confirmationMessage }}</p>
-  <button (click)="onNoClick()">No, go back</button>
-  <button class="warn" (click)="onYesClick()">Yes, delete</button>
-</div>
+    <!-- Anonymous voter-->
+    <div *ngIf="!isAuthenticated">
+        <div class="navbar">
+            <a href="/overview" class="active"> <i class="fa fa-fw fa-home"></i> Home</a>
+            <a (click)="navigateToLogin()"> Return to login</a>
+            <div class="right">
+                <button (click)="searchPollsById(id)" class="button"><i class="fa fa-fw fa-search"></i></button>
+                <input type="number" placeholder="Search by Poll ID.." [(ngModel)]="id">
+            </div>
+        </div> <br>
 
-<div *ngIf="isAuthenticated">
-  <a class="my-profile-button" routerLink="/myPolls">My Profile</a>
-</div>
-<a class="create-poll-button" routerLink="/createPoll">Create New Poll</a>
+        <div class="error-message" *ngIf="errorMessage">
+            {{ errorMessage }}
+        </div>
+
+        <div class="role">
+            <p>Role: Anonymous voter </p>
+        </div>
+    </div>
+
+    <!-- User -->
+    <div *ngIf="isAuthenticated">
+        <div class="navbar">
+            <a href="/overview" class="active"> <i class="fa fa-fw fa-home"></i> Home</a>
+            <a href="/createPoll"><i class="fa fa-fw fa-plus"></i> Create new Poll</a>
+            <a href="/myPolls"><i class="fa fa-fw fa-user"></i> My Profile</a>
+            <a (click)="logout()">Logout</a>
+            <div class="right">
+                <button (click)="searchPollsById(id)" class="button"><i class="fa fa-fw fa-search"></i></button>
+                <input type="number" placeholder="Search by Poll ID.." [(ngModel)]="id">
+            </div>
+        </div> <br>
+
+        <div class="error-message" *ngIf="errorMessage">
+            {{ errorMessage }}
+        </div>
+
+        <div class="role">
+            <p>You are logged in as: "{{this.username}}" </p>
+        </div>
+    </div>
+
+    <!-- Admin -->
+    <div *ngIf="isAdmin">
+      <br>
+        <h2>Accounts</h2>
+        <ul>
+            <li *ngFor="let account of accounts; trackBy: trackAccountBy">
+                Username: "{{ account.username }}"
+                Role: {{ account.role }}
+                Account-id: {{ account.id }}
+                Number of polls: {{ account.numberOfpolls }}
+                Polls: {{ account.polls }}
+                <button (click)="deleteAccount(account.id)">Delete account</button>
+            </li>
+        </ul>
+    </div>
+
+
+    <div class="main">
+        <h2>OVERVIEW POLLS</h2>
+        <p>Click on a button to choose grid view (default) or list view.</p>
+
+        <button onclick="document.getElementById('polls').className='grid'">
+            <i class="fa fa-th-large"></i> Grid
+        </button>
+
+        <button onclick="document.getElementById('polls').className=''">
+            <i class="fa fa-bars"></i> List
+        </button>
+
+        <div id="poll-container">
+
+            <!-- Loop through polls and display them dynamically -->
+            <ul id="polls" class="grid"> <!--Added class="grid"-->
+                <li *ngFor="let poll of polls" class="poll-box">
+
+                    <div class="poll-privacy">
+                        {{ poll.pollPrivacy === 'PUBLIC' ? 'Public' : 'Private' }}
+                    </div> <br>
+
+                    <h2 class="poll-question">{{ poll.question }}</h2> <br>
+                    <div class="poll-content">
+                        <!-- Check if the poll is open to display the end time -->
+                        <ng-container *ngIf="isPollActive(poll); else closedPoll">
+                            Open until: {{ poll.endTime | date: 'dd.MM.yyyy - HH:mm'}}
+                        </ng-container>
+
+                        <ng-template #closedPoll>
+                            This poll is closed for voting.
+                        </ng-template>
+                    </div>
+
+                    <div class="poll-header">
+                        <!-- Use the isPollOpen function to check if the poll is open -->
+                        <ng-container *ngIf="isPollActive(poll); else resultsButton">
+                            <button (click)="navigateToVote(poll.id)">Vote</button>
+                        </ng-container>
+
+                        <ng-template #resultsButton>
+                            <button (click)="navigateToResults(poll.id)">View Results</button>
+                        </ng-template>
+
+                        <button *ngIf="isAdmin" (click)="openConfirmationDialog(poll.id)">Delete</button>
+                    </div>
+
+                    <p id="id"><strong>Poll ID:</strong> {{ poll.id }}</p>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div *ngIf="isConfirmationDialogOpen" class="confirmation-dialog">
+        <h1>Confirmation</h1>
+        <p>{{ confirmationMessage }}</p>
+        <button (click)="onNoClick()">No, go back</button>
+        <button class="warn" (click)="onYesClick()">Yes, delete</button>
+    </div>
+
+    <div class="footer">
+        <img height="110" src="../../../assets/Logo-new.png">
+    </div>
+</body>
+
+</html>

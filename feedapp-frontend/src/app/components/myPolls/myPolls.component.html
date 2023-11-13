@@ -1,54 +1,119 @@
-<div class="container">
-    <h1>My Polls</h1>
-    <div *ngIf="isAuthenticated; else notAuthenticated">
-        <button (click)="navigateToOverview()">Back to the main page</button>
-        <!-- Content for authenticated users -->
-        <!-- Place your content here for logged-in users -->
-        <li *ngFor="let poll of userPolls">
-            <div class="poll-item">
-              <p><strong>Question:</strong> {{ poll.question }}</p>
-              <p><strong>Poll ID:</strong> {{ poll.id }}</p>
-              <button (click)="openConfirmationDialog(poll.id)">Delete</button>
-              <!-- Add an Update button to trigger the form -->
-              <button (click)="toggleUpdateFormVisibility(poll.id)">Update</button>
-              <!-- Add a form for updating the poll -->
-              <div [hidden]="!isUpdateFormVisible[poll.id]">
-                <form (submit)="updatePoll(poll)">
-                  <label for="privacy">Privacy:</label>
-                  <select name="privacy" id="privacy" [(ngModel)]="poll.pollPrivacy">
-                    <option value="PUBLIC">Public</option>
-                    <option value="PRIVATE">Private</option>
-                  </select>
-                  <br>
-                  <label for="startTime">Start Time:</label>
-                  <input type="datetime-local" name="startTime" id="startTime" [(ngModel)]="poll.startTime">
-                  <br>
-                  <label for="endTime">End Time:</label>
-                  <input type="datetime-local" name="endTime" id="endTime" [(ngModel)]="poll.endTime">
-                  <br>
-                  <button type="submit">Update Poll</button>
-                </form>
-                <p class="error-message" *ngIf="errorMessage">{{ errorMessage }}</p>
-              </div>
+<!DOCTYPE html>
+<html>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<body>
+    <div class="header">
+        <h1>FeedApp</h1>
+        <p>A <b>voting application</b> developed to facilitate user feedback through binary yes/no votes on polls.</p>
+    </div>
+
+    <!-- User -->
+    <div *ngIf="isAuthenticated">
+        <div class="navbar">
+            <a href="/overview"> <i class="fa fa-fw fa-home"></i> Home</a>
+            <a href="/createPoll"><i class="fa fa-fw fa-plus"></i> Create new Poll</a>
+            <a href="/myPolls" class="active"><i class="fa fa-fw fa-user"></i> My Profile</a>
+            <!-- <a (click)="navigateToLogin()"> Return to login</a>
+            <a (click)="logout()">Logout</a>
+            <div class="right">
+                <button (click)="searchPollsById(id)" class="button"><i class="fa fa-fw fa-search"></i></button>
+                <input type="number" placeholder="Search by Poll ID.." [(ngModel)]="id">
+            </div> -->
+        </div>
+
+        <!-- <div class="error-message" *ngIf="errorMessage">
+            {{ errorMessage }}
+        </div> -->
+
+        <div class="main">
+            <h2>MY POLLS</h2>
+            <p>Click on a button to choose grid view (default) or list view.</p>
+
+            <button onclick="document.getElementById('polls').className='grid'">
+                <i class="fa fa-th-large"></i> Grid
+            </button>
+
+            <button onclick="document.getElementById('polls').className=''">
+                <i class="fa fa-bars"></i> List
+            </button>
+
+            <div *ngIf="isAuthenticated; else notAuthenticated">
+                <!-- Loop through polls and display them dynamically -->
+                <ul id="polls" class="grid"> <!--Added class="grid"-->
+
+                    <li *ngFor="let poll of userPolls">
+
+                        <h2 class="question"><strong>Question:</strong> {{ poll.question }}</h2> <br>
+                        <div class="poll-content">
+
+                            <button id="delete-button" (click)="openConfirmationDialog(poll.id)">Delete Poll</button>
+                            <!-- Add an Update button to trigger the form -->
+
+                            <button id="update-button" (click)="toggleUpdateFormVisibility(poll.id)">Update Poll</button>
+                            <!-- Add a form for updating the poll -->
+                            <div [hidden]="!isUpdateFormVisible[poll.id]">
+                                <form (submit)="updatePoll(poll)">
+
+                                    <div class="form-group">
+                                        <label for="start-time"><i class="fa fa-calendar"> Start Time:</i></label>
+                                        <input type="datetime-local" id="start" name="startTime"
+                                            [(ngModel)]="poll.startTime">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="end-time"><i class="fa fa-calendar"> End Time:</i></label>
+                                        <input type="datetime-local" id="end" name="endTime" [(ngModel)]="poll.endTime">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="privacy">Privacy:</label>
+                                        <select name="privacy" id="privacy" [(ngModel)]="poll.pollPrivacy">
+                                            <option value="PUBLIC">Public</option>
+                                            <option value="PRIVATE">Private</option>
+                                        </select>
+                                    </div>
+
+                                    <button type="submit">Update</button>
+                                </form>
+                            </div>
+                            
+                        </div>
+                        <p id="id"><strong>Poll ID:</strong> {{ poll.id }}</p>
+                    </li>
+                </ul>
             </div>
-          </li>
+        </div>
     </div>
 
     <ng-template #notAuthenticated>
-            <!-- Content for non-authenticated users -->
-    <p>You have to be logged in to see your polls.</p>
-    <button (click)="navigateToLogin()">Login</button>
-    <button (click)="navigateToOverview()">Back</button>
-  </ng-template>
-    <ul>
+        <!-- Content for non-authenticated users -->
+        <p class="login-text">You have to be logged in to view your created polls. <br>
+            <button class="login-button" routerLink="/login">Login</button>
+        </p>
+        <p class="signup-text">Don't have an account yet? Register now! <br>
+            <button class="signup-button" routerLink="/register">Sign Up</button>
+        </p>
+        <p class="backtrack-text">Get back to voting? <br>
+            <button class="backtrack-button" routerLink="/overview">Go to Polls</button>
+        </p>
+    </ng-template>
 
-    </ul>
-    <p *ngIf="noPolls">{{ noPollsMessage }}</p>
-  </div>
-  <!-- Confirmation Dialog (Hidden by default) -->
-  <div *ngIf="isConfirmationDialogOpen" class="confirmation-dialog">
-    <h1>Confirmation</h1>
-    <p>{{ confirmationMessage }}</p>
-    <button (click)="onNoClick()">No, go back</button>
-    <button class="warn" (click)="onYesClick()">Yes, delete</button>
-  </div>
+    <div class="error-no-polls-created">
+        <p *ngIf="noPolls">{{ noPollsMessage }}</p>
+    </div>
+
+    <!-- Confirmation Dialog (Hidden by default) -->
+    <div *ngIf="isConfirmationDialogOpen" class="confirmation-dialog">
+        <h1>Confirmation</h1>
+        <p>{{ confirmationMessage }}</p>
+        <button (click)="onNoClick()">Cancel</button>
+        <button class="warn" (click)="onYesClick()">Yes</button>
+    </div>
+
+    <div class="footer">
+        <img height="110" src="../../../assets/Logo-new.png">
+    </div>
+</body>
+
+</html>

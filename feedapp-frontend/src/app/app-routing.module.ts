@@ -8,22 +8,22 @@ import { RegisterComponent } from './components/register/register.component';
 import { ResultsComponent } from './components/results/results.component';
 import { VoteComponent } from './components/vote/vote.component';
 import { CreatePollComponent } from './components/createPoll/createPoll.component';
-// import { PollComponent } from './components/poll/poll.component';
-
+// import { PublicPollGuard } from './components/publicPollsGuard';
+// import { PrivatePollMessageComponent } from './components/private-poll-message/private-poll-message.component';
 
 const routes: Routes = [
     { path: '', component: LoginComponent },
     { path: 'register', component: RegisterComponent },
     { path: 'overview', component: OverviewComponent },
-    { path: 'login', component: LoginComponent},
-    { path: 'myPolls', component: MyPollsComponent},
-    { path: 'vote', component: VoteComponent},
-    { path: 'results', component: ResultsComponent},
-    { path: 'results/:pollId', component: ResultsComponent},
-    { path: 'poll/:pollId', component: ResultsComponent},
-    { path: 'createPoll', component: CreatePollComponent},
-    { path: 'vote/:id', component: VoteComponent},
-    // { path: 'poll/:id', component: PollComponent},
+    { path: 'login', component: LoginComponent },
+    { path: 'myPolls', component: MyPollsComponent },
+    { path: 'vote', component: VoteComponent },
+    { path: 'results', component: ResultsComponent },
+    { path: 'results/:pollId', component: ResultsComponent },
+    { path: 'poll/:pollId', component: ResultsComponent },
+    { path: 'createPoll', component: CreatePollComponent },
+    { path: 'vote/:id', component: VoteComponent },
+    // { path: 'private-poll-message', PrivatePollMessageComponent }, 
     { path: '', redirectTo: '/login', pathMatch: 'full' },
 ];
 

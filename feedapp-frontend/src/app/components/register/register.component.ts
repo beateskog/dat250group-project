@@ -27,7 +27,7 @@ export class RegisterComponent {
     this.authService.register({username: this.registrationForm.username, password: this.registrationForm.password}).subscribe(
         (response) => {
           this.authService.setToken(response);
-          this.router.navigate(['/overview']);
+          this.router.navigate(['/login']);
           console.log("success");
         },
     );

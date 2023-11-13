@@ -1,7 +1,42 @@
-<div class="container">
-  <a class="go-back-button" routerLink="/overview">Back</a>
-    <h1>Results</h1>
-    <p>Total Votes: {{ pollData.totalVotes }}</p>
-    <p>Yes Votes: {{ pollData.yesVotes }}</p>
-    <p>No Votes: {{ pollData.noVotes }}</p>
-  </div>
+<!DOCTYPE html>
+<html>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<body>
+    <div class="header">
+        <h1>FeedApp</h1>
+        <p>A <b>voting application</b> developed to facilitate user feedback through binary yes/no votes on polls.</p>
+    </div>
+
+    <div class="navbar">
+        <a href="/overview"> <i class="fa fa-fw fa-home"></i> Home</a>
+        <a href="/createPoll"><i class="fa fa-fw fa-plus"></i> Create new Poll</a>
+        <a href="/myPolls"><i class="fa fa-fw fa-user"></i> My Profile</a>
+        <!-- <a (click)="navigateToLogin()"> Return to login</a>
+            <a (click)="logout()">Logout</a>
+            <div class="right">
+                <button (click)="searchPollsById(id)" class="button"><i class="fa fa-fw fa-search"></i></button>
+                <input type="number" placeholder="Search by Poll ID.." [(ngModel)]="id">
+            </div> -->
+    </div>
+
+    <!-- <div class="error-message" *ngIf="errorMessage">
+            {{ errorMessage }}
+        </div> -->
+
+    <div class="main">
+        <h2>RESULTS</h2>
+
+        <!-- <h1 class="poll-question">{{ question }}</h1> -->
+        <p id="id">Poll ID: {{ pollId }}</p>
+        <p>Total Votes: {{ pollData.totalVotes }}</p>
+        <p>Yes Votes: {{ pollData.yesVotes }}</p>
+        <p>No Votes: {{ pollData.noVotes }}</p>
+    </div>
+
+    <div class="footer">
+        <img height="110" src="../../../assets/Logo-new.png">
+    </div>
+</body>
+
+</html>

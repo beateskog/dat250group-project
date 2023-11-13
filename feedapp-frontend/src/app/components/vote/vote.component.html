@@ -1,19 +1,54 @@
-<div class="container">
-  <a class="go-back-button" routerLink="/overview">Back</a>
-  <h1>{{ question }}</h1>
-  <p>Poll ID: {{ pollId }}</p>
-  <button (click)="vote(pollId, true)">Yes</button>
-  <button (click)="vote(pollId, false)">No</button>
-  <div class="error-message" *ngIf="errorMessage">
-    {{ errorMessage }}
-  </div>
-</div>
+<!DOCTYPE html>
+<html>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-<div class="vote-message" *ngIf="showVoteMessage">Thanks for your vote!</div>
-<div>
-  <!-- Conditionally render the message if the user has voted -->
-  <p *ngIf="hasVoted">You have already voted in this poll.</p>
-  
-  <!-- Conditionally render the button if the user has voted -->
-  <button *ngIf="hasVoted" (click)="seeResults(pollId)">See Results</button>
-</div>
+<body>
+    <div class="header">
+        <h1>FeedApp</h1>
+        <p>A <b>voting application</b> developed to facilitate user feedback through binary yes/no votes on polls.</p>
+    </div>
+
+    <div class="navbar">
+        <a href="/overview"> <i class="fa fa-fw fa-home"></i> Home</a>
+        <a href="/createPoll"><i class="fa fa-fw fa-plus"></i> Create new Poll</a>
+        <a href="/myPolls"><i class="fa fa-fw fa-user"></i> My Profile</a>
+        <!-- <a (click)="navigateToLogin()"> Return to login</a>
+            <a (click)="logout()">Logout</a>
+            <div class="right">
+                <button (click)="searchPollsById(id)" class="button"><i class="fa fa-fw fa-search"></i></button>
+                <input type="number" placeholder="Search by Poll ID.." [(ngModel)]="id">
+            </div> -->
+    </div>
+
+    <!-- <div class="error-message" *ngIf="errorMessage">
+            {{ errorMessage }}
+        </div> -->
+
+    <div class="main">
+        <h2>VOTE</h2>
+
+        <h1 class="poll-question">{{ question }}</h1>
+        <p id="id">Poll ID: {{ pollId }}</p>
+        <button id="yes-vote" (click)="vote(pollId, true)">Yes <i class="fa fa-fw fa-thumbs-up"></i></button>
+        <button id="no-vote" (click)="vote(pollId, false)">No <i class="fa fa-fw fa-thumbs-down"></i></button>
+
+        <div class="error-message" *ngIf="errorMessage">
+            {{ errorMessage }}
+        </div>
+    </div>
+
+    <div class="vote-message" *ngIf="showVoteMessage">Thanks for your vote!</div>
+    <div class="error-already-voted">
+        <!-- Conditionally render the message if the user has voted -->
+        <p *ngIf="hasVoted">You have already voted on this poll.</p>
+
+        <!-- Conditionally render the button if the user has voted -->
+        <button id="results-button" *ngIf="hasVoted" (click)="seeResults(pollId)">See Results</button>
+    </div>
+
+    <div class="footer">
+        <img height="110" src="../../../assets/Logo-new.png">
+    </div>
+</body>
+
+</html>
